@@ -8,6 +8,9 @@ SCL         3           6           A5          D1/GPIO5    5/GPIO0
 
 */
 
+/**********
+ * Load modules
+ **********/
 #include <DS3231.h>
 #include <Wire.h>
 
@@ -15,6 +18,9 @@ SCL         3           6           A5          D1/GPIO5    5/GPIO0
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+/**********
+ * RTC
+ **********/
 DS3231 myRTC;
 
 byte year;
@@ -24,4 +30,3 @@ byte dOW;
 byte hour;
 byte minute;
 byte second;
-
