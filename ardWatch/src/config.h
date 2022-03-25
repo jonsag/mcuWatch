@@ -8,3 +8,20 @@ SCL         3           6           A5          D1/GPIO5    5/GPIO0
 
 */
 
+#include <DS3231.h>
+#include <Wire.h>
+
+#include <Adafruit_I2CDevice.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+DS3231 myRTC;
+
+byte year;
+byte month;
+byte date;
+byte dOW;
+byte hour;
+byte minute;
+byte second;
+
