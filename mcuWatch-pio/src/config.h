@@ -8,13 +8,13 @@ SDA         2           5           A4          D2/GPIO4    3/GPIO2
 SCL         3           6           A5          D1/GPIO5    5/GPIO0
 
 ST7735
-Function    Arduino     ESP8266     ESP-01
------       -----       -----       -----
-CS          D5
+Function    Arduino 168 Arduino 328 ESP8266     ESP-01
+-----       -----       -----       -----       -----
+CS          D5          
 DC          D6
 RES         D7
-SDA         D8
-SCK         D9
+SDA         D8          D11
+SCK         D9          D13
 
 */
 
