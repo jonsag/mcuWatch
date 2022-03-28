@@ -1017,10 +1017,10 @@
     (property "Reference" "RV1" (id 0) (at 99.8221 104.5753 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Value" "" (id 1) (at 99.8221 107.1122 0)
+    (property "Value" "R_Potentiometer" (id 1) (at 99.8221 107.1122 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Footprint" "" (id 2) (at 101.6 105.41 0)
+    (property "Footprint" "My_Misc:Potentiometer_Bourns_3339P_Vertical_large" (id 2) (at 101.6 105.41 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 101.6 105.41 0)
@@ -1082,7 +1082,7 @@
     (property "Reference" "#PWR0113" (id 0) (at 101.6 134.62 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "" (id 1) (at 101.6 132.7134 0))
+    (property "Value" "GND" (id 1) (at 101.6 132.7134 0))
     (property "Footprint" "" (id 2) (at 101.6 128.27 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -1125,6 +1125,22 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid c740f6ed-0d9b-42af-a301-806c7b32fecb))
+  )
+
+  (symbol (lib_id "power:+3.3V") (at 135.89 95.25 0) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid 9396dbf5-aa3c-4ba1-a9ae-1945fbb2026c)
+    (property "Reference" "#PWR?" (id 0) (at 135.89 99.06 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "" (id 1) (at 135.89 91.6742 0))
+    (property "Footprint" "" (id 2) (at 135.89 95.25 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (id 3) (at 135.89 95.25 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 064a14d4-7625-4c17-9926-3bc8bef61c95))
   )
 
   (symbol (lib_id "power:+3.3V") (at 82.55 29.21 0) (unit 1)
@@ -1223,22 +1239,6 @@
     (pin "1" (uuid 8c39a863-805c-4cc8-ade7-65bed3cd8984))
   )
 
-  (symbol (lib_id "power:+5V") (at 135.89 95.25 0) (unit 1)
-    (in_bom yes) (on_board yes)
-    (uuid d9e401b8-baf3-4ffb-94cf-ae614cfb9092)
-    (property "Reference" "#PWR0101" (id 0) (at 135.89 99.06 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+5V" (id 1) (at 135.89 91.6742 0))
-    (property "Footprint" "" (id 2) (at 135.89 95.25 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (id 3) (at 135.89 95.25 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid fc69056e-a1a5-4be8-b172-896a54d5890c))
-  )
-
   (symbol (lib_id "power:+5V") (at 201.93 44.45 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid e554d7e7-5ae3-4e47-a985-6f871eb89d63)
@@ -1314,9 +1314,6 @@
   )
 
   (symbol_instances
-    (path "/d9e401b8-baf3-4ffb-94cf-ae614cfb9092"
-      (reference "#PWR0101") (unit 1) (value "+5V") (footprint "")
-    )
     (path "/cb98afaf-57c8-4a7d-9e8e-3faa1ae4d64d"
       (reference "#PWR0102") (unit 1) (value "GND") (footprint "")
     )
@@ -1355,6 +1352,9 @@
     )
     (path "/559f02aa-cafe-4fbe-87b4-6bb2ebe4b156"
       (reference "#PWR0114") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/9396dbf5-aa3c-4ba1-a9ae-1945fbb2026c"
+      (reference "#PWR?") (unit 1) (value "+3.3V") (footprint "")
     )
     (path "/672233ec-4d06-4b1a-8178-caf57df5342a"
       (reference "BZ1") (unit 1) (value "Buzzer") (footprint "My_Misc:Buzzer_TDK_PS1240P02BT_D12.2mm_H6.5mm_large")
