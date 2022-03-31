@@ -25,3 +25,8 @@ A watch based on an ATmega32P or an ESP8266 module with an RTC clock and a TFT s
 [DS3231](https://github.com/NorthernWidget/DS3231)  
 [Adafruit GFX Library](https://github.com/adafruit/Adafruit-GFX-Library)  
 [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)  
+
+#### Tiny TFT Graphics Library
+
+[Tiny TFT Graphics Library](http://www.technoblogy.com/show?L6I)  
+[Compact TFT Graphics Library](http://www.technoblogy.com/show?2LMJ)  
