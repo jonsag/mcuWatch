@@ -291,7 +291,7 @@ void TestChart () {
 }
 
 // Setup **********************************************
-/*
+
 void setup() {
   InitDisplay();
   ClearDisplay();
@@ -338,4 +338,3 @@ void loop () {
   }
   for (;;);
 }
-*/
