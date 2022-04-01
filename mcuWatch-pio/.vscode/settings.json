@@ -1,10 +1,14 @@
 {
     "cSpell.words": [
         "CASET",
+        "HMISO",
+        "HMOSI",
+        "HSCLK",
         "RAMWR",
         "RASET",
         "xinc",
         "xorigin",
+        "yinc",
         "yoff",
         "yorigin",
         "ysize"
