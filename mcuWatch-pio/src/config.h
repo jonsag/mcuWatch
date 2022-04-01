@@ -16,9 +16,17 @@ CS          7           D5          D6          D3/GPIO0                Chip Sel
 
 #include <SPI.h>
 
-int const cs = 6; // TFT display SPI chip select pin
-int const dc = 7; // TFT display data/command select pin
+#if defined(ESP8266)
+#define dc 2   // D4/GPIO2
+#define cs 0   // D3/GPIO0
 
+#else
+#define dc 5 // TFT display SPI chip select pin
+#define cs 4 // TFT display data/command select pin
+
+#endif
+
+// define screen
 /*
 rotate:
 0: no rotation
@@ -26,7 +34,54 @@ rotate:
 6: 180 degrees
 5: 90 degrees CCW
 */
-
 int const ysize = 128, xsize = 160, yoff = 0, xoff = 0, invert = 0, rotate = 0; // Adafruit 1.8" 160x128 display
 
 #include <TFTGraphicsLibrary.h> // this line must come after definitions of cs/dc pins
+
+/**********
+ * RTC
+ **********/
+/*I2C (RTC and SSD1306)
+Function    RTC         Screen      Arduino     ESP8266     ESP-01
+-----       -----       -----       -----       -----       -----
+Address     0x68        0x3C
+SDA         2                       A4          D2/GPIO4    3/GPIO2
+SCL         3                       A5          D1/GPIO5    5/GPIO0
+*/
+
+/*
+#include <DS3231.h>
+//#include <Wire.h> // included by the SPI-include above
+
+DS3231 myRTC;
+
+byte year;
+byte month;
+byte date;
+byte dOW;
+byte hour;
+byte minute;
+byte second;
+*/
+
+/**********
+ * Rotary encoder
+ **********/
+/*
+Rotary encoder
+Function    Arduino 168 Arduino 328 ESP8266     ESP-01
+-----       -----       -----       -----       -----
+CLK                     D9
+DT                      D8
+SW                      D7
+*/
+
+/**********
+ * Buzzer
+ **********/
+/*
+Buzzer
+Function    Arduino 168 Arduino 328 ESP8266     ESP-01
+-----       -----       -----       -----       -----
++                       D6
+*/
