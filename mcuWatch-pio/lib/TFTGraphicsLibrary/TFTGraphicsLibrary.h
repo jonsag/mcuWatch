@@ -299,6 +299,42 @@ void PlotText(PGM_P p)
   }
 }
 
+void lcd_circle(uint8_t xc, uint8_t yc, uint8_t r)
+{
+  int16_t x = 0;
+  int16_t y = r;
+  int16_t d = r - 1;
+
+  while (y >= x)
+  {
+    PlotPoint(xc + x, yc + y);
+    PlotPoint(xc + y, yc + x);
+    PlotPoint(xc - x, yc + y);
+    PlotPoint(xc - y, yc + x);
+    PlotPoint(xc + x, yc - y);
+    PlotPoint(xc + y, yc - x);
+    PlotPoint(xc - x, yc - y);
+    PlotPoint(xc - y, yc - x);
+
+    if (d >= 2 * x)
+    {
+      d -= 2 * x + 1;
+      x++;
+    }
+    else if (d < 2 * (r - y))
+    {
+      d += 2 * y - 1;
+      y--;
+    }
+    else
+    {
+      d += 2 * (y - x - 1);
+      y--;
+      x++;
+    }
+  }
+}
+
 void TestChart()
 {
   MoveTo(0, 0);
