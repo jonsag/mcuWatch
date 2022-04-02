@@ -116,8 +116,8 @@ int const RAMWR = 0x2C; // Write to display RAM
 
 // Globals - current plot position and colours
 int xorigin, yorigin;
-int fore = 0xFFFF; // White
-int back = 0;      // Black
+int fore = 0xFFFF; // Foreground White
+int back = 0;      // Background Black
 int scale = 1;     // Text scale
 
 // Send a byte to the display
