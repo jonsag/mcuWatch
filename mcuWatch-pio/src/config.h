@@ -6,11 +6,11 @@
 SPI (ST7735)
 Function    Screen pin  Arduino 168 Arduino 328 ESP8266     ESP-01      Comment
 -----       -----       -----       -----       -----       -----       -----
-SCK         3           D9          D13*)       D5/GPIO14*)             SCL, HSCLK, SPI Clock, Hardware SPI clk
-SDA         4           D8          D11*)       D7/GPIO13*)             SPI Data, MOSI, HMOSI, data to screen
+SCK         3           D13*)        D13*)       D5/GPIO14*)             SCL, HSCLK, SPI Clock, Hardware SPI clk
+SDA         4           D11*)        D11*)       D7/GPIO13*)             SPI Data, MOSI, HMOSI, data to screen
 RES         pulled high                                                 RST, HMISO, screen reset
-DC          6           D6          D7          D4/GPIO2                Register Select, labelled as DC in Adafruit code
-CS          7           D5          D6          D3/GPIO0                Chip Select, defined as Slave Select in SPI
+DC          6           D5          D5          D4/GPIO2                Register Select, labelled as DC in Adafruit code
+CS          7           D4          D4          D3/GPIO0                Chip Select, defined as Slave Select in SPI
 *) Must be these pins as they are set in firmware/hardware
 */
 
@@ -49,7 +49,6 @@ SDA         2                       A4          D2/GPIO4    3/GPIO2
 SCL         3                       A5          D1/GPIO5    5/GPIO0
 */
 
-/*
 #include <DS3231.h>
 //#include <Wire.h> // included by the SPI-include above
 
@@ -62,7 +61,7 @@ byte dOW;
 byte hour;
 byte minute;
 byte second;
-*/
+
 
 /**********
  * Rotary encoder
@@ -85,3 +84,4 @@ Function    Arduino 168 Arduino 328 ESP8266     ESP-01
 -----       -----       -----       -----       -----
 +                       D6
 */
+

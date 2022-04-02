@@ -299,7 +299,7 @@ void PlotText(PGM_P p)
   }
 }
 
-void lcd_circle(uint8_t xc, uint8_t yc, uint8_t r)
+void DrawCircle(uint8_t xc, uint8_t yc, uint8_t r)
 {
   int16_t x = 0;
   int16_t y = r;
@@ -335,6 +335,7 @@ void lcd_circle(uint8_t xc, uint8_t yc, uint8_t r)
   }
 }
 
+/*
 void TestChart()
 {
   MoveTo(0, 0);
@@ -346,3 +347,4 @@ void TestChart()
   MoveTo((xsize - 40) / 2, (ysize - 64) / 2);
   PlotChar('F');
 }
+*/
