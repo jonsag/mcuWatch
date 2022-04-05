@@ -36,7 +36,7 @@ rotate:
 */
 int const ysize = 128, xsize = 160, yoff = 0, xoff = 0, invert = 0, rotate = 0; // Adafruit 1.8" 160x128 display
 
-#include <TFTGraphicsLibrary.h> // this line must come after definitions of cs/dc pins
+#include <TFTGraphicsLibrary.h>
 
 /**********
  * RTC
