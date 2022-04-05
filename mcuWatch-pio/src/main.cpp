@@ -2,8 +2,9 @@
 
 #include "config.h"
 #include "drawScreen.h"
+#include "RTCf.h"
 
-// Setup **********************************************
+// Setup **********************************************>
 
 void setup()
 {
@@ -21,13 +22,50 @@ void setup()
   DisplayOn();
   MoveTo(0, 0);
 
+  Serial.println("Drawing frame...");
   TestFrame();
+  Serial.println("Drawing large char...");
   TestChar();
+  Serial.println("Drawing circle...");
   TestCircle();
+  Serial.println("Drawing text...");
   TestText();
+
+  Serial.println("Delay...");
+  delay(2000);
 }
 
 void loop()
 {
+  currentMillis = millis();
 
+  // setRTC();
+
+  if (currentMillis - lastTickMillis >= tickInterval)
+  {
+    i++;
+
+    Serial.println();
+    Serial.print(i);
+    Serial.print(":\t");
+    Serial.print("Getting time...\t");
+
+    // printTime();
+    Serial.print(myRTC.getYear(), DEC);
+    Serial.print("-");
+    /*
+    Serial.print(myRTC.getMonth(century), DEC);
+    Serial.print("-");
+    Serial.print(myRTC.getDate(), DEC);
+    Serial.print(" ");
+    Serial.print(myRTC.getHour(h12Flag, pmFlag), DEC); // 24-hr
+    Serial.print(":");
+    Serial.print(myRTC.getMinute(), DEC);
+    Serial.print(":");
+    Serial.println(myRTC.getSecond(), DEC);
+    */
+    Serial.println();
+
+    lastTickMillis = currentMillis;
+  }
 }

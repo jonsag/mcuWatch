@@ -1,3 +1,4 @@
+
 void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
                   byte &hour, byte &minute, byte &second)
 {
@@ -53,13 +54,18 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
     second = temp1 * 10 + temp2;
 }
 
-void ds3231Set()
+void getTime()
 {
 
     // If something is coming in on the serial line, it's
     // a time correction so set the clock accordingly.
     if (Serial.available())
     {
+        getDateStuff(year, month, date, dOW, hour, minute, second);
+
+        myRTC.setClockMode(false); // set to 24h
+        // setClockMode(true); // set to 12h
+
         getDateStuff(year, month, date, dOW, hour, minute, second);
 
         myRTC.setClockMode(false); // set to 24h
@@ -86,6 +92,29 @@ void ds3231Set()
         myRTC.turnOnAlarm(1);
         myRTC.turnOnAlarm(2);
         */
+
+        Serial.println();
+        Serial.println("RTC is set");
     }
+
     delay(1000);
+}
+
+void printTime()
+{
+    for (int i = 0; i < 1; i++)
+    {
+        // delay(1000);
+        Serial.print(myRTC.getYear(), DEC);
+        Serial.print("-");
+        Serial.print(myRTC.getMonth(century), DEC);
+        Serial.print("-");
+        Serial.print(myRTC.getDate(), DEC);
+        Serial.print(" ");
+        Serial.print(myRTC.getHour(h12Flag, pmFlag), DEC); // 24-hr
+        Serial.print(":");
+        Serial.print(myRTC.getMinute(), DEC);
+        Serial.print(":");
+        Serial.println(myRTC.getSecond(), DEC);
+    }
 }

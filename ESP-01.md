@@ -34,3 +34,11 @@ Check version
 Exit  
 
 >$ Ctrl+a Ctrl+x
+
+## Communication using cu
+
+A simple serial monitor  
+
+>$ cu -l /dev/ttyACM0 -s 9600
+
+Exit with ~. (tilde dot)  

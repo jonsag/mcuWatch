@@ -62,6 +62,13 @@ byte hour;
 byte minute;
 byte second;
 
+bool century = false;
+bool h12Flag;
+bool pmFlag;
+
+long currentMillis;
+long lastTickMillis;
+int tickInterval = 1000;
 
 /**********
  * Rotary encoder
@@ -85,3 +92,8 @@ Function    Arduino 168 Arduino 328 ESP8266     ESP-01
 +                       D6
 */
 
+/**********
+ * Misc
+ **********/
+
+int i = 0;
