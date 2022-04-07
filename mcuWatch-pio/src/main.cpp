@@ -12,29 +12,29 @@ void setup()
   Serial.begin(9600);
   Serial.setTimeout(serialTimeout);
   
-  Serial.println("Hello! ST77xx TFT Test");
-  Serial.println("Compact TFT Graphics library");
-  Serial.println();
+  debugln("Hello! ST77xx TFT Test");
+  debugln("Compact TFT Graphics library");
+  debugln();
 
-  Serial.println("Initializing display ...");
+  debugln("Initializing display ...");
   InitDisplay();
-  Serial.println("Clearing display ...");
+  debugln("Clearing display ...");
   ClearDisplay();
-  Serial.println("Turning on display ...");
+  debugln("Turning on display ...");
   DisplayOn();
   MoveTo(0, 0);
 
-  Serial.println("Drawing frame...");
+  debugln("Drawing frame...");
   TestFrame();
-  Serial.println("Drawing large char...");
+  debugln("Drawing large char...");
   TestChar();
-  Serial.println("Drawing circle...");
+  debugln("Drawing circle...");
   TestCircle();
-  Serial.println("Drawing text...");
+  debugln("Drawing text...");
   TestText();
 
-  Serial.println("Set time with YYMMDDwHHMMSS, with an 'x' at the end!");
-  Serial.println("Delay...");
+  debugln("Set time with YYMMDDwHHMMSS, with an 'x' at the end!");
+  debugln("Delay...");
   delay(2000);
 }
 
@@ -48,13 +48,13 @@ void loop()
   {
     i++;
 
-    Serial.println("Getting time...");
+    debugln("Getting time...");
     getTime();
 
-    Serial.println("Raw time: ");
+    debugln("Raw time: ");
     printRawTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
 
-    Serial.print("Formatted time: ");
+    debug("Formatted time: ");
     printFormattedTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
 
     lastTickMillis = currentMillis;

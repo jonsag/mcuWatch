@@ -39,7 +39,7 @@ void TestChart2()
   MoveTo(x1, y1);
   DrawTo(xsize - 1, y1);
   for (int i = 0; i <= 20; i = i + 4)
-  {Serial.println("Turning on display ...");
+  {debugln("Turning on display ...");
     int mark = x1 + i * xinc;
     MoveTo(mark, y1);
     DrawTo(mark, y1 - 2);

@@ -52,10 +52,10 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
         rlen = Serial.readBytesUntil('x', buf, BUFFER_SIZE);
 
         // prints the received data
-        Serial.print("I received: ");
+        debug("I received: ");
         for (int i = 0; i < rlen; i++)
         {
-            Serial.print(buf[i]);
+            debug(buf[i]);
             inString[i] = buf[i];
         }
 
@@ -65,51 +65,51 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
         }
     }
 
-    Serial.print("I got: ");
-    Serial.println(inString);
+    debug("I got: ");
+    debugln(inString);
 
-    Serial.print("Number of chars: ");
-    Serial.println(rlen);
+    debug("Number of chars: ");
+    debugln(rlen);
 
     temp1 = (byte)inString[0] - 48; // Read year first
     temp2 = (byte)inString[1] - 48;
     year = temp1 * 10 + temp2;
-    Serial.print("Year: ");
-    Serial.println(year);
+    debug("Year: ");
+    debugln(year);
 
     temp1 = (byte)inString[2] - 48; // now month
     temp2 = (byte)inString[3] - 48;
     month = temp1 * 10 + temp2;
-    Serial.print("Month: ");
-    Serial.println(month);
+    debug("Month: ");
+    debugln(month);
 
     temp1 = (byte)inString[4] - 48; // now date
     temp2 = (byte)inString[5] - 48;
     date = temp1 * 10 + temp2;
-    Serial.print("Date: ");
-    Serial.println(date);
+    debug("Date: ");
+    debugln(date);
 
     dOW = (byte)inString[6] - 48; // now Day of Week
-    Serial.print("Dow: ");
-    Serial.println(dOW);
+    debug("Dow: ");
+    debugln(dOW);
 
     temp1 = (byte)inString[7] - 48; // now hour
     temp2 = (byte)inString[8] - 48;
     hour = temp1 * 10 + temp2;
-    Serial.print("Hour: ");
-    Serial.println(hour);
+    debug("Hour: ");
+    debugln(hour);
 
     temp1 = (byte)inString[9] - 48; // now minute
     temp2 = (byte)inString[10] - 48;
     minute = temp1 * 10 + temp2;
-    Serial.print("Minute: ");
-    Serial.println(minute);
+    debug("Minute: ");
+    debugln(minute);
 
     temp1 = (byte)inString[11] - 48; // now second
     temp2 = (byte)inString[12] - 48;
     second = temp1 * 10 + temp2;
-    Serial.print("Second: ");
-    Serial.println(second);
+    debug("Second: ");
+    debugln(second);
 }
 
 void setTime()
@@ -121,7 +121,7 @@ void setTime()
     {
         // clockIsSet = false;
 
-        Serial.println("Preparing to set RTC...");
+        debugln("Preparing to set RTC...");
 
         getDateStuff(year, month, date, dOW, hour, minute, second);
 
@@ -150,17 +150,17 @@ void setTime()
         myRTC.turnOnAlarm(2);
         */
 
-        Serial.println();
-        Serial.println("Finished!");
+        debugln();
+        debugln("Finished!");
         // clockIsSet = true;
     }
 
     /*
         if (clockIsSet)
         {
-            Serial.println("RTC is set");
+            debugln("RTC is set");
             clockIsSet = false;
-            Serial.println("Clearing serial buffer...");
+            debugln("Clearing serial buffer...");
             while (Serial.available())
                 Serial.read();
         }
@@ -191,31 +191,31 @@ void getTime()
 void printRawTime(byte &year, byte &month, byte &date, byte &dOW,
                   byte &hour, byte &minute, byte &second)
 {
-    Serial.print(year);
-    Serial.print("-");
-    Serial.print(month);
-    Serial.print("-");
-    Serial.print(date);
-    Serial.print(" ");
-    Serial.print(hour); // 24-hr
-    Serial.print(":");
-    Serial.print(minute);
-    Serial.print(":");
-    Serial.println(second);
+    debug(year);
+    debug("-");
+    debug(month);
+    debug("-");
+    debug(date);
+    debug(" ");
+    debug(hour); // 24-hr
+    debug(":");
+    debug(minute);
+    debug(":");
+    debugln(second);
 }
 
 void printFormattedTime(byte &year, byte &month, byte &date, byte &dOW,
                         byte &hour, byte &minute, byte &second)
 {
-    Serial.print(padByte(year));
-    Serial.print("-");
-    Serial.print(padByte(month));
-    Serial.print("-");
-    Serial.print(padByte(date));
-    Serial.print(" ");
-    Serial.print(padByte(hour)); // 24-hr
-    Serial.print(":");
-    Serial.print(padByte(minute));
-    Serial.print(":");
-    Serial.println(padByte(second));
+    debug(padByte(year));
+    debug("-");
+    debug(padByte(month));
+    debug("-");
+    debug(padByte(date));
+    debug(" ");
+    debug(padByte(hour)); // 24-hr
+    debug(":");
+    debug(padByte(minute));
+    debug(":");
+    debugln(padByte(second));
 }
