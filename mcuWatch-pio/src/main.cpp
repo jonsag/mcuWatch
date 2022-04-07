@@ -10,7 +10,7 @@ void setup()
 {
   // Start the serial port
   Serial.begin(9600);
-  Serial.print(F("Hello! ST77xx TFT Test"));
+  Serial.println("Hello! ST77xx TFT Test");
   Serial.println("Compact TFT Graphics library");
   Serial.println();
 
@@ -46,23 +46,14 @@ void loop()
   {
     i++;
 
-    // Serial.println();
-    Serial.print(i);
-    Serial.print(":\t");
-    Serial.print("Getting time...\t");
+    Serial.println("Getting time...");
+    getTime();
 
-    // printTime();
-    Serial.print(myRTC.getYear(), DEC);
-    Serial.print("-");
-    Serial.print(myRTC.getMonth(century), DEC);
-    Serial.print("-");
-    Serial.print(myRTC.getDate(), DEC);
-    Serial.print(" ");
-    Serial.print(myRTC.getHour(h12Flag, pmFlag), DEC); // 24-hr
-    Serial.print(":");
-    Serial.print(myRTC.getMinute(), DEC);
-    Serial.print(":");
-    Serial.println(myRTC.getSecond(), DEC);
+    Serial.println("Raw time: ");
+    printRawTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
+
+    Serial.print("Formatted time: ");
+    printFormattedTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
 
     lastTickMillis = currentMillis;
   }

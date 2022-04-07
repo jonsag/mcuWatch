@@ -71,15 +71,23 @@ byte hour;
 byte minute;
 byte second;
 
+byte yearNow;
+byte monthNow;
+byte dateNow;
+byte dOWNow;
+byte hourNow;
+byte minuteNow;
+byte secondNow;
+
 bool century = false;
 bool h12Flag;
 bool pmFlag;
 
 long currentMillis;
 long lastTickMillis;
-int tickInterval = 3000;
+int tickInterval = 1000;
 
-boolean clockIsSet = false;
+//boolean clockIsSet = false;
 
 /**********
  * Rotary encoder
