@@ -6,6 +6,7 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
     // the serial port. The stuff coming in should be in
     // the order YYMMDDwHHMMSS, with an 'x' at the end.
     // boolean gotString = false;
+    /*
     char inChar;
     byte temp1, temp2;
     char inString[20];
@@ -26,8 +27,49 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
             }
         }
     }
+*/
 
+    // based on an examples at
+    // https://arduinogetstarted.com/reference/serial-readbytes
+    // https://arduinogetstarted.com/reference/serial-readbytesuntil
+    // https://arduinogetstarted.com/reference/serial-settimeout
+    char inString[20];
+    byte temp1, temp2;
+
+    rxlen = Serial.available(); // number of bytes available in Serial buffer
+    if (rxlen > 0) // read only the fixed number of bytes in buffer
+    {
+        if (rxlen > BUFFER_SIZE)
+        {                       // check if the data exceeds the buffer size
+            rlen = BUFFER_SIZE; // if yes, read BUFFER_SIZE bytes. The remaining will be read in the next time
+        }
+        else
+        {
+            rlen = rxlen;
+        }
+
+        // read the incoming bytes:
+        rlen = Serial.readBytesUntil('x', buf, BUFFER_SIZE);
+
+        // prints the received data
+        Serial.print("I received: ");
+        for (int i = 0; i < rlen; i++)
+        {
+            Serial.print(buf[i]);
+            inString[i] = buf[i];
+        }
+
+        while (Serial.available()) // clear buffer
+        {
+            Serial.read();
+        }
+    }
+
+    Serial.print("I got: ");
     Serial.println(inString);
+
+    Serial.print("Number of chars: ");
+    Serial.println(rlen);
 
     temp1 = (byte)inString[0] - 48; // Read year first
     temp2 = (byte)inString[1] - 48;

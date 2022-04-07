@@ -10,6 +10,8 @@ void setup()
 {
   // Start the serial port
   Serial.begin(9600);
+  Serial.setTimeout(serialTimeout);
+  
   Serial.println("Hello! ST77xx TFT Test");
   Serial.println("Compact TFT Graphics library");
   Serial.println();

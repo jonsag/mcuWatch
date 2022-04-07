@@ -88,6 +88,11 @@ const char *dayName[7] = {
   "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
 };
 
+const int BUFFER_SIZE = 14;
+char buf[BUFFER_SIZE];
+int rlen;
+int rxlen;
+
 bool century = false;
 bool h12Flag;
 bool pmFlag;
@@ -125,3 +130,4 @@ Function    Arduino 168 Arduino 328 ESP8266     ESP-01
  **********/
 
 int i = 0;
+const int serialTimeout = 10000;
