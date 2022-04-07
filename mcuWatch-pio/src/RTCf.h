@@ -30,41 +30,54 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
     temp1 = (byte)inString[0] - 48;
     temp2 = (byte)inString[1] - 48;
     year = temp1 * 10 + temp2;
+    Serial.print("Year: ");
+    Serial.println(year);
     // now month
     temp1 = (byte)inString[2] - 48;
     temp2 = (byte)inString[3] - 48;
     month = temp1 * 10 + temp2;
+    Serial.print("Month: ");
+    Serial.println(month);
     // now date
     temp1 = (byte)inString[4] - 48;
     temp2 = (byte)inString[5] - 48;
     date = temp1 * 10 + temp2;
+    Serial.print("Date: ");
+    Serial.println(date);
     // now Day of Week
     dOW = (byte)inString[6] - 48;
+    Serial.print("Dow: ");
+    Serial.println(dOW);
     // now hour
     temp1 = (byte)inString[7] - 48;
     temp2 = (byte)inString[8] - 48;
     hour = temp1 * 10 + temp2;
+    Serial.print("Hour: ");
+    Serial.println(hour);
     // now minute
     temp1 = (byte)inString[9] - 48;
     temp2 = (byte)inString[10] - 48;
     minute = temp1 * 10 + temp2;
+    Serial.print("Minute: ");
+    Serial.println(minute);
     // now second
     temp1 = (byte)inString[11] - 48;
     temp2 = (byte)inString[12] - 48;
     second = temp1 * 10 + temp2;
+    Serial.print("Second: ");
+    Serial.println(second);
 }
 
-void getTime()
+void setTime()
 {
 
     // If something is coming in on the serial line, it's
     // a time correction so set the clock accordingly.
     if (Serial.available())
     {
-        getDateStuff(year, month, date, dOW, hour, minute, second);
+        clockIsSet = false;
 
-        myRTC.setClockMode(false); // set to 24h
-        // setClockMode(true); // set to 12h
+        Serial.println("Preparing to set RTC...");
 
         getDateStuff(year, month, date, dOW, hour, minute, second);
 
@@ -94,10 +107,18 @@ void getTime()
         */
 
         Serial.println();
-        Serial.println("RTC is set");
+        Serial.println("Finished!");
+        clockIsSet = true;
     }
 
-    delay(1000);
+    if (clockIsSet)
+    {
+        Serial.println("RTC is set");
+        clockIsSet = false;
+        Serial.println("Clearing serial buffer...");
+        while (Serial.available())
+            Serial.read();
+    }
 }
 
 void printTime()

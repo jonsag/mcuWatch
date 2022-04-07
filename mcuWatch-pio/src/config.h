@@ -47,6 +47,15 @@ Function    RTC         Screen      Arduino     ESP8266     ESP-01
 Address     0x68        0x3C
 SDA         2                       A4          D2/GPIO4    3/GPIO2
 SCL         3                       A5          D1/GPIO5    5/GPIO0
+
+RTC from above
+------------
+| 5 GND     |
+| 4 NC      |
+| 3 C SCL   |
+| 2 D SDA   |
+| 1 VCC     |
+------------
 */
 
 #include <DS3231.h>
@@ -68,7 +77,9 @@ bool pmFlag;
 
 long currentMillis;
 long lastTickMillis;
-int tickInterval = 1000;
+int tickInterval = 3000;
+
+boolean clockIsSet = false;
 
 /**********
  * Rotary encoder

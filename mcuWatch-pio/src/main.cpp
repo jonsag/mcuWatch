@@ -28,9 +28,10 @@ void setup()
   TestChar();
   Serial.println("Drawing circle...");
   TestCircle();
-  Serial.println("Drawing text...");
-  TestText();
+  //Serial.println("Drawing text...");
+  //TestText();
 
+  Serial.println("Set time with YYMMDDwHHMMSS, with an 'x' at the end!");
   Serial.println("Delay...");
   delay(2000);
 }
@@ -39,13 +40,13 @@ void loop()
 {
   currentMillis = millis();
 
-  // setRTC();
+  setTime();
 
   if (currentMillis - lastTickMillis >= tickInterval)
   {
     i++;
 
-    Serial.println();
+    //Serial.println();
     Serial.print(i);
     Serial.print(":\t");
     Serial.print("Getting time...\t");
@@ -53,7 +54,6 @@ void loop()
     // printTime();
     Serial.print(myRTC.getYear(), DEC);
     Serial.print("-");
-    /*
     Serial.print(myRTC.getMonth(century), DEC);
     Serial.print("-");
     Serial.print(myRTC.getDate(), DEC);
@@ -63,9 +63,7 @@ void loop()
     Serial.print(myRTC.getMinute(), DEC);
     Serial.print(":");
     Serial.println(myRTC.getSecond(), DEC);
-    */
-    Serial.println();
-
+    
     lastTickMillis = currentMillis;
   }
 }
