@@ -6,8 +6,6 @@ void TestFrame()
     DrawTo(xsize - 1, ysize - 1);
     DrawTo(0, ysize - 1);
     DrawTo(0, 0);
-    //for (;;)
-    //    ;
 }
 
 void TestChar()
@@ -15,24 +13,18 @@ void TestChar()
     scale = 8;
     MoveTo((xsize - 40) / 2, (ysize - 64) / 2);
     PlotChar('F');
-    //for (;;)
-    //    ;
 }
 
 void TestCircle()
 {
     DrawCircle(xsize / 2, ysize / 2, min((xsize - 2) / 2, (ysize - 2) / 2));
-    //for (;;)
-    //    ;
 }
 
 void TestText()
 {
     scale = 1;
     MoveTo(20, 20);
-    PlotText('TEST');
-    //for (;;)
-    //    ;
+    PlotText(PSTR("Graphics Display"));
 }
 
 /*

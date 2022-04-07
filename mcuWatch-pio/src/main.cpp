@@ -28,8 +28,8 @@ void setup()
   TestChar();
   Serial.println("Drawing circle...");
   TestCircle();
-  //Serial.println("Drawing text...");
-  //TestText();
+  Serial.println("Drawing text...");
+  TestText();
 
   Serial.println("Set time with YYMMDDwHHMMSS, with an 'x' at the end!");
   Serial.println("Delay...");
@@ -46,7 +46,7 @@ void loop()
   {
     i++;
 
-    //Serial.println();
+    // Serial.println();
     Serial.print(i);
     Serial.print(":\t");
     Serial.print("Getting time...\t");
@@ -63,7 +63,7 @@ void loop()
     Serial.print(myRTC.getMinute(), DEC);
     Serial.print(":");
     Serial.println(myRTC.getSecond(), DEC);
-    
+
     lastTickMillis = currentMillis;
   }
 }
