@@ -79,6 +79,15 @@ byte hourNow;
 byte minuteNow;
 byte secondNow;
 
+const char *monthName[12] = {
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+};
+
+const char *dayName[7] = {
+  "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
+};
+
 bool century = false;
 bool h12Flag;
 bool pmFlag;
