@@ -51,7 +51,7 @@ void loop()
     debugln("Getting time...");
     getTime();
 
-    debugln("Raw time: ");
+    debug("Raw time: ");
     printRawTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
 
     debug("Formatted time: ");

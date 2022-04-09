@@ -37,7 +37,7 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
     byte temp1, temp2;
 
     rxlen = Serial.available(); // number of bytes available in Serial buffer
-    if (rxlen > 0) // read only the fixed number of bytes in buffer
+    if (rxlen > 0)              // read only the fixed number of bytes in buffer
     {
         if (rxlen > BUFFER_SIZE)
         {                       // check if the data exceeds the buffer size
@@ -58,6 +58,10 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
             debug(buf[i]);
             inString[i] = buf[i];
         }
+        debugln();
+
+        debug("Number of chars: ");
+        debugln(rlen);
 
         while (Serial.available()) // clear buffer
         {
@@ -67,9 +71,6 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
 
     debug("I got: ");
     debugln(inString);
-
-    debug("Number of chars: ");
-    debugln(rlen);
 
     temp1 = (byte)inString[0] - 48; // Read year first
     temp2 = (byte)inString[1] - 48;
@@ -180,12 +181,36 @@ String padByte(byte &k)
 
 void getTime()
 {
+    DateTime now = myRTC.now();
+
+    /*
     yearNow = (myRTC.getYear(), DEC);
     monthNow = (myRTC.getMonth(century), DEC);
     dateNow = (myRTC.getDate(), DEC);
     hourNow = (myRTC.getHour(h12Flag, pmFlag), DEC); // 24-hr
     minuteNow = (myRTC.getMinute(), DEC);
     secondNow = (myRTC.getSecond(), DEC);
+*/
+
+    yearNow = (now.year(), DEC);
+    monthNow = (now.month(), DEC);
+    dateNow = (now.day(), DEC);
+    hourNow = (now.hour(), DEC); // 24-hr
+    minuteNow = (now.minute(), DEC);
+    secondNow = (now.second(), DEC);
+
+    debug("From RTC: ");
+    debug(yearNow);
+    debug("-");
+    debug(monthNow);
+    debug("-");
+    debug(dateNow);
+    debug(" ");
+    debug(hourNow); // 24-hr
+    debug(":");
+    debug(minuteNow);
+    debug(":");
+    debugln(secondNow);
 }
 
 void printRawTime(byte &year, byte &month, byte &date, byte &dOW,
