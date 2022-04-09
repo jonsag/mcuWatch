@@ -1,11 +1,13 @@
 {
     "cSpell.words": [
         "CASET",
+        "debugln",
         "HMISO",
         "HMOSI",
         "HSCLK",
         "RAMWR",
         "RASET",
+        "rxlen",
         "xinc",
         "xorigin",
         "yinc",
