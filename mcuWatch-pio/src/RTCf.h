@@ -179,9 +179,14 @@ String padByte(byte &k)
     return myString;
 }
 
+DateTime timeNow()
+{
+    return myRTCget.now();
+}
+
 void getTime()
 {
-    DateTime now = myRTCget.now();
+    // DateTime now = myRTCget.now();
 
     /*
     yearNow = (myRTCset.getYear(), DEC);
@@ -191,6 +196,7 @@ void getTime()
     minuteNow = (myRTCset.getMinute(), DEC);
     secondNow = (myRTCset.getSecond(), DEC);
 */
+    now = timeNow();
 
     yearNow = (now.year(), DEC);
     monthNow = (now.month(), DEC);
@@ -243,4 +249,21 @@ void printFormattedTime(byte &year, byte &month, byte &date, byte &dOW,
     debug(padByte(minute));
     debug(":");
     debugln(padByte(second));
+}
+
+void printUNIXtime()
+{
+    now = timeNow();
+
+    debug("Since midnight 1/1/1970: ");
+    debug(now.unixtime());
+    debug("\ts: ");
+    debug(now.unixtime() / 86400L);
+    debugln("d");
+}
+
+void printTemp()
+{
+    debug("Temp: ");
+    debugln((myRTCset.getTemperature(), 2));
 }

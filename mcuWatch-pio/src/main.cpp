@@ -33,8 +33,20 @@ void setup()
   debugln("Drawing text...");
   TestText();
 
-  debugln("Set time with YYMMDDwHHMMSS, with an 'x' at the end!");
+  debugln();
+  debugln("Set time with YYMMDDwhhmmssx, ");
+  debugln("where YY = Year (ex. 20 for 2020)");
+  debugln("      MM = Month (ex. 04 for April)");
+  debugln("      DD = Day of month (ex. 09 for 9th)");
+  debugln("      w  = Day of week from 1 to 7, 1 = Monday (ex. 4 for Thursday)");
+  debugln("      hh = hours in 24h format (ex. 09 for 9AM or 21 for 9PM)");
+  debugln("      mm = minutes (ex. 02)");
+  debugln("      ss = seconds (ex. 42)");
+  debugln("End with 'x'");
+  debugln("Example for input : 2004094090242x");
+
   debugln("Delay...");
+  debugln();
   delay(2000);
 }
 
@@ -57,6 +69,13 @@ void loop()
     debug("Formatted time: ");
     printFormattedTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
 
+    debugln("UNIX time: ");
+    printUNIXtime();
+
+    printTemp();
+
+    debugln();
+    
     lastTickMillis = currentMillis;
   }
 }

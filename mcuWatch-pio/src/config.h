@@ -2,7 +2,7 @@
 /**********
  * Debug
  **********/
-#define DEBUG 1
+#define DEBUG 1 // debug is off when 0
 
 #if DEBUG == 1
 #define debug(x) Serial.print(x)
@@ -76,6 +76,8 @@ RTC from above
 
 DS3231 myRTCset;
 RTClib myRTCget;
+
+DateTime now;
 
 byte year;
 byte month;
