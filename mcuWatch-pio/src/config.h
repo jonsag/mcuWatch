@@ -30,8 +30,8 @@ CS          7           D4          D4          D3/GPIO0                Chip Sel
 #include <SPI.h>
 
 #if defined(ESP8266)
-#define dc 2   // D4/GPIO2
-#define cs 0   // D3/GPIO0
+#define dc 2 // D4/GPIO2
+#define cs 0 // D3/GPIO0
 
 #else
 #define dc 5 // TFT display SPI chip select pin
@@ -74,8 +74,8 @@ RTC from above
 #include <DS3231.h>
 //#include <Wire.h> // included by the SPI-include above
 
-DS3231 myRTCset;
-RTClib myRTCget;
+DS3231 myDS3231;
+RTClib myRTClib;
 
 DateTime now;
 
@@ -96,16 +96,16 @@ byte minuteNow;
 byte secondNow;
 
 const char *monthName[12] = {
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-};
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
 const char *dayName[7] = {
-  "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
-};
+    "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
-const int BUFFER_SIZE = 14;
+const int BUFFER_SIZE = 12;
 char buf[BUFFER_SIZE];
+char inString[BUFFER_SIZE];
+byte temp1, temp2;
 int rlen;
 int rxlen;
 
@@ -115,9 +115,9 @@ bool pmFlag;
 
 long currentMillis;
 long lastTickMillis;
-int tickInterval = 1000;
+int tickInterval = 5000;
 
-//boolean clockIsSet = false;
+// boolean clockIsSet = false;
 
 /**********
  * Rotary encoder

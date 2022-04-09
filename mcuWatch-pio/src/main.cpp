@@ -11,7 +11,9 @@ void setup()
   // Start the serial port
   Serial.begin(9600);
   Serial.setTimeout(serialTimeout);
-  
+
+  Wire.begin();
+
   debugln("Hello! ST77xx TFT Test");
   debugln("Compact TFT Graphics library");
   debugln();
@@ -60,22 +62,27 @@ void loop()
   {
     i++;
 
-    debugln("Getting time...");
-    getTime();
+        debugln("Getting time...");
+        getTime();
 
-    debug("Raw time: ");
-    printRawTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
+        debug("Raw time: ");
+        printRawTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
 
-    debug("Formatted time: ");
-    printFormattedTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
+        debug("Formatted time: ");
+        printFormattedTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
 
-    debugln("UNIX time: ");
-    printUNIXtime();
+        debug("Time: ");
+        printTime();
 
-    printTemp();
+        debugln("UNIX time: ");
+        printUNIXtime();
 
-    debugln();
-    
+        printTemp();
+
+        debugln();
+
+        RTCtest();
+
     lastTickMillis = currentMillis;
   }
 }
