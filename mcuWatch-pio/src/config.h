@@ -74,7 +74,8 @@ RTC from above
 #include <DS3231.h>
 //#include <Wire.h> // included by the SPI-include above
 
-DS3231 myRTC;
+DS3231 myRTCset;
+RTClib myRTCget;
 
 byte year;
 byte month;

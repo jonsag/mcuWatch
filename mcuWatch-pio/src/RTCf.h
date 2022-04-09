@@ -126,29 +126,29 @@ void setTime()
 
         getDateStuff(year, month, date, dOW, hour, minute, second);
 
-        myRTC.setClockMode(false); // set to 24h
+        myRTCset.setClockMode(false); // set to 24h
         // setClockMode(true); // set to 12h
 
-        myRTC.setYear(year);
-        myRTC.setMonth(month);
-        myRTC.setDate(date);
-        myRTC.setDoW(dOW);
-        myRTC.setHour(hour);
-        myRTC.setMinute(minute);
-        myRTC.setSecond(second);
+        myRTCset.setYear(year);
+        myRTCset.setMonth(month);
+        myRTCset.setDate(date);
+        myRTCset.setDoW(dOW);
+        myRTCset.setHour(hour);
+        myRTCset.setMinute(minute);
+        myRTCset.setSecond(second);
 
         /*
         // Test of alarm functions
         // set A1 to one minute past the time we just set the clock
         // on current day of week.
-        myRTC.setA1Time(dOW, hour, minute + 1, second, 0x0, true,
+        myRTCset.setA1Time(dOW, hour, minute + 1, second, 0x0, true,
                         false, false);
         // set A2 to two minutes past, on current day of month.
-        myRTC.setA2Time(date, hour, minute + 2, 0x0, false, false,
+        myRTCset.setA2Time(date, hour, minute + 2, 0x0, false, false,
                         false);
         // Turn on both alarms, with external interrupt
-        myRTC.turnOnAlarm(1);
-        myRTC.turnOnAlarm(2);
+        myRTCset.turnOnAlarm(1);
+        myRTCset.turnOnAlarm(2);
         */
 
         debugln();
@@ -181,15 +181,15 @@ String padByte(byte &k)
 
 void getTime()
 {
-    DateTime now = myRTC.now();
+    DateTime now = myRTCget.now();
 
     /*
-    yearNow = (myRTC.getYear(), DEC);
-    monthNow = (myRTC.getMonth(century), DEC);
-    dateNow = (myRTC.getDate(), DEC);
-    hourNow = (myRTC.getHour(h12Flag, pmFlag), DEC); // 24-hr
-    minuteNow = (myRTC.getMinute(), DEC);
-    secondNow = (myRTC.getSecond(), DEC);
+    yearNow = (myRTCset.getYear(), DEC);
+    monthNow = (myRTCset.getMonth(century), DEC);
+    dateNow = (myRTCset.getDate(), DEC);
+    hourNow = (myRTCset.getHour(h12Flag, pmFlag), DEC); // 24-hr
+    minuteNow = (myRTCset.getMinute(), DEC);
+    secondNow = (myRTCset.getSecond(), DEC);
 */
 
     yearNow = (now.year(), DEC);
