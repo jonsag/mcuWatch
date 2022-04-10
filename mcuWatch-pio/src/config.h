@@ -87,13 +87,14 @@ byte hour;
 byte minute;
 byte second;
 
-byte yearNow;
-byte monthNow;
-byte dateNow;
-byte dOWNow;
-byte hourNow;
-byte minuteNow;
-byte secondNow;
+
+String yearNow;
+String monthNow;
+String dayNow;
+String dOWNow;
+String hourNow;
+String minuteNow;
+String secondNow;
 
 const char *monthName[12] = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -101,6 +102,8 @@ const char *monthName[12] = {
 
 const char *dayName[7] = {
     "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+
+String nowArray[] = {};
 
 const int BUFFER_SIZE = 12;
 char buf[BUFFER_SIZE];

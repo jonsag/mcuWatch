@@ -169,9 +169,9 @@ void setTime()
         */
 }
 
-String padByte(byte &k)
+String padByte(String &s)
 {
-    String myString = String(k);
+    String myString = s;
     if (myString.length() < 2)
     {
         myString = "0" + myString;
@@ -185,106 +185,55 @@ DateTime timeNow()
     return myRTClib.now();
 }
 
-void getTime()
+void RTCtest(DateTime &now)
 {
-    // DateTime now = myRTClib.now();
+    // now = myRTClib.now();
 
-    /*
-    yearNow = (myDS3231.getYear(), DEC);
-    monthNow = (myDS3231.getMonth(century), DEC);
-    dateNow = (myDS3231.getDate(), DEC);
-    hourNow = (myDS3231.getHour(h12Flag, pmFlag), DEC); // 24-hr
-    minuteNow = (myDS3231.getMinute(), DEC);
-    secondNow = (myDS3231.getSecond(), DEC);
-*/
-
-    now = timeNow();
-
-#if DEBUG
-    Serial.print("From RTC: ");
-    Serial.print(now.year(), DEC);
+    Serial.print(now.year()); //, DEC);
     Serial.print('/');
-    Serial.print(now.month(), DEC);
+    Serial.print(now.month()); //, DEC);
     Serial.print('/');
-    Serial.print(now.day(), DEC);
+    Serial.print(now.day()); //, DEC);
     Serial.print(' ');
-    Serial.print(now.hour(), DEC);
+    Serial.print(now.hour()); //, DEC);
     Serial.print(':');
-    Serial.print(now.minute(), DEC);
+    Serial.print(now.minute()); //, DEC);
     Serial.print(':');
-    Serial.print(now.second(), DEC);
-    Serial.println();
-#endif
-
-    yearNow = (now.year(), DEC);
-    monthNow = (now.month(), DEC);
-    dateNow = (now.day(), DEC);
-    hourNow = (now.hour(), DEC); // 24-hr
-    minuteNow = (now.minute(), DEC);
-    secondNow = (now.second(), DEC);
+    Serial.println(now.second()); //, DEC);
 }
 
-void printRawTime(byte &year, byte &month, byte &date, byte &dOW,
-                  byte &hour, byte &minute, byte &second)
+void paddedRTCtest(DateTime &now)
 {
-#if DEBUG
-    Serial.print(year);
-    Serial.print("-");
-    Serial.print(month);
-    Serial.print("-");
-    Serial.print(date);
-    Serial.print(" ");
-    Serial.print(hour); // 24-hr
-    Serial.print(":");
-    Serial.print(minute);
-    Serial.print(":");
-    Serial.println(second);
-#endif
-}
+    // now = myRTClib.now();
 
-void printFormattedTime(byte &year, byte &month, byte &date, byte &dOW,
-                        byte &hour, byte &minute, byte &second)
-{
-#if DEBUG
-    Serial.print(padByte(year));
-    Serial.print("-");
-    Serial.print(padByte(month));
-    Serial.print("-");
-    Serial.print(padByte(date));
-    Serial.print(" ");
-    Serial.print(padByte(hour)); // 24-hr
-    Serial.print(":");
-    Serial.print(padByte(minute));
-    Serial.print(":");
-    Serial.println(padByte(second));
-#endif
-}
+    yearNow = now.year();     //, DEC;
+    monthNow = now.month();   //, DEC;
+    dayNow = now.day();       //, DEC;
+    hourNow = now.hour();     //, DEC;
+    minuteNow = now.minute(); //, DEC;
+    secondNow = now.second(); //, DEC;
 
-void printTime()
-{
-#if DEBUG
     Serial.print(padByte(yearNow));
-    Serial.print("-");
+    Serial.print('/');
     Serial.print(padByte(monthNow));
-    Serial.print("-");
-    Serial.print(padByte(dateNow));
-    Serial.print(" ");
-    Serial.print(padByte(hourNow)); // 24-hr
-    Serial.print(":");
+    Serial.print('/');
+    Serial.print(padByte(dayNow));
+    Serial.print(' ');
+    Serial.print(padByte(hourNow));
+    Serial.print(':');
     Serial.print(padByte(minuteNow));
-    Serial.print(":");
+    Serial.print(':');
     Serial.println(padByte(secondNow));
-#endif
 }
-void printUNIXtime()
+
+void printUNIXtime(DateTime &now)
 {
-    now = timeNow();
+    // now = myRTClib.now();
 
 #if DEBUG
-    Serial.println();
     Serial.print("Since midnight 1/1/1970: ");
     Serial.print(now.unixtime());
-    Serial.print(" s, ");
+    Serial.print("s, ");
     Serial.print(now.unixtime() / 86400L);
     Serial.println("d");
 #endif
@@ -293,35 +242,66 @@ void printUNIXtime()
 void printTemp()
 {
 #if DEBUG
-    Serial.println();
-    Serial.print("Temp: ");
     Serial.println((myDS3231.getTemperature(), 2));
 #endif
 }
 
-void RTCtest()
+String getDayName(DateTime &now)
 {
-    // now = myRTClib.now();
-    now = timeNow();
+    dOWNow = myDS3231.getDoW();
 
-    Serial.print(now.year(), DEC);
-    Serial.print('/');
-    Serial.print(now.month(), DEC);
-    Serial.print('/');
-    Serial.print(now.day(), DEC);
-    Serial.print(' ');
-    Serial.print(now.hour(), DEC);
-    Serial.print(':');
-    Serial.print(now.minute(), DEC);
-    Serial.print(':');
-    Serial.print(now.second(), DEC);
-    Serial.println();
+    return dayName[dOWNow.toInt()];
+}
 
-    Serial.print(" since midnight 1/1/1970 = ");
-    Serial.print(now.unixtime());
-    Serial.print("s = ");
-    Serial.print(now.unixtime() / 86400L);
-    Serial.println("d");
+String getMonthName(DateTime &now)
+{
+    monthNow = now.month();
 
-    Serial.println();
+    return monthName[monthNow.toInt() - 1];
+}
+
+String prettyNumbering(String &k)
+{
+    char last = k.charAt(k.length() - 1);
+    int l = (int)(last - '0');
+
+    switch (l)
+    {
+    case 1:
+        return k + "st";
+        break;
+    case 2:
+        return k + "nd";
+        break;
+    case 3:
+        return k + "rd";
+        break;
+    default:
+        return k + "th";
+        break;
+    }
+}
+
+void prettyPrint(DateTime &now)
+{
+    yearNow = now.year();     //, DEC;
+    monthNow = now.month();   //, DEC;
+    dayNow = now.day();       //, DEC;
+    hourNow = now.hour();     //, DEC;
+    minuteNow = now.minute(); //, DEC;
+    secondNow = now.second(); //, DEC;
+
+    Serial.print(padByte(hourNow));
+    Serial.print(":");
+    Serial.print(padByte(minuteNow));
+    Serial.print(":");
+    Serial.print(padByte(secondNow));
+    Serial.print(" ");
+    Serial.print(getDayName(now));
+    Serial.print(" ");
+    Serial.print(getMonthName(now));
+    Serial.print(" ");
+    Serial.print(prettyNumbering(dayNow));
+    Serial.print(" ");
+    Serial.println(padByte(yearNow));
 }

@@ -61,27 +61,30 @@ void loop()
   if (currentMillis - lastTickMillis >= tickInterval)
   {
     i++;
+    debugln("Getting time...");
+    now = timeNow();
 
-        debugln("Getting time...");
-        getTime();
+    debug("RTCtest: ");
+    RTCtest(now);
 
-        debug("Raw time: ");
-        printRawTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
+    debug("Padded RTCtest: ");
+    paddedRTCtest(now);
 
-        debug("Formatted time: ");
-        printFormattedTime(yearNow, monthNow, dateNow, dOWNow, hourNow, minuteNow, secondNow);
+    debug("UNIX time: ");
+    printUNIXtime(now);
 
-        debug("Time: ");
-        printTime();
+    debug("Temp: ");
+    printTemp();
 
-        debugln("UNIX time: ");
-        printUNIXtime();
+    debug("Day of the week: ");
+    debugln(getDayName(now));
 
-        printTemp();
+    debug("Month: ");
+    debugln(getMonthName(now));
 
-        debugln();
+    prettyPrint(now);
 
-        RTCtest();
+    debugln();
 
     lastTickMillis = currentMillis;
   }
