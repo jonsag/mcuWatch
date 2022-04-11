@@ -13,7 +13,7 @@
 #endif
 
 /**********
- * TFT screen
+ * Pins
  **********/
 /*
 SPI (ST7735)
@@ -25,7 +25,48 @@ RES         pulled high                                                 RST, HMI
 DC          6           D4          D4          D4/GPIO2                Register Select, labelled as DC in Adafruit code
 CS          7           D3          D3          D3/GPIO0                Chip Select, defined as Slave Select in SPI
 *) Must be these pins as they are set in firmware/hardware
+
+I2C (RTC and SSD1306)
+Function    RTC         Screen      Arduino     ESP8266     ESP-01
+-----       -----       -----       -----       -----       -----
+Address     0x68        0x3C
+SDA         2                       A4          D2/GPIO4    3/GPIO2
+SCL         3                       A5          D1/GPIO5    5/GPIO0
+
+Rotary encoder
+Function                Arduino 168 Arduino 328 ESP8266     ESP-01
+-----                   -----       -----       -----       -----
+CLK                                 D9
+DT                                  D8
+SW                                  D7
+
+Buzzer
+Function                Arduino 168 Arduino 328 ESP8266     ESP-01
+-----                   -----       -----       -----       -----
++                                   D6          D8/GPIO15
 */
+
+#if defined(ESP8266)
+#define dc D4 // D4/GPIO2
+#define cs D3 // D3/GPIO0
+#define rotCLK SD3 // SD3/GPIO10
+#define rotDT SD2 // SD2/GPIO9
+#define rotSW D0 // D0/GPIO16
+#define buz D8 // D4/GPIO2
+
+#elif defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO)
+#define dc 4 // TFT display SPI chip select pin
+#define cs 3 // TFT display data/command select pin
+#define rotCLK 9
+#define rotDT 8
+#define rotSW 7
+#define buz 6
+
+#endif
+/**********
+ * TFT screen
+ **********/
+
 
 #include <SPI.h>
 
@@ -57,16 +98,6 @@ MK20DX256 || arm || CORE_TEENSY
 $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 */
 
-#if defined(ESP8266)
-#define dc 2 // D4/GPIO2
-#define cs 0 // D3/GPIO0
-
-#elif defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO)
-#define dc 4 // TFT display SPI chip select pin
-#define cs 3 // TFT display data/command select pin
-
-#endif
-
 // define screen
 /*
 rotate:
@@ -82,13 +113,7 @@ int const ysize = 128, xsize = 160, yoff = 0, xoff = 0, invert = 0, rotate = 0; 
 /**********
  * RTC
  **********/
-/*I2C (RTC and SSD1306)
-Function    RTC         Screen      Arduino     ESP8266     ESP-01
------       -----       -----       -----       -----       -----
-Address     0x68        0x3C
-SDA         2                       A4          D2/GPIO4    3/GPIO2
-SCL         3                       A5          D1/GPIO5    5/GPIO0
-
+/*
 RTC from above
 ------------
 | 5 GND     |
@@ -152,28 +177,13 @@ int tickInterval = 5000;
 /**********
  * Rotary encoder
  **********/
-/*
-Rotary encoder
-Function    Arduino 168 Arduino 328 ESP8266     ESP-01
------       -----       -----       -----       -----
-CLK                     D9
-DT                      D8
-SW                      D7
-*/
 
 /**********
  * Buzzer
  **********/
-/*
-Buzzer
-Function    Arduino 168 Arduino 328 ESP8266     ESP-01
------       -----       -----       -----       -----
-+                       D6
-*/
 
 /**********
  * Misc
  **********/
-
 int i = 0;
 const int serialTimeout = 10000;

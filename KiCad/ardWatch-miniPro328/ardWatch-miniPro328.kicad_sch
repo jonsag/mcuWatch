@@ -1423,7 +1423,7 @@
       (reference "J1") (unit 1) (value "2-pin_power_input_header") (footprint "My_Headers:2-pin_power_input_header")
     )
     (path "/6d012fbc-a5e9-4e1f-84d4-e411fd28d128"
-      (reference "R1") (unit 1) (value "R") (footprint "My_Misc:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal_larger_pads")
+      (reference "R1") (unit 1) (value "10k") (footprint "My_Misc:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal_larger_pads")
     )
     (path "/488f0a8c-afa0-4991-97f4-7c1725dbe36d"
       (reference "RV1") (unit 1) (value "Backlight") (footprint "My_Misc:Potentiometer_Bourns_3339P_Vertical_large")
