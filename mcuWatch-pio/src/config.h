@@ -61,7 +61,7 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #define dc 2 // D4/GPIO2
 #define cs 0 // D3/GPIO0
 
-#elif defined(ARDUINO_AVR_PRO)
+#elif defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO)
 #define dc 4 // TFT display SPI chip select pin
 #define cs 3 // TFT display data/command select pin
 
