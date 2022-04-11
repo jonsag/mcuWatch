@@ -44,9 +44,12 @@ Buzzer
 Function                Arduino 168 Arduino 328 ESP8266     ESP-01
 -----                   -----       -----       -----       -----
 +                                   D6          D8/GPIO15
+
+Find macro definitions:
+$ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 */
 
-#if defined(ESP8266)
+#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E)
 #define dc D4 // GPIO2
 #define cs D3 // GPIO0
 #define rotCLK SD3 // GPIO10
@@ -54,7 +57,7 @@ Function                Arduino 168 Arduino 328 ESP8266     ESP-01
 #define rotSW D0 // GPIO16
 #define buz D8 // GPIO2
 
-#elif defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO)
+#elif defined(ARDUINO_AVR_PRO)
 #define dc 4 // TFT display SPI chip select pin
 #define cs 3 // TFT display data/command select pin
 #define rotCLK 9
@@ -62,7 +65,15 @@ Function                Arduino 168 Arduino 328 ESP8266     ESP-01
 #define rotSW 7
 #define buz 6
 
+#elif defined(ARDUINO_AVR_UNO)
+#define dc 4 // TFT display SPI chip select pin
+#define cs 3 // TFT display data/command select pin
+#define rotCLK 8
+#define rotDT 7
+#define rotSW 6
+#define buz 9
 #endif
+
 /**********
  * TFT screen
  **********/
@@ -75,7 +86,13 @@ rotate:
 5: 90 degrees CCW
 */
 
+#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_AVR_PRO)
 int const ysize = 128, xsize = 160, yoff = 0, xoff = 0, invert = 0, rotate = 0; // Adafruit 1.8" 160x128 display
+
+#elif defined(ARDUINO_AVR_UNO)
+int const ysize = 128, xsize = 160, yoff = 0, xoff = 0, invert = 0, rotate = 6; // Adafruit 1.8" 160x128 display
+
+#endif
 
 #include <TFTGraphicsLibrary.h>
 
