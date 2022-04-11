@@ -19,23 +19,51 @@
 SPI (ST7735)
 Function    Screen pin  Arduino 168 Arduino 328 ESP8266     ESP-01      Comment
 -----       -----       -----       -----       -----       -----       -----
-SCK         3           D13*)        D13*)       D5/GPIO14*)             SCL, HSCLK, SPI Clock, Hardware SPI clk
-SDA         4           D11*)        D11*)       D7/GPIO13*)             SPI Data, MOSI, HMOSI, data to screen
+SCK         3           D13*)       D13*)       D5/GPIO14*)             SCL, HSCLK, SPI Clock, Hardware SPI clk
+SDA         4           D11*)       D11*)       D7/GPIO13*)             SPI Data, MOSI, HMOSI, data to screen
 RES         pulled high                                                 RST, HMISO, screen reset
-DC          6           D5          D5          D4/GPIO2                Register Select, labelled as DC in Adafruit code
-CS          7           D4          D4          D3/GPIO0                Chip Select, defined as Slave Select in SPI
+DC          6           D4          D4          D4/GPIO2                Register Select, labelled as DC in Adafruit code
+CS          7           D3          D3          D3/GPIO0                Chip Select, defined as Slave Select in SPI
 *) Must be these pins as they are set in firmware/hardware
 */
 
 #include <SPI.h>
 
+/*
+__AVR__ 
+  for any board with AVR architecture
+ARDUINO_AVR_PRO 
+  for the Arduino Pro or Pro Mini selection in the Tools > Board menu.
+ESP8266 
+  for any ESP8266 board
+ARDUINO_ESP8266_NODEMCU 
+  for the NodeMCU 0.9 (ESP-12 Module) 
+  or NodeMCU 1.0 (ESP-12E Module) selections in the Tools > Board menu
+AVR_ATmega328 
+  Microprocessors using the ATmega328p (like the Uno)
+AVR_ATmega32U4 
+  Microprocessors using the ATmega32u4 (like Leonardo)
+AVR_ATtiny85 
+  Microprocessors using the ATtiny85 chip (Trinket, Gemma, Digispark)
+AVR_ATmega2560
+  Microprocessors using the ATmega2560 chip (Mega)
+SAM3X8E || arm
+  Due and DigiX
+MK20DX128 || arm ||CORE_TEENSY
+  Teensy 3.0
+MK20DX256 || arm || CORE_TEENSY
+  Teensy 3.1
+
+$ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
+*/
+
 #if defined(ESP8266)
 #define dc 2 // D4/GPIO2
 #define cs 0 // D3/GPIO0
 
-#else
-#define dc 5 // TFT display SPI chip select pin
-#define cs 4 // TFT display data/command select pin
+#elif defined(ARDUINO_AVR_PRO)
+#define dc 4 // TFT display SPI chip select pin
+#define cs 3 // TFT display data/command select pin
 
 #endif
 
@@ -86,7 +114,6 @@ byte dOW;
 byte hour;
 byte minute;
 byte second;
-
 
 String yearNow;
 String monthNow;

@@ -63,25 +63,25 @@ void loop()
     i++;
     debugln("Getting time...");
     now = timeNow();
+    /*
+        debug("RTCtest: ");
+        RTCtest(now);
 
-    debug("RTCtest: ");
-    RTCtest(now);
+        debug("Padded RTCtest: ");
+        paddedRTCtest(now);
 
-    debug("Padded RTCtest: ");
-    paddedRTCtest(now);
+        debug("UNIX time: ");
+        printUNIXtime(now);
 
-    debug("UNIX time: ");
-    printUNIXtime(now);
+        debug("Temp: ");
+        printTemp();
 
-    debug("Temp: ");
-    printTemp();
+        debug("Day of the week: ");
+        debugln(getDayName(now));
 
-    debug("Day of the week: ");
-    debugln(getDayName(now));
-
-    debug("Month: ");
-    debugln(getMonthName(now));
-
+        debug("Month: ");
+        debugln(getMonthName(now));
+    */
     prettyPrint(now);
 
     debugln();

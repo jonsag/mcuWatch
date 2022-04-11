@@ -2,32 +2,6 @@
 void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
                   byte &hour, byte &minute, byte &second)
 {
-    // Call this if you notice something coming in on
-    // the serial port. The stuff coming in should be in
-    // the order YYMMDDwHHMMSS, with an 'x' at the end.
-    // boolean gotString = false;
-    /*
-    char inChar;
-    byte temp1, temp2;
-    char inString[20];
-    byte j = 0;
-
-    // while (!gotString)
-    while (true)
-    {
-        if (Serial.available())
-        {
-            inChar = Serial.read();
-            inString[j] = inChar;
-            j += 1;
-            if (inChar == 'x')
-            {
-                // gotString = true;
-                break;
-            }
-        }
-    }
-*/
 
     // based on an examples at
     // https://arduinogetstarted.com/reference/serial-readbytes
@@ -154,19 +128,7 @@ void setTime()
 
         debugln();
         debugln("Finished!");
-        // clockIsSet = true;
     }
-
-    /*
-        if (clockIsSet)
-        {
-            debugln("RTC is set");
-            clockIsSet = false;
-            debugln("Clearing serial buffer...");
-            while (Serial.available())
-                Serial.read();
-        }
-        */
 }
 
 String padByte(String &s)
@@ -187,8 +149,7 @@ DateTime timeNow()
 
 void RTCtest(DateTime &now)
 {
-    // now = myRTClib.now();
-
+#if DEBUG
     Serial.print(now.year()); //, DEC);
     Serial.print('/');
     Serial.print(now.month()); //, DEC);
@@ -200,12 +161,12 @@ void RTCtest(DateTime &now)
     Serial.print(now.minute()); //, DEC);
     Serial.print(':');
     Serial.println(now.second()); //, DEC);
+#endif
 }
 
 void paddedRTCtest(DateTime &now)
 {
-    // now = myRTClib.now();
-
+#if DEBUG
     yearNow = now.year();     //, DEC;
     monthNow = now.month();   //, DEC;
     dayNow = now.day();       //, DEC;
@@ -224,12 +185,11 @@ void paddedRTCtest(DateTime &now)
     Serial.print(padByte(minuteNow));
     Serial.print(':');
     Serial.println(padByte(secondNow));
+#endif
 }
 
 void printUNIXtime(DateTime &now)
 {
-    // now = myRTClib.now();
-
 #if DEBUG
     Serial.print("Since midnight 1/1/1970: ");
     Serial.print(now.unixtime());
@@ -291,6 +251,7 @@ void prettyPrint(DateTime &now)
     minuteNow = now.minute(); //, DEC;
     secondNow = now.second(); //, DEC;
 
+#if DEBUG
     Serial.print(padByte(hourNow));
     Serial.print(":");
     Serial.print(padByte(minuteNow));
@@ -304,4 +265,5 @@ void prettyPrint(DateTime &now)
     Serial.print(prettyNumbering(dayNow));
     Serial.print(" ");
     Serial.println(padByte(yearNow));
+#endif
 }
