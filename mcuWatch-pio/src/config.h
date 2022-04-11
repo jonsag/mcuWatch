@@ -47,12 +47,12 @@ Function                Arduino 168 Arduino 328 ESP8266     ESP-01
 */
 
 #if defined(ESP8266)
-#define dc D4 // D4/GPIO2
-#define cs D3 // D3/GPIO0
-#define rotCLK SD3 // SD3/GPIO10
-#define rotDT SD2 // SD2/GPIO9
-#define rotSW D0 // D0/GPIO16
-#define buz D8 // D4/GPIO2
+#define dc D4 // GPIO2
+#define cs D3 // GPIO0
+#define rotCLK SD3 // GPIO10
+#define rotDT SD2 // GPIO9
+#define rotSW D0 // GPIO16
+#define buz D8 // GPIO2
 
 #elif defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO)
 #define dc 4 // TFT display SPI chip select pin
@@ -66,39 +66,7 @@ Function                Arduino 168 Arduino 328 ESP8266     ESP-01
 /**********
  * TFT screen
  **********/
-
-
 #include <SPI.h>
-
-/*
-__AVR__ 
-  for any board with AVR architecture
-ARDUINO_AVR_PRO 
-  for the Arduino Pro or Pro Mini selection in the Tools > Board menu.
-ESP8266 
-  for any ESP8266 board
-ARDUINO_ESP8266_NODEMCU 
-  for the NodeMCU 0.9 (ESP-12 Module) 
-  or NodeMCU 1.0 (ESP-12E Module) selections in the Tools > Board menu
-AVR_ATmega328 
-  Microprocessors using the ATmega328p (like the Uno)
-AVR_ATmega32U4 
-  Microprocessors using the ATmega32u4 (like Leonardo)
-AVR_ATtiny85 
-  Microprocessors using the ATtiny85 chip (Trinket, Gemma, Digispark)
-AVR_ATmega2560
-  Microprocessors using the ATmega2560 chip (Mega)
-SAM3X8E || arm
-  Due and DigiX
-MK20DX128 || arm ||CORE_TEENSY
-  Teensy 3.0
-MK20DX256 || arm || CORE_TEENSY
-  Teensy 3.1
-
-$ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
-*/
-
-// define screen
 /*
 rotate:
 0: no rotation
@@ -106,6 +74,7 @@ rotate:
 6: 180 degrees
 5: 90 degrees CCW
 */
+
 int const ysize = 128, xsize = 160, yoff = 0, xoff = 0, invert = 0, rotate = 0; // Adafruit 1.8" 160x128 display
 
 #include <TFTGraphicsLibrary.h>
@@ -125,7 +94,7 @@ RTC from above
 */
 
 #include <DS3231.h>
-//#include <Wire.h> // included by the SPI-include above
+#include <Wire.h> // also included by the SPI-include above
 
 DS3231 myDS3231;
 RTClib myRTClib;
@@ -155,8 +124,6 @@ const char *monthName[12] = {
 const char *dayName[7] = {
     "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
-String nowArray[] = {};
-
 const int BUFFER_SIZE = 12;
 char buf[BUFFER_SIZE];
 char inString[BUFFER_SIZE];
@@ -171,8 +138,6 @@ bool pmFlag;
 long currentMillis;
 long lastTickMillis;
 int tickInterval = 5000;
-
-// boolean clockIsSet = false;
 
 /**********
  * Rotary encoder
