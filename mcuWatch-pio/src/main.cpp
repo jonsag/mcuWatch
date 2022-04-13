@@ -55,12 +55,12 @@ void setup()
   debugln("End with 'x'");
   debugln("Example for input : 2004094090242x");
 
-  debugln("Delay...");
+  //debugln("Delay...");
+  //debugln();
+
+  debugln("Running screen test ...");
+  adaScreenTest();
   debugln();
-
-debugln("Running screen test ...");
-adaScreenTest();
-
 }
 
 void loop()
@@ -96,7 +96,7 @@ void loop()
     prettyPrint(now);
     debugln();
 
-    updateScreenTime(now);
+    updateScreen(now);
 
     lastTickMillis = currentMillis;
   }

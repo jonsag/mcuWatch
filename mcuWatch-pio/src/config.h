@@ -50,16 +50,18 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 */
 
 #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E)
-#define dc D4 // GPIO2, TFT display SPI chip select pin
-#define cs D3 // GPIO0, TFT display data/command select pin
+#define tftRES 0
+#define tftDC D4 // GPIO2, TFT display SPI chip select pin
+#define tftCS D3 // GPIO0, TFT display data/command select pin
 #define rotCLK SD3 // GPIO10
 #define rotDT SD2 // GPIO9
 #define rotSW D0 // GPIO16
 #define buz D8 // GPIO2
 
 #elif defined(ARDUINO_AVR_PRO)
-#define dc 4
-#define cs 3
+#define tftRES 5
+#define tftDC 4
+#define tftCS 3
 #define rotCLK 9
 #define rotDT 8
 #define rotSW 7
@@ -67,9 +69,9 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 
 #elif defined(ARDUINO_AVR_UNO)
 
-#define res 5
-#define dc 4
-#define cs 3
+#define tftRES 5
+#define tftDC 4
+#define tftCS 3
 #define rotCLK 8
 #define rotDT 7
 #define rotSW 6
@@ -83,7 +85,16 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #include <Adafruit_ST7735.h>
 #include <SPI.h>
 
-Adafruit_ST7735 tft = Adafruit_ST7735(cs, dc, res);
+Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
+
+// colours
+#define colBla ST77XX_Black
+#define colWhi ST77XX_WHITE
+#define colYel ST77XX_YELLOW
+#define colRed ST77XX_RED
+#define colGre ST77XX_GREEN
+#define colBlu ST77XX_BLUE
+#define colMag ST77XX_MAGENTA
 
 /*
 rotate:
@@ -182,4 +193,4 @@ int i = 0;
 
 const int serialTimeout = 10000;
 
-float p = 3.1415926;
+float pi = 3.1415926;
