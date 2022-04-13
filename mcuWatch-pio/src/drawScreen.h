@@ -1,33 +1,32 @@
 
 void TestFrame()
 {
-    MoveTo(0, 0);
-    DrawTo(xsize - 1, 0);
-    DrawTo(xsize - 1, ysize - 1);
-    DrawTo(0, ysize - 1);
-    DrawTo(0, 0);
+  MoveTo(0, 0);
+  DrawTo(xsize - 1, 0);
+  DrawTo(xsize - 1, ysize - 1);
+  DrawTo(0, ysize - 1);
+  DrawTo(0, 0);
 }
 
 void TestChar()
 {
-    scale = 8;
-    MoveTo((xsize - 40) / 2, (ysize - 64) / 2);
-    PlotChar('F');
+  scale = 8;
+  MoveTo((xsize - 40) / 2, (ysize - 64) / 2);
+  PlotChar('F');
 }
 
 void TestCircle()
 {
-    DrawCircle(xsize / 2, ysize / 2, min((xsize - 2) / 2, (ysize - 2) / 2));
+  DrawCircle(xsize / 2, ysize / 2, min((xsize - 2) / 2, (ysize - 2) / 2));
 }
 
 void TestText()
 {
-    scale = 1;
-    MoveTo(20, 20);
-    PlotText(PSTR("Graphics Display"));
+  scale = 1;
+  MoveTo(20, 20);
+  PlotText(PSTR("Graphics Display"));
 }
 
-/*
 void TestChart2()
 {
   // Plot bar chart
@@ -39,7 +38,8 @@ void TestChart2()
   MoveTo(x1, y1);
   DrawTo(xsize - 1, y1);
   for (int i = 0; i <= 20; i = i + 4)
-  {debugln("Turning on display ...");
+  {
+    debugln("Turning on display ...");
     int mark = x1 + i * xinc;
     MoveTo(mark, y1);
     DrawTo(mark, y1 - 2);
@@ -90,7 +90,47 @@ void TestChart2()
     MoveTo(x1 - 9, mark - 4);
     PlotChar(i % 10 + '0');
   }
-  for (;;)
-    ;
 }
-*/
+
+void stringToCharArray(String myString) {
+  char buf[myString.length() + 1];
+
+  myString.toCharArray(buf, myString.length() + 1);
+}
+
+void printTime(DateTime &now)
+{
+  yearNow = now.year();     //, DEC;
+  monthNow = now.month();   //, DEC;
+  dayNow = now.day();       //, DEC;
+  hourNow = now.hour();     //, DEC;
+  minuteNow = now.minute(); //, DEC;
+  secondNow = now.second(); //, DEC;
+
+  String time = padByte(hourNow) + ":" + padByte(minuteNow);
+  //String time = "1553";
+  debugln(time);
+  
+  char buf[time.length() + 1];
+  time.toCharArray(buf, time.length() + 1);
+
+  Serial.println(time);
+
+  scale = 1;
+  MoveTo(20, 20);
+  PlotText(PSTR(time));
+
+ debugln();
+}
+
+void updateScreenTime(DateTime &now)
+{
+  minuteNow = now.minute();
+
+  if (minuteNow != oldMinuteNow)
+  {
+    debugln("Updating screen ...");
+    printTime(now);
+    oldMinuteNow = minuteNow;
+  }
+}

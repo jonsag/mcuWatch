@@ -1,8 +1,8 @@
 #include <Arduino.h>
 
 #include "config.h"
-#include "drawScreen.h"
 #include "RTCf.h"
+#include "adaScreen.h"
 
 // Setup **********************************************>
 
@@ -15,25 +15,33 @@ void setup()
   Wire.begin();
 
   debugln("Hello! ST77xx TFT Test");
-  debugln("Compact TFT Graphics library");
+  // debugln("Compact TFT Graphics library");
   debugln();
 
   debugln("Initializing display ...");
+  tft.initR(INITR_BLACKTAB);
+  debugln("Initialized");
+
+  /*
   InitDisplay();
   debugln("Clearing display ...");
   ClearDisplay();
   debugln("Turning on display ...");
   DisplayOn();
-  MoveTo(0, 0);
 
-  debugln("Drawing frame...");
-  TestFrame();
-  debugln("Drawing large char...");
-  TestChar();
-  debugln("Drawing circle...");
-  TestCircle();
-  debugln("Drawing text...");
-  TestText();
+    MoveTo(0, 0);
+    debugln("Drawing frame...");
+    TestFrame();
+    debugln("Drawing large char...");
+    TestChar();
+    debugln("Drawing circle...");
+    TestCircle();
+    debugln("Drawing text...");
+    TestText();
+  */
+
+  // debugln("Drawing TestChart2 ...");
+  // TestChart2();
 
   debugln();
   debugln("Set time with YYMMDDwhhmmssx, ");
@@ -49,7 +57,10 @@ void setup()
 
   debugln("Delay...");
   debugln();
-  delay(2000);
+
+debugln("Running screen test ...");
+adaScreenTest();
+
 }
 
 void loop()
@@ -83,8 +94,9 @@ void loop()
         debugln(getMonthName(now));
     */
     prettyPrint(now);
-
     debugln();
+
+    updateScreenTime(now);
 
     lastTickMillis = currentMillis;
   }

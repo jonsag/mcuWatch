@@ -66,6 +66,8 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #define buz 6
 
 #elif defined(ARDUINO_AVR_UNO)
+
+#define res 5
 #define dc 4
 #define cs 3
 #define rotCLK 8
@@ -77,7 +79,12 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 /**********
  * TFT screen
  **********/
+#include <Adafruit_GFX.h>
+#include <Adafruit_ST7735.h>
 #include <SPI.h>
+
+Adafruit_ST7735 tft = Adafruit_ST7735(cs, dc, res);
+
 /*
 rotate:
 0: no rotation
@@ -86,6 +93,7 @@ rotate:
 5: 90 degrees CCW
 */
 
+/*
 #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_AVR_PRO)
 int const ysize = 128, xsize = 160, yoff = 0, xoff = 0, invert = 0, rotate = 0; // Adafruit 1.8" 160x128 display
 
@@ -95,6 +103,7 @@ int const ysize = 128, xsize = 160, yoff = 0, xoff = 0, invert = 0, rotate = 6; 
 #endif
 
 #include <TFTGraphicsLibrary.h>
+*/
 
 /**********
  * RTC
@@ -134,6 +143,8 @@ String hourNow;
 String minuteNow;
 String secondNow;
 
+String oldMinuteNow;
+
 const char *monthName[12] = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
@@ -168,4 +179,7 @@ int tickInterval = 5000;
  * Misc
  **********/
 int i = 0;
+
 const int serialTimeout = 10000;
+
+float p = 3.1415926;
