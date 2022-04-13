@@ -88,7 +88,7 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 
 // colours
-#define colBla ST77XX_Black
+#define colBla ST77XX_BLACK
 #define colWhi ST77XX_WHITE
 #define colYel ST77XX_YELLOW
 #define colRed ST77XX_RED
