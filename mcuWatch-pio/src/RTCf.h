@@ -45,8 +45,8 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
         }
     }
 
-    debug("I got: ");
-    debugln(inString);
+    Serial.print("I got: ");
+    Serial.print(inString);
 
     temp1 = (byte)inString[0] - 48; // Read year first
     temp2 = (byte)inString[1] - 48;
@@ -97,7 +97,7 @@ void setTime()
     {
         // clockIsSet = false;
 
-        debugln("Preparing to set RTC...");
+        Serial.println("Preparing to set RTC...");
 
         getDateStuff(year, month, date, dOW, hour, minute, second);
 
@@ -127,7 +127,7 @@ void setTime()
         */
 
         debugln();
-        debugln("Finished!");
+        Serial.print("Time is set!");
     }
 }
 
@@ -251,7 +251,7 @@ void prettyPrint(DateTime &now)
     minuteNow = now.minute(); //, DEC;
     secondNow = now.second(); //, DEC;
 
-#if DEBUG
+//#if DEBUG
     Serial.print(padByte(hourNow));
     Serial.print(":");
     Serial.print(padByte(minuteNow));
@@ -265,5 +265,5 @@ void prettyPrint(DateTime &now)
     Serial.print(prettyNumbering(dayNow));
     Serial.print(" ");
     Serial.println(padByte(yearNow));
-#endif
+//#endif
 }

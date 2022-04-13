@@ -154,7 +154,14 @@ String hourNow;
 String minuteNow;
 String secondNow;
 
-String oldMinuteNow;
+//String oldYearNow;
+//String oldMonthNow;
+//String oldDayNow;
+//String olddOWNow;
+//String oldHourNow;
+String oldMinuteNow;;
+
+String oldTime;
 
 const char *monthName[12] = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",

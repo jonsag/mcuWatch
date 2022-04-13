@@ -14,7 +14,7 @@ void setup()
 
   Wire.begin();
 
-  debugln("Hello! ST77xx TFT Test");
+  debugln("mcuWatch");
   // debugln("Compact TFT Graphics library");
   debugln();
 
@@ -55,11 +55,14 @@ void setup()
   debugln("End with 'x'");
   debugln("Example for input : 2004094090242x");
 
-  //debugln("Delay...");
-  //debugln();
+  // debugln("Delay...");
+  // debugln();
 
+#if DEBUG
   debugln("Running screen test ...");
   adaScreenTest();
+#endif
+
   debugln();
 }
 

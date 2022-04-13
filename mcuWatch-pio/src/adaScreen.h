@@ -220,56 +220,69 @@ void mediabuttons()
 
 void adaScreenTest()
 {
+  // Serial.println("Clearing screen ...");
   uint16_t time = millis();
   tft.fillScreen(ST77XX_BLACK);
   time = millis() - time;
 
+  // Serial.print("Time: ");
   Serial.println(time, DEC);
   delay(500);
 
-  // large block of text
+  // Serial.println("Test 1/12: large block of text ..."); // large block of text
   tft.fillScreen(ST77XX_BLACK);
   testdrawtext("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing ante sed nibh tincidunt feugiat. Maecenas enim massa, fringilla sed malesuada et, malesuada sit amet turpis. Sed porttitor neque ut ante pretium vitae malesuada nunc bibendum. Nullam aliquet ultrices massa eu hendrerit. Ut sed nisi lorem. In vestibulum purus a tortor imperdiet posuere. ", ST77XX_WHITE);
   delay(1000);
+  /*
+    //Serial.println("Test 2/12: print function ..."); // tft print function!
+    tftPrintTest();
+    delay(4000);
 
-  // tft print function!
-  tftPrintTest();
-  delay(4000);
+    //Serial.println("Test 3/12: single pixel ..."); // a single pixel
+    tft.drawPixel(tft.width() / 2, tft.height() / 2, ST77XX_GREEN);
+    delay(500);
 
-  // a single pixel
-  tft.drawPixel(tft.width() / 2, tft.height() / 2, ST77XX_GREEN);
-  delay(500);
+    //Serial.println("Test 4/12: line draw ..."); // line draw test
+    testlines(ST77XX_YELLOW);
+    delay(500);
 
-  // line draw test
-  testlines(ST77XX_YELLOW);
-  delay(500);
+    //Serial.println("Test 5/12: optimized lines ..."); // optimized lines
+    testfastlines(ST77XX_RED, ST77XX_BLUE);
+    delay(500);
 
-  // optimized lines
-  testfastlines(ST77XX_RED, ST77XX_BLUE);
-  delay(500);
+    //Serial.println("Test 6/12: draw rectangles ...");
+    testdrawrects(ST77XX_GREEN);
+    delay(500);
 
-  testdrawrects(ST77XX_GREEN);
-  delay(500);
+    //Serial.println("Test 7/12: fill rectangles ...");
+    testfillrects(ST77XX_YELLOW, ST77XX_MAGENTA);
+    delay(500);
 
-  testfillrects(ST77XX_YELLOW, ST77XX_MAGENTA);
-  delay(500);
+    tft.fillScreen(ST77XX_BLACK);
 
-  tft.fillScreen(ST77XX_BLACK);
-  testfillcircles(10, ST77XX_BLUE);
-  testdrawcircles(10, ST77XX_WHITE);
-  delay(500);
+    //Serial.println("Test 8/12: fill circles ...");
+    testfillcircles(10, ST77XX_BLUE);
 
-  testroundrects();
-  delay(500);
+    //Serial.println("Test 9/12: draw circles ...");
+    testdrawcircles(10, ST77XX_WHITE);
+    delay(500);
 
-  testtriangles();
-  delay(500);
+    //Serial.println("Test 10/12: round rextangles ...");
+    testroundrects();
+    delay(500);
 
-  mediabuttons();
-  delay(500);
+    //Serial.println("Test 11/12: triangles ...");
+    testtriangles();
+    delay(500);
 
-  Serial.println("done");
-  delay(1000);
+    //Serial.println("Test 12/12: media buttons ...");
+    mediabuttons();
+    delay(500);
+
+    //Serial.println("Done\nWaiting ...");
+    delay(500);
+    //Serial.println("Continuing");
+    */
 }
 
 // ****************************** end of test ******************************
@@ -284,6 +297,56 @@ char strToCharArr(String &myString)
   char buf[myString.length() + 1];
   myString.toCharArray(buf, myString.length() + 1);
   return *buf;
+}
+
+void eraseCenter(String &oldText)
+{
+  int16_t x1, y1, x, y;
+  uint16_t width, height;
+
+  debug("Erasing old text: ");
+  debug(oldText);
+  debugln(" ...");
+
+  tft.getTextBounds(oldText, x, y, &x1, &y1, &width, &height);
+
+  debug("x: ");
+  debugln(x);
+  debug("y: ");
+  debugln(y);
+  debug("x1: ");
+  debugln(x1);
+  debug("y1: ");
+  debugln(y1);
+  debug("width: ");
+  debugln(width);
+  debug("height: ");
+  debugln(height);
+  debugln();
+
+  tft.fillRect(tft.width() / 2 - x / 2, tft.height() / 2 - x / 2, x, x, colBla);
+}
+
+void drawCenter(String &oldText, String &newText)
+{
+  int16_t x1;
+  int16_t y1;
+  uint16_t width;
+  uint16_t height;
+
+  eraseCenter(oldText);
+
+  debug("Drawing new text: ");
+  debug(newText);
+  debugln(" ...");
+
+  tft.getTextBounds(newText, 0, 0, &x1, &y1, &width, &height);
+
+  // display on horizontal and vertical center
+  // oled.clearDisplay(); // clear display
+  tft.setCursor((tft.width() - width) / 2, (tft.height() - height) / 2);
+  tft.print(newText); // text to display
+  // oled.display();
 }
 
 void drawText(int posX, int posY, char text, uint16_t color)
@@ -304,10 +367,12 @@ void printTime(DateTime &now)
   secondNow = now.second(); //, DEC;
 
   String time = padByte(hourNow) + ":" + padByte(minuteNow);
+  
+  debug("Time: ");
   debugln(time);
-  debugln();
 
-  drawText(20, 30, strToCharArr(time), colRed);
+  //drawText(20, 30, strToCharArr(time), colRed);
+  drawCenter(oldTime, time);
 }
 
 void updateScreen(DateTime &now)
@@ -318,6 +383,7 @@ void updateScreen(DateTime &now)
   {
     debugln("Updating screen ...");
     printTime(now);
+
     oldMinuteNow = minuteNow;
   }
 }
