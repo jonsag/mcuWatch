@@ -21,6 +21,7 @@ void setup()
   debugln("Initializing display ...");
   tft.initR(INITR_BLACKTAB);
   debugln("Initialized");
+  debugln();
 
   /*
   InitDisplay();
@@ -54,6 +55,7 @@ void setup()
   debugln("      ss = seconds (ex. 42)");
   debugln("End with 'x'");
   debugln("Example for input : 2004094090242x");
+  debugln();
 
   // debugln("Delay...");
   // debugln();
@@ -99,7 +101,7 @@ void loop()
     prettyPrint(now);
     debugln();
 
-    updateScreen(now);
+    updateScreen();
 
     lastTickMillis = currentMillis;
   }

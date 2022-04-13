@@ -292,6 +292,7 @@ void clearScreen()
   tft.fillScreen(ST77XX_BLACK);
 }
 
+/*
 char strToCharArr(String &myString)
 {
   char buf[myString.length() + 1];
@@ -299,21 +300,21 @@ char strToCharArr(String &myString)
   return *buf;
 }
 
-void eraseCenter(String &oldText)
+void eraseCenter(int posX, int posY, String &oldText)
 {
-  int16_t x1, y1, x, y;
+  int16_t x1, y1;
   uint16_t width, height;
 
   debug("Erasing old text: ");
   debug(oldText);
   debugln(" ...");
 
-  tft.getTextBounds(oldText, x, y, &x1, &y1, &width, &height);
+  tft.getTextBounds(oldText, posX, posY, &x1, &y1, &width, &height);
 
-  debug("x: ");
-  debugln(x);
-  debug("y: ");
-  debugln(y);
+  debug("posX: ");
+  debugln(posX);
+  debug("posY: ");
+  debugln(posY);
   debug("x1: ");
   debugln(x1);
   debug("y1: ");
@@ -324,17 +325,17 @@ void eraseCenter(String &oldText)
   debugln(height);
   debugln();
 
-  tft.fillRect(tft.width() / 2 - x / 2, tft.height() / 2 - x / 2, x, x, colBla);
+  tft.fillRect(tft.width() / 2 - posX / 2, tft.height() / 2 - posX / 2, posX, posX, colBla);
 }
 
-void drawCenter(String &oldText, String &newText)
+void drawCenter(int posX, int posY, String &oldText, String &newText)
 {
   int16_t x1;
   int16_t y1;
   uint16_t width;
   uint16_t height;
 
-  eraseCenter(oldText);
+  eraseCenter(posX, posY, oldText);
 
   debug("Drawing new text: ");
   debug(newText);
@@ -343,46 +344,58 @@ void drawCenter(String &oldText, String &newText)
   tft.getTextBounds(newText, 0, 0, &x1, &y1, &width, &height);
 
   // display on horizontal and vertical center
-  // oled.clearDisplay(); // clear display
   tft.setCursor((tft.width() - width) / 2, (tft.height() - height) / 2);
   tft.print(newText); // text to display
-  // oled.display();
 }
+*/
 
-void drawText(int posX, int posY, char text, uint16_t color)
+void drawText(int16_t posX, int16_t posY, String myString, uint16_t color)
 {
+  char text[myString.length() + 1];
+  myString.toCharArray(text, myString.length() + 1);
+
+  Serial.print("x: ");
+  Serial.print(posX);
+  Serial.print("\ty: ");
+  Serial.print(posY);
+  Serial.print("\tColour: ");
+  Serial.print(color);
+  Serial.print("\tText: ");
+  Serial.println(text);
+
   tft.setCursor(posX, posY);
   tft.setTextColor(color);
   tft.setTextWrap(true);
-  tft.print(text);
+  tft.print(myString);
 }
 
-void printTime(DateTime &now)
+void printTime()
 {
-  yearNow = now.year();     //, DEC;
-  monthNow = now.month();   //, DEC;
-  dayNow = now.day();       //, DEC;
-  hourNow = now.hour();     //, DEC;
-  minuteNow = now.minute(); //, DEC;
-  secondNow = now.second(); //, DEC;
-
   String time = padByte(hourNow) + ":" + padByte(minuteNow);
-  
-  debug("Time: ");
-  debugln(time);
+  Serial.println(time);
 
-  //drawText(20, 30, strToCharArr(time), colRed);
-  drawCenter(oldTime, time);
+  drawText(20, 30, time, colRed);
+  // drawCenter(20, 30, oldTime, time);
+
+  if (dayNow != oldDayNow)
+  {
+    String dateLine = getDayName(now) + " " + getMonthName(now) + " " + prettyNumbering(dayNow) + " " + padByte(yearNow);
+    Serial.println(dateLine);
+
+    drawText(20, 20, dateLine, colBlu);
+
+    oldDayNow = dayNow;
+  }
 }
 
-void updateScreen(DateTime &now)
+void updateScreen()
 {
   minuteNow = now.minute();
 
   if (minuteNow != oldMinuteNow)
   {
     debugln("Updating screen ...");
-    printTime(now);
+    printTime();
 
     oldMinuteNow = minuteNow;
   }

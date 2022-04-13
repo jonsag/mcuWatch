@@ -2,7 +2,7 @@
 /**********
  * Debug
  **********/
-#define DEBUG 1 // debug is off when 0
+#define DEBUG 0 // debug is off when 0
 
 #if DEBUG == 1
 #define debug(x) Serial.print(x)
@@ -156,12 +156,12 @@ String secondNow;
 
 //String oldYearNow;
 //String oldMonthNow;
-//String oldDayNow;
+String oldDayNow;
 //String olddOWNow;
 //String oldHourNow;
 String oldMinuteNow;;
 
-String oldTime;
+//String oldTime;
 
 const char *monthName[12] = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
