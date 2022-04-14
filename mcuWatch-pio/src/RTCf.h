@@ -206,20 +206,6 @@ void printTemp()
 #endif
 }
 
-String getDayName(DateTime &now)
-{
-    dOWNow = myDS3231.getDoW();
-
-    return dayName[dOWNow.toInt()];
-}
-
-String getMonthName(DateTime &now)
-{
-    monthNow = now.month();
-
-    return monthName[monthNow.toInt() - 1];
-}
-
 String prettyNumbering(String &k)
 {
     char last = k.charAt(k.length() - 1);
@@ -244,26 +230,32 @@ String prettyNumbering(String &k)
 
 void prettyPrint(DateTime &now)
 {
-    yearNow = now.year();     //, DEC;
-    monthNow = now.month();   //, DEC;
-    dayNow = now.day();       //, DEC;
-    hourNow = now.hour();     //, DEC;
-    minuteNow = now.minute(); //, DEC;
-    secondNow = now.second(); //, DEC;
+    String temp;
 
-//#if DEBUG
-    Serial.print(padByte(hourNow));
+    //#if DEBUG
+    temp = now.hour();
+    Serial.print(padByte(temp));
     Serial.print(":");
-    Serial.print(padByte(minuteNow));
+
+    temp = now.minute();
+    Serial.print(padByte(temp));
     Serial.print(":");
-    Serial.print(padByte(secondNow));
+
+    temp = now.second();
+    Serial.print(padByte(temp));
     Serial.print(" ");
-    Serial.print(getDayName(now));
+
+    Serial.print(dayName[myDS3231.getDoW() - 1]);
     Serial.print(" ");
-    Serial.print(getMonthName(now));
+
+    Serial.print(monthName[now.month() -1]);
     Serial.print(" ");
-    Serial.print(prettyNumbering(dayNow));
+
+    temp = now.day();
+    Serial.print(prettyNumbering(temp));
     Serial.print(" ");
-    Serial.println(padByte(yearNow));
-//#endif
+
+    temp = now.year();
+    Serial.println(padByte(temp));
+    //#endif
 }

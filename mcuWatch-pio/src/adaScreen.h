@@ -349,7 +349,7 @@ void drawCenter(int posX, int posY, String &oldText, String &newText)
 }
 */
 
-void drawText(int16_t posX, int16_t posY, String myString, uint16_t color)
+void drawText(int16_t size, int16_t posX, int16_t posY, String myString, uint16_t color)
 {
   char text[myString.length() + 1];
   myString.toCharArray(text, myString.length() + 1);
@@ -364,39 +364,48 @@ void drawText(int16_t posX, int16_t posY, String myString, uint16_t color)
   Serial.println(text);
 
   tft.setCursor(posX, posY);
+  tft.setTextSize(size);
   tft.setTextColor(color);
   tft.setTextWrap(true);
   tft.print(myString);
 }
 
-void printTime()
+void printTime(DateTime &now)
 {
-  String time = padByte(hourNow) + ":" + padByte(minuteNow);
-  Serial.println(time);
+  String temp1;
+  String temp2;
 
-  drawText(20, 30, time, colRed);
-  // drawCenter(20, 30, oldTime, time);
+  temp1 = now.hour();
+  temp2 = now.minute();
 
-  if (dayNow != oldDayNow)
-  {
-    String dateLine = getDayName(now) + " " + getMonthName(now) + " " + prettyNumbering(dayNow) + " " + padByte(yearNow);
-    Serial.println(dateLine);
+  Serial.println((padByte(now.hour()) + ":" + padByte(temp2)));
 
-    drawText(20, 20, dateLine, colBlu);
+  drawText(timeSize, tft.width() / 2 - 2.5 * pixX * timeSize, tft.height() / 4, (padByte(temp1) + ":" + padByte(temp1)), colYel);
 
-    oldDayNow = dayNow;
-  }
+  /*
+    if (dayNow != oldDayNow)
+    {
+      //String dateLine = getDayName(now) + " " + getMonthName(now) + " " + prettyNumbering(dayNow) + " " + padByte(yearNow);
+      Serial.println((getDayName(now) + " " + getMonthName(now) + " " + prettyNumbering(dayNow) + " " + padByte(yearNow)));
+
+      drawText(dateSize, 10,tft.height() / 2, (getDayName(now) + " " + getMonthName(now) + " " + prettyNumbering(dayNow) + " " + padByte(yearNow)), colRed);
+
+      oldDayNow = dayNow;
+    }
+    */
 }
 
-void updateScreen()
+void updateScreen(DateTime &now)
 {
-  minuteNow = now.minute();
+  String temp;
 
-  if (minuteNow != oldMinuteNow)
+  temp = now.minute();
+
+  if (temp != oldMinuteNow)
   {
     debugln("Updating screen ...");
-    printTime();
+    printTime(now);
 
-    oldMinuteNow = minuteNow;
+    oldMinuteNow = temp;
   }
 }

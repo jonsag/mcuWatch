@@ -4,7 +4,7 @@
  **********/
 #define DEBUG 0 // debug is off when 0
 
-#if DEBUG == 1
+#if DEBUG
 #define debug(x) Serial.print(x)
 #define debugln(x) Serial.println(x)
 #else
@@ -96,6 +96,14 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define colBlu ST77XX_BLUE
 #define colMag ST77XX_MAGENTA
 
+// sizes
+#define timeSize 4
+#define dateSize 1
+
+// font
+#define pixX 6
+#define pixY 8
+
 /*
 rotate:
 0: no rotation
@@ -137,6 +145,7 @@ DS3231 myDS3231;
 RTClib myRTClib;
 
 DateTime now;
+DateTime oldNow;
 
 byte year;
 byte month;
@@ -146,13 +155,13 @@ byte hour;
 byte minute;
 byte second;
 
-String yearNow;
-String monthNow;
-String dayNow;
-String dOWNow;
-String hourNow;
-String minuteNow;
-String secondNow;
+//String yearNow;
+//String monthNow;
+//String dayNow;
+//String dOWNow;
+//String hourNow;
+//String minuteNow;
+//String secondNow;
 
 //String oldYearNow;
 //String oldMonthNow;

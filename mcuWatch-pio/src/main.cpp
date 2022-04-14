@@ -2,7 +2,7 @@
 
 #include "config.h"
 #include "RTCf.h"
-#include "adaScreen.h"
+//#include "adaScreen.h"
 
 // Setup **********************************************>
 
@@ -66,6 +66,8 @@ void setup()
 #endif
 
   debugln();
+
+  //clearScreen();
 }
 
 void loop()
@@ -101,7 +103,7 @@ void loop()
     prettyPrint(now);
     debugln();
 
-    updateScreen();
+    //updateScreen(now);
 
     lastTickMillis = currentMillis;
   }
