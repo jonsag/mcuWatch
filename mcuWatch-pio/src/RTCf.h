@@ -2,11 +2,15 @@
 void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
                   byte &hour, byte &minute, byte &second)
 {
-
     // based on an examples at
     // https://arduinogetstarted.com/reference/serial-readbytes
     // https://arduinogetstarted.com/reference/serial-readbytesuntil
     // https://arduinogetstarted.com/reference/serial-settimeout
+
+    const int BUFFER_SIZE = 12;
+    char buf[BUFFER_SIZE], inString[BUFFER_SIZE];
+    byte temp1, temp2;
+    int rlen, rxlen;
 
     rxlen = Serial.available(); // number of bytes available in Serial buffer
     if (rxlen > 0)              // read only the fixed number of bytes in buffer
@@ -164,30 +168,6 @@ void RTCtest(DateTime &now)
 #endif
 }
 
-void paddedRTCtest(DateTime &now)
-{
-#if DEBUG
-    yearNow = now.year();     //, DEC;
-    monthNow = now.month();   //, DEC;
-    dayNow = now.day();       //, DEC;
-    hourNow = now.hour();     //, DEC;
-    minuteNow = now.minute(); //, DEC;
-    secondNow = now.second(); //, DEC;
-
-    Serial.print(padByte(yearNow));
-    Serial.print('/');
-    Serial.print(padByte(monthNow));
-    Serial.print('/');
-    Serial.print(padByte(dayNow));
-    Serial.print(' ');
-    Serial.print(padByte(hourNow));
-    Serial.print(':');
-    Serial.print(padByte(minuteNow));
-    Serial.print(':');
-    Serial.println(padByte(secondNow));
-#endif
-}
-
 void printUNIXtime(DateTime &now)
 {
 #if DEBUG
@@ -248,7 +228,7 @@ void prettyPrint(DateTime &now)
     Serial.print(dayName[myDS3231.getDoW() - 1]);
     Serial.print(" ");
 
-    Serial.print(monthName[now.month() -1]);
+    Serial.print(monthName[now.month() - 1]);
     Serial.print(" ");
 
     temp = now.day();
@@ -257,5 +237,7 @@ void prettyPrint(DateTime &now)
 
     temp = now.year();
     Serial.println(padByte(temp));
+
+    debugln();
     //#endif
 }

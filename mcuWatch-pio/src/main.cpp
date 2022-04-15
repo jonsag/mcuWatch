@@ -2,72 +2,49 @@
 
 #include "config.h"
 #include "RTCf.h"
-//#include "adaScreen.h"
+#include "adaScreen.h"
 
 // Setup **********************************************>
 
 void setup()
 {
-  // Start the serial port
-  Serial.begin(9600);
+  Serial.begin(9600); // start the serial port
   Serial.setTimeout(serialTimeout);
 
   Wire.begin();
 
-  debugln("mcuWatch");
-  // debugln("Compact TFT Graphics library");
-  debugln();
+  Serial.println("mcuWatch");
+  Serial.println();
 
-  debugln("Initializing display ...");
+  Serial.println("Initializing display ...");
   tft.initR(INITR_BLACKTAB);
-  debugln("Initialized");
-  debugln();
+  Serial.println("Initialized");
+  Serial.println();
 
-  /*
-  InitDisplay();
-  debugln("Clearing display ...");
-  ClearDisplay();
-  debugln("Turning on display ...");
-  DisplayOn();
+  Serial.println("Set time with YYMMDDwhhmmssx, ");
+  Serial.println("where YY = Year (ex. 20 for 2020)");
+  Serial.println("      MM = Month (ex. 04 for April)");
+  Serial.println("      DD = Day of month (ex. 09 for 9th)");
+  Serial.println("      w  = Day of week from 1 to 7, 1 = Monday (ex. 4 for Thursday)");
+  Serial.println("      hh = hours in 24h format (ex. 09 for 9AM or 21 for 9PM)");
+  Serial.println("      mm = minutes (ex. 02)");
+  Serial.println("      ss = seconds (ex. 42)");
+  Serial.println("End with 'x'");
+  Serial.println("Example for input : 2004094090242x");
+  Serial.println();
 
-    MoveTo(0, 0);
-    debugln("Drawing frame...");
-    TestFrame();
-    debugln("Drawing large char...");
-    TestChar();
-    debugln("Drawing circle...");
-    TestCircle();
-    debugln("Drawing text...");
-    TestText();
-  */
+  // Serial.println("Running screen test ...");
+  // adaScreenTest();
+  // Serial.println();
 
-  // debugln("Drawing TestChart2 ...");
-  // TestChart2();
+  Serial.println("Clearing screen ...");
+  clearScreen();
+  Serial.println();
 
-  debugln();
-  debugln("Set time with YYMMDDwhhmmssx, ");
-  debugln("where YY = Year (ex. 20 for 2020)");
-  debugln("      MM = Month (ex. 04 for April)");
-  debugln("      DD = Day of month (ex. 09 for 9th)");
-  debugln("      w  = Day of week from 1 to 7, 1 = Monday (ex. 4 for Thursday)");
-  debugln("      hh = hours in 24h format (ex. 09 for 9AM or 21 for 9PM)");
-  debugln("      mm = minutes (ex. 02)");
-  debugln("      ss = seconds (ex. 42)");
-  debugln("End with 'x'");
-  debugln("Example for input : 2004094090242x");
-  debugln();
-
-  // debugln("Delay...");
-  // debugln();
-
-#if DEBUG
-  debugln("Running screen test ...");
-  adaScreenTest();
-#endif
-
-  debugln();
-
-  //clearScreen();
+  Serial.println("Getting time...");
+  now = timeNow();
+  prettyPrint(now);
+  updateScreen(now);
 }
 
 void loop()
@@ -76,35 +53,14 @@ void loop()
 
   setTime();
 
-  if (currentMillis - lastTickMillis >= tickInterval)
+  if (currentMillis - lastCheckMillis >= checkInterval)
   {
-    i++;
     debugln("Getting time...");
     now = timeNow();
-    /*
-        debug("RTCtest: ");
-        RTCtest(now);
-
-        debug("Padded RTCtest: ");
-        paddedRTCtest(now);
-
-        debug("UNIX time: ");
-        printUNIXtime(now);
-
-        debug("Temp: ");
-        printTemp();
-
-        debug("Day of the week: ");
-        debugln(getDayName(now));
-
-        debug("Month: ");
-        debugln(getMonthName(now));
-    */
     prettyPrint(now);
-    debugln();
 
-    //updateScreen(now);
+    updateScreen(now);
 
-    lastTickMillis = currentMillis;
+    lastCheckMillis = currentMillis;
   }
 }

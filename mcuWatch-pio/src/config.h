@@ -2,7 +2,7 @@
 /**********
  * Debug
  **********/
-#define DEBUG 0 // debug is off when 0
+#define DEBUG 1 // debug is off when 0
 
 #if DEBUG
 #define debug(x) Serial.print(x)
@@ -51,12 +51,12 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 
 #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E)
 #define tftRES 0
-#define tftDC D4 // GPIO2, TFT display SPI chip select pin
-#define tftCS D3 // GPIO0, TFT display data/command select pin
+#define tftDC D4   // GPIO2, TFT display SPI chip select pin
+#define tftCS D3   // GPIO0, TFT display data/command select pin
 #define rotCLK SD3 // GPIO10
-#define rotDT SD2 // GPIO9
-#define rotSW D0 // GPIO16
-#define buz D8 // GPIO2
+#define rotDT SD2  // GPIO9
+#define rotSW D0   // GPIO16
+#define buz D8     // GPIO2
 
 #elif defined(ARDUINO_AVR_PRO)
 #define tftRES 5
@@ -88,6 +88,10 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 
 // colours
+#define bgCol ST77XX_BLACK
+#define timeCol ST77XX_RED
+#define dateCol ST77XX_YELLOW
+
 #define colBla ST77XX_BLACK
 #define colWhi ST77XX_WHITE
 #define colYel ST77XX_YELLOW
@@ -155,23 +159,6 @@ byte hour;
 byte minute;
 byte second;
 
-//String yearNow;
-//String monthNow;
-//String dayNow;
-//String dOWNow;
-//String hourNow;
-//String minuteNow;
-//String secondNow;
-
-//String oldYearNow;
-//String oldMonthNow;
-String oldDayNow;
-//String olddOWNow;
-//String oldHourNow;
-String oldMinuteNow;;
-
-//String oldTime;
-
 const char *monthName[12] = {
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
@@ -179,20 +166,13 @@ const char *monthName[12] = {
 const char *dayName[7] = {
     "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
-const int BUFFER_SIZE = 12;
-char buf[BUFFER_SIZE];
-char inString[BUFFER_SIZE];
-byte temp1, temp2;
-int rlen;
-int rxlen;
-
 bool century = false;
 bool h12Flag;
 bool pmFlag;
 
 long currentMillis;
-long lastTickMillis;
-int tickInterval = 5000;
+long lastCheckMillis;
+int checkInterval = 5000;
 
 /**********
  * Rotary encoder
@@ -205,8 +185,6 @@ int tickInterval = 5000;
 /**********
  * Misc
  **********/
-int i = 0;
-
 const int serialTimeout = 10000;
 
 float pi = 3.1415926;

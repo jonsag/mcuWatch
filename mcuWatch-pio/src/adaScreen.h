@@ -233,63 +233,62 @@ void adaScreenTest()
   tft.fillScreen(ST77XX_BLACK);
   testdrawtext("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing ante sed nibh tincidunt feugiat. Maecenas enim massa, fringilla sed malesuada et, malesuada sit amet turpis. Sed porttitor neque ut ante pretium vitae malesuada nunc bibendum. Nullam aliquet ultrices massa eu hendrerit. Ut sed nisi lorem. In vestibulum purus a tortor imperdiet posuere. ", ST77XX_WHITE);
   delay(1000);
-  /*
-    //Serial.println("Test 2/12: print function ..."); // tft print function!
-    tftPrintTest();
-    delay(4000);
 
-    //Serial.println("Test 3/12: single pixel ..."); // a single pixel
-    tft.drawPixel(tft.width() / 2, tft.height() / 2, ST77XX_GREEN);
-    delay(500);
+  // Serial.println("Test 2/12: print function ..."); // tft print function!
+  tftPrintTest();
+  delay(4000);
 
-    //Serial.println("Test 4/12: line draw ..."); // line draw test
-    testlines(ST77XX_YELLOW);
-    delay(500);
+  // Serial.println("Test 3/12: single pixel ..."); // a single pixel
+  tft.drawPixel(tft.width() / 2, tft.height() / 2, ST77XX_GREEN);
+  delay(500);
 
-    //Serial.println("Test 5/12: optimized lines ..."); // optimized lines
-    testfastlines(ST77XX_RED, ST77XX_BLUE);
-    delay(500);
+  // Serial.println("Test 4/12: line draw ..."); // line draw test
+  testlines(ST77XX_YELLOW);
+  delay(500);
 
-    //Serial.println("Test 6/12: draw rectangles ...");
-    testdrawrects(ST77XX_GREEN);
-    delay(500);
+  // Serial.println("Test 5/12: optimized lines ..."); // optimized lines
+  testfastlines(ST77XX_RED, ST77XX_BLUE);
+  delay(500);
 
-    //Serial.println("Test 7/12: fill rectangles ...");
-    testfillrects(ST77XX_YELLOW, ST77XX_MAGENTA);
-    delay(500);
+  // Serial.println("Test 6/12: draw rectangles ...");
+  testdrawrects(ST77XX_GREEN);
+  delay(500);
 
-    tft.fillScreen(ST77XX_BLACK);
+  // Serial.println("Test 7/12: fill rectangles ...");
+  testfillrects(ST77XX_YELLOW, ST77XX_MAGENTA);
+  delay(500);
 
-    //Serial.println("Test 8/12: fill circles ...");
-    testfillcircles(10, ST77XX_BLUE);
+  tft.fillScreen(ST77XX_BLACK);
 
-    //Serial.println("Test 9/12: draw circles ...");
-    testdrawcircles(10, ST77XX_WHITE);
-    delay(500);
+  // Serial.println("Test 8/12: fill circles ...");
+  testfillcircles(10, ST77XX_BLUE);
 
-    //Serial.println("Test 10/12: round rextangles ...");
-    testroundrects();
-    delay(500);
+  // Serial.println("Test 9/12: draw circles ...");
+  testdrawcircles(10, ST77XX_WHITE);
+  delay(500);
 
-    //Serial.println("Test 11/12: triangles ...");
-    testtriangles();
-    delay(500);
+  // Serial.println("Test 10/12: round rextangles ...");
+  testroundrects();
+  delay(500);
 
-    //Serial.println("Test 12/12: media buttons ...");
-    mediabuttons();
-    delay(500);
+  // Serial.println("Test 11/12: triangles ...");
+  testtriangles();
+  delay(500);
 
-    //Serial.println("Done\nWaiting ...");
-    delay(500);
-    //Serial.println("Continuing");
-    */
+  // Serial.println("Test 12/12: media buttons ...");
+  mediabuttons();
+  delay(500);
+
+  // Serial.println("Done\nWaiting ...");
+  delay(500);
+  // Serial.println("Continuing");
 }
 
 // ****************************** end of test ******************************
 
 void clearScreen()
 {
-  tft.fillScreen(ST77XX_BLACK);
+  tft.fillScreen(bgCol);
 }
 
 /*
@@ -349,10 +348,10 @@ void drawCenter(int posX, int posY, String &oldText, String &newText)
 }
 */
 
-void drawText(int16_t size, int16_t posX, int16_t posY, String myString, uint16_t color)
+void drawText(int16_t size, int16_t posX, int16_t posY, String inText, uint16_t color)
 {
-  char text[myString.length() + 1];
-  myString.toCharArray(text, myString.length() + 1);
+  // char text[myString.length() + 1];
+  // inText.toCharArray(text, inText.length() + 1);
 
   Serial.print("x: ");
   Serial.print(posX);
@@ -361,51 +360,86 @@ void drawText(int16_t size, int16_t posX, int16_t posY, String myString, uint16_
   Serial.print("\tColour: ");
   Serial.print(color);
   Serial.print("\tText: ");
-  Serial.println(text);
+  Serial.println(inText);
 
   tft.setCursor(posX, posY);
   tft.setTextSize(size);
   tft.setTextColor(color);
   tft.setTextWrap(true);
-  tft.print(myString);
+  tft.print(inText);
 }
 
 void printTime(DateTime &now)
 {
-  String temp1;
-  String temp2;
+  String temp1, temp2;
 
+  debug("Overwriting old time: ");
+  temp1 = oldNow.hour();
+  temp2 = padByte(temp1);
+  temp2 += ":";
+  temp1 = oldNow.minute();
+  temp2 += padByte(temp1);
+  debugln(temp2);
+
+  drawText(timeSize, tft.width() / 2 - 2.5 * pixX * timeSize, tft.height() / 4, temp2, bgCol);
+
+  debug("Writing new time: ");
   temp1 = now.hour();
-  temp2 = now.minute();
+  temp2 = padByte(temp1);
+  temp2 += ":";
+  temp1 = now.minute();
+  temp2 += padByte(temp1);
+  debugln(temp2);
 
-  Serial.println((padByte(now.hour()) + ":" + padByte(temp2)));
+  drawText(timeSize, tft.width() / 2 - 2.5 * pixX * timeSize, tft.height() / 4, temp2, timeCol);
 
-  drawText(timeSize, tft.width() / 2 - 2.5 * pixX * timeSize, tft.height() / 4, (padByte(temp1) + ":" + padByte(temp1)), colYel);
+  temp1 = now.day();
+  temp2 = oldNow.day();
+  if (temp1 != temp2)
+  {
+    debug("Overwriting old date: ");
+    temp2 = dayName[myDS3231.getDoW() - 1];
+    temp2 += " ";
+    temp2 += monthName[oldNow.month() - 1];
+    temp2 += " ";
+    temp1 = oldNow.day();
+    temp2 += prettyNumbering(temp1);
+    temp2 += " ";
+    temp1 = oldNow.year();
+    temp2 += padByte(temp1);
+    debugln((temp2));
 
-  /*
-    if (dayNow != oldDayNow)
-    {
-      //String dateLine = getDayName(now) + " " + getMonthName(now) + " " + prettyNumbering(dayNow) + " " + padByte(yearNow);
-      Serial.println((getDayName(now) + " " + getMonthName(now) + " " + prettyNumbering(dayNow) + " " + padByte(yearNow)));
+    drawText(dateSize, 10, tft.height() / 2, temp2, bgCol);
 
-      drawText(dateSize, 10,tft.height() / 2, (getDayName(now) + " " + getMonthName(now) + " " + prettyNumbering(dayNow) + " " + padByte(yearNow)), colRed);
+    debug("Writing new date: ");
+    temp2 = dayName[myDS3231.getDoW() - 1];
+    temp2 += " ";
+    temp2 += monthName[now.month() - 1];
+    temp2 += " ";
+    temp1 = now.day();
+    temp2 += prettyNumbering(temp1);
+    temp2 += " ";
+    temp1 = now.year();
+    temp2 += padByte(temp1);
+    debugln((temp2));
 
-      oldDayNow = dayNow;
-    }
-    */
+    drawText(dateSize, 10, tft.height() / 2, temp2, dateCol);
+  }
+
+  oldNow = now;
+
+  debugln();
 }
 
 void updateScreen(DateTime &now)
 {
-  String temp;
+  String temp1, temp2;
 
-  temp = now.minute();
-
-  if (temp != oldMinuteNow)
+  temp1 = now.minute();
+  temp2 = oldNow.minute();
+  if (temp1 != temp2)
   {
     debugln("Updating screen ...");
     printTime(now);
-
-    oldMinuteNow = temp;
   }
 }
