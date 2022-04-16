@@ -41,6 +41,12 @@ void setup()
   clearScreen();
   Serial.println();
 
+  #if DEBUG
+  Serial.println("Drawing help lines ...");
+  helpLines();
+  Serial.println();
+  #endif
+
   Serial.println("Getting time...");
   now = timeNow();
   prettyPrint(now);

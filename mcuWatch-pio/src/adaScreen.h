@@ -286,6 +286,32 @@ void adaScreenTest()
 
 // ****************************** end of test ******************************
 
+void helpLines()
+{
+  for (int i = tft.height() / 4 ; i < tft.height(); i += tft.height() / 4)
+  {
+    Serial.print("0, ");
+    Serial.print(i);
+    Serial.print(" -> ");
+    Serial.print(tft.width() - 1);
+    Serial.print(", ");
+    Serial.println(i);
+
+    tft.drawLine(0, i, tft.width() - 1, i, colGre);
+  }
+
+  for (int i = tft.width() / 4 ; i < tft.width(); i += tft.width() / 4)
+  {
+    Serial.print(i);
+    Serial.print(", 0 -> ");
+    Serial.print(i);
+    Serial.print(", ");
+    Serial.println(tft.height() - 1);
+
+    tft.drawLine(i, 0, i, tft.height() - 1, colGre);
+  }
+}
+
 void clearScreen()
 {
   tft.fillScreen(bgCol);
@@ -379,7 +405,6 @@ void printTime(DateTime &now)
   temp2 += ":";
   temp1 = oldNow.minute();
   temp2 += padByte(temp1);
-  temp2 = "00:00";
   debugln(temp2);
 
   drawText(timeSize, tft.width() / 2 - temp2.length() / 2.0 * pixX * timeSize + timeXOffs, tft.height() / 4, temp2, bgCol);
@@ -390,8 +415,6 @@ void printTime(DateTime &now)
   temp2 += ":";
   temp1 = now.minute();
   temp2 += padByte(temp1);
-  temp2 = "00:00";
-
   debugln(temp2);
 
   drawText(timeSize, tft.width() / 2 - temp2.length() / 2.0 * pixX * timeSize + timeXOffs, tft.height() / 4, temp2, timeCol);
