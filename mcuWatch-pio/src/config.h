@@ -12,9 +12,6 @@
 #define debugln(x)
 #endif
 
-/**********
- * Pins
- **********/
 /*
 SPI (ST7735)
 Function    Screen pin  Arduino 168 Arduino 328 ESP8266     ESP-01      Comment
@@ -48,6 +45,10 @@ Function                Arduino 168 Arduino 328 ESP8266     ESP-01
 Find macro definitions:
 $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 */
+
+/**********
+ * Pins
+ **********/
 
 #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E)
 #define tftRES 0

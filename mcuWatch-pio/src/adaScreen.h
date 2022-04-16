@@ -379,14 +379,14 @@ void drawText(int16_t size, int16_t posX, int16_t posY, String inText, uint16_t 
   // char text[myString.length() + 1];
   // inText.toCharArray(text, inText.length() + 1);
 
-  Serial.print("x: ");
-  Serial.print(posX);
-  Serial.print("\ty: ");
-  Serial.print(posY);
-  Serial.print("\tColour: ");
-  Serial.print(color);
-  Serial.print("\tText: ");
-  Serial.println(inText);
+  debug("x: ");
+  debug(posX);
+  debug("\ty: ");
+  debug(posY);
+  debug("\tColour: ");
+  debug(color);
+  debug("\tText: ");
+  debugln(inText);
 
   tft.setCursor(posX, posY);
   tft.setTextSize(size);
