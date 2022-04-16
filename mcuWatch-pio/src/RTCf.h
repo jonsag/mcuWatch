@@ -163,17 +163,17 @@ float tempNow() {
 void RTCtest(DateTime &now)
 {
 #if DEBUG
-    Serial.print(now.year()); //, DEC);
+    Serial.print(now.year(), DEC);
     Serial.print('/');
-    Serial.print(now.month()); //, DEC);
+    Serial.print(now.month(), DEC);
     Serial.print('/');
-    Serial.print(now.date()); //, DEC);
+    Serial.print(now.date(), DEC);
     Serial.print(' ');
-    Serial.print(now.hour()); //, DEC);
+    Serial.print(now.hour(), DEC);
     Serial.print(':');
-    Serial.print(now.minute()); //, DEC);
+    Serial.print(now.minute(), DEC);
     Serial.print(':');
-    Serial.println(now.second()); //, DEC);
+    Serial.println(now.second(), DEC);
 #endif
 }
 
