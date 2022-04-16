@@ -153,6 +153,8 @@ RTC from above
 //DS3231 myDS3231;
 //RTClib myRTClib;
 
+const int DST = 1;
+
 DateTime now;
 DateTime oldNow;
 

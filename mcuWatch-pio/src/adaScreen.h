@@ -400,7 +400,7 @@ void printTime(DateTime &now)
   String temp1, temp2;
 
   debug("Overwriting old time: ");
-  temp1 = oldNow.hour();
+  temp1 = oldNow.hour() - 1;
   temp2 = padByte(temp1);
   temp2 += ":";
   temp1 = oldNow.minute();
@@ -410,7 +410,7 @@ void printTime(DateTime &now)
   drawText(timeSize, tft.width() / 2 - temp2.length() / 2.0 * pixX * timeSize + timeXOffs, tft.height() / 4, temp2, bgCol);
 
   debug("Writing new time: ");
-  temp1 = now.hour();
+  temp1 = now.hour() - 1;
   temp2 = padByte(temp1);
   temp2 += ":";
   temp1 = now.minute();

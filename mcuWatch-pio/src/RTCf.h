@@ -107,18 +107,20 @@ void setTime()
 
         //          year, month, date, hour, min, sec and week-day
         DateTime dt(year, month, date, hour, minute, second, dOW);
-/*
-        myDS3231.setClockMode(false); // set to 24h
-        // setClockMode(true); // set to 12h
+        rtc.setDateTime(dt);
 
-        myDS3231.setYear(year);
-        myDS3231.setMonth(month);
-        myDS3231.setDate(date);
-        myDS3231.setDoW(dOW);
-        myDS3231.setHour(hour);
-        myDS3231.setMinute(minute);
-        myDS3231.setSecond(second);
-*/
+        /*
+                myDS3231.setClockMode(false); // set to 24h
+                // setClockMode(true); // set to 12h
+
+                myDS3231.setYear(year);
+                myDS3231.setMonth(month);
+                myDS3231.setDate(date);
+                myDS3231.setDoW(dOW);
+                myDS3231.setHour(hour);
+                myDS3231.setMinute(minute);
+                myDS3231.setSecond(second);
+        */
 
         /*
         // Test of alarm functions
@@ -139,6 +141,13 @@ void setTime()
     }
 }
 
+void adjustDate(int year, int month, int date, int hour, int min, int sec, int weekday)
+{
+    DateTime dt(year, month, date, hour, min, sec, weekday);
+    rtc.setDateTime(dt); // Adjust date-time as defined 'dt' above
+    // Serial.println(rtc.now().getEpoch());//debug info
+}
+
 String padByte(String &s)
 {
     String myString = s;
@@ -155,8 +164,9 @@ DateTime timeNow()
     return rtc.now();
 }
 
-float tempNow() {
-    rtc.convertTemperature();    
+float tempNow()
+{
+    rtc.convertTemperature();
     return rtc.getTemperature();
 }
 
@@ -224,7 +234,7 @@ void prettyPrint(DateTime &now, float temperature)
     String temp;
 
     //#if DEBUG
-    temp = now.hour();
+    temp = now.hour() - DST;
     Serial.print(padByte(temp));
     Serial.print(":");
 
