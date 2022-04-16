@@ -104,6 +104,9 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define timeSize 4
 #define dateSize 1
 
+// compensations
+#define timeXOffs 2
+
 // font
 #define pixX 6
 #define pixY 8

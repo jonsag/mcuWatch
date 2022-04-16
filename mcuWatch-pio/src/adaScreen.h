@@ -379,9 +379,10 @@ void printTime(DateTime &now)
   temp2 += ":";
   temp1 = oldNow.minute();
   temp2 += padByte(temp1);
+  temp2 = "00:00";
   debugln(temp2);
 
-  drawText(timeSize, tft.width() / 2 - 2.5 * pixX * timeSize, tft.height() / 4, temp2, bgCol);
+  drawText(timeSize, tft.width() / 2 - temp2.length() / 2.0 * pixX * timeSize + timeXOffs, tft.height() / 4, temp2, bgCol);
 
   debug("Writing new time: ");
   temp1 = now.hour();
@@ -389,9 +390,11 @@ void printTime(DateTime &now)
   temp2 += ":";
   temp1 = now.minute();
   temp2 += padByte(temp1);
+  temp2 = "00:00";
+
   debugln(temp2);
 
-  drawText(timeSize, tft.width() / 2 - 2.5 * pixX * timeSize, tft.height() / 4, temp2, timeCol);
+  drawText(timeSize, tft.width() / 2 - temp2.length() / 2.0 * pixX * timeSize + timeXOffs, tft.height() / 4, temp2, timeCol);
 
   temp1 = now.day();
   temp2 = oldNow.day();
@@ -409,7 +412,7 @@ void printTime(DateTime &now)
     temp2 += padByte(temp1);
     debugln((temp2));
 
-    drawText(dateSize, 10, tft.height() / 2, temp2, bgCol);
+    drawText(dateSize, tft.width() / 2 - temp2.length() / 2.0 * pixX * dateSize, tft.height() / 2, temp2, bgCol);
 
     debug("Writing new date: ");
     temp2 = dayName[myDS3231.getDoW() - 1];
@@ -423,7 +426,7 @@ void printTime(DateTime &now)
     temp2 += padByte(temp1);
     debugln((temp2));
 
-    drawText(dateSize, 10, tft.height() / 2, temp2, dateCol);
+    drawText(dateSize, tft.width() / 2 - temp2.length() / 2.0 * pixX * dateSize, tft.height() / 2, temp2, dateCol);
   }
 
   oldNow = now;
