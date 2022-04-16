@@ -146,14 +146,18 @@ RTC from above
 ------------
 */
 
-#include <DS3231.h>
+//#include <DS3231.h>
+#include <Sodaq_DS3231.h>
 #include <Wire.h> // also included by the SPI-include above
 
-DS3231 myDS3231;
-RTClib myRTClib;
+//DS3231 myDS3231;
+//RTClib myRTClib;
 
 DateTime now;
 DateTime oldNow;
+
+float temperature;
+//float oldTemp;
 
 byte year;
 byte month;

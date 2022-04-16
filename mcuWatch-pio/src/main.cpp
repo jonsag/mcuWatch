@@ -8,13 +8,18 @@
 
 void setup()
 {
-  Serial.begin(9600); // start the serial port
+  Serial.begin(57600); // start the serial port
   Serial.setTimeout(serialTimeout);
 
-  Wire.begin();
-
+  Serial.println();
   Serial.println("mcuWatch");
   Serial.println();
+
+  Serial.println("Starting wire ...");
+  Wire.begin();
+
+  Serial.println("Starting RTC ...");
+  rtc.begin();
 
   Serial.println("Initializing display ...");
   tft.initR(INITR_BLACKTAB);
@@ -41,16 +46,18 @@ void setup()
   clearScreen();
   Serial.println();
 
-  #if DEBUG
+#if DEBUG
   Serial.println("Drawing help lines ...");
   helpLines();
   Serial.println();
-  #endif
+#endif
 
   Serial.println("Getting time...");
   now = timeNow();
-  prettyPrint(now);
-  updateScreen(now);
+  Serial.println("Getting temp...");
+  temperature = tempNow();
+  prettyPrint(now, temperature);
+  updateScreen(now, temperature);
 }
 
 void loop()
@@ -63,9 +70,12 @@ void loop()
   {
     debugln("Getting time...");
     now = timeNow();
-    prettyPrint(now);
+    Serial.println("Getting temp...");
+    temperature = tempNow();
 
-    updateScreen(now);
+    prettyPrint(now, temperature);
+
+    updateScreen(now, temperature);
 
     lastCheckMillis = currentMillis;
   }

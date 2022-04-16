@@ -288,7 +288,7 @@ void adaScreenTest()
 
 void helpLines()
 {
-  for (int i = tft.height() / 4 ; i < tft.height(); i += tft.height() / 4)
+  for (int i = tft.height() / 4; i < tft.height(); i += tft.height() / 4)
   {
     Serial.print("0, ");
     Serial.print(i);
@@ -300,7 +300,7 @@ void helpLines()
     tft.drawLine(0, i, tft.width() - 1, i, colGre);
   }
 
-  for (int i = tft.width() / 4 ; i < tft.width(); i += tft.width() / 4)
+  for (int i = tft.width() / 4; i < tft.width(); i += tft.width() / 4)
   {
     Serial.print(i);
     Serial.print(", 0 -> ");
@@ -419,16 +419,16 @@ void printTime(DateTime &now)
 
   drawText(timeSize, tft.width() / 2 - temp2.length() / 2.0 * pixX * timeSize + timeXOffs, tft.height() / 4, temp2, timeCol);
 
-  temp1 = now.day();
-  temp2 = oldNow.day();
+  temp1 = now.date();
+  temp2 = oldNow.date();
   if (temp1 != temp2)
   {
     debug("Overwriting old date: ");
-    temp2 = dayName[myDS3231.getDoW() - 1];
+    temp2 = dayName[now.dayOfWeek()];
     temp2 += " ";
     temp2 += monthName[oldNow.month() - 1];
     temp2 += " ";
-    temp1 = oldNow.day();
+    temp1 = oldNow.date();
     temp2 += prettyNumbering(temp1);
     temp2 += " ";
     temp1 = oldNow.year();
@@ -438,11 +438,11 @@ void printTime(DateTime &now)
     drawText(dateSize, tft.width() / 2 - temp2.length() / 2.0 * pixX * dateSize, tft.height() / 2, temp2, bgCol);
 
     debug("Writing new date: ");
-    temp2 = dayName[myDS3231.getDoW() - 1];
+    temp2 = dayName[now.dayOfWeek()];
     temp2 += " ";
     temp2 += monthName[now.month() - 1];
     temp2 += " ";
-    temp1 = now.day();
+    temp1 = now.date();
     temp2 += prettyNumbering(temp1);
     temp2 += " ";
     temp1 = now.year();
@@ -452,12 +452,10 @@ void printTime(DateTime &now)
     drawText(dateSize, tft.width() / 2 - temp2.length() / 2.0 * pixX * dateSize, tft.height() / 2, temp2, dateCol);
   }
 
-  oldNow = now;
-
   debugln();
 }
 
-void updateScreen(DateTime &now)
+void updateScreen(DateTime &now, float temperature)
 {
   String temp1, temp2;
 
@@ -465,7 +463,9 @@ void updateScreen(DateTime &now)
   temp2 = oldNow.minute();
   if (temp1 != temp2)
   {
-    debugln("Updating screen ...");
+    debugln("Updating screen time ...");
     printTime(now);
+
+    oldNow = now;
   }
 }

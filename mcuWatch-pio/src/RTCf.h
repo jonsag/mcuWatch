@@ -105,6 +105,9 @@ void setTime()
 
         getDateStuff(year, month, date, dOW, hour, minute, second);
 
+        //          year, month, date, hour, min, sec and week-day
+        DateTime dt(year, month, date, hour, minute, second, dOW);
+/*
         myDS3231.setClockMode(false); // set to 24h
         // setClockMode(true); // set to 12h
 
@@ -115,6 +118,7 @@ void setTime()
         myDS3231.setHour(hour);
         myDS3231.setMinute(minute);
         myDS3231.setSecond(second);
+*/
 
         /*
         // Test of alarm functions
@@ -148,7 +152,12 @@ String padByte(String &s)
 
 DateTime timeNow()
 {
-    return myRTClib.now();
+    return rtc.now();
+}
+
+float tempNow() {
+    rtc.convertTemperature();    
+    return rtc.getTemperature();
 }
 
 void RTCtest(DateTime &now)
@@ -158,7 +167,7 @@ void RTCtest(DateTime &now)
     Serial.print('/');
     Serial.print(now.month()); //, DEC);
     Serial.print('/');
-    Serial.print(now.day()); //, DEC);
+    Serial.print(now.date()); //, DEC);
     Serial.print(' ');
     Serial.print(now.hour()); //, DEC);
     Serial.print(':');
@@ -172,9 +181,9 @@ void printUNIXtime(DateTime &now)
 {
 #if DEBUG
     Serial.print("Since midnight 1/1/1970: ");
-    Serial.print(now.unixtime());
+    Serial.print(now.getEpoch());
     Serial.print("s, ");
-    Serial.print(now.unixtime() / 86400L);
+    Serial.print(now.getEpoch() / 86400L);
     Serial.println("d");
 #endif
 }
@@ -182,7 +191,9 @@ void printUNIXtime(DateTime &now)
 void printTemp()
 {
 #if DEBUG
-    Serial.println((myDS3231.getTemperature(), 2));
+    rtc.convertTemperature();
+    Serial.print(rtc.getTemperature()); // read registers and display the temperature
+    Serial.println("deg C");
 #endif
 }
 
@@ -208,7 +219,7 @@ String prettyNumbering(String &k)
     }
 }
 
-void prettyPrint(DateTime &now)
+void prettyPrint(DateTime &now, float temperature)
 {
     String temp;
 
@@ -225,18 +236,21 @@ void prettyPrint(DateTime &now)
     Serial.print(padByte(temp));
     Serial.print(" ");
 
-    Serial.print(dayName[myDS3231.getDoW() - 1]);
+    Serial.print(dayName[now.dayOfWeek()]);
     Serial.print(" ");
 
     Serial.print(monthName[now.month() - 1]);
     Serial.print(" ");
 
-    temp = now.day();
+    temp = now.date();
     Serial.print(prettyNumbering(temp));
     Serial.print(" ");
 
     temp = now.year();
     Serial.println(padByte(temp));
+
+    Serial.print("Temperature: ");
+    Serial.println(temperature);
 
     debugln();
     //#endif
