@@ -234,7 +234,7 @@ void prettyPrint(DateTime &now, float temperature)
     String temp;
 
     //#if DEBUG
-    temp = now.hour();
+    temp = now.hour() + hourOffs;
     Serial.print(padByte(temp));
     Serial.print(":");
 

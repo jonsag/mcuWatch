@@ -90,8 +90,13 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 
 // colours
 #define bgCol ST77XX_BLACK
+
 #define timeCol ST77XX_RED
 #define dateCol ST77XX_YELLOW
+
+#define tempCol ST77XX_GREEN
+#define maxTempCol ST77XX_RED
+#define minTempCol ST77XX_BLUE
 
 #define colBla ST77XX_BLACK
 #define colWhi ST77XX_WHITE
@@ -104,6 +109,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 // sizes
 #define timeSize 4
 #define dateSize 1
+#define tempSize 2
 
 // compensations
 #define timeXOffs 2
@@ -150,16 +156,16 @@ RTC from above
 #include <Sodaq_DS3231.h>
 #include <Wire.h> // also included by the SPI-include above
 
-//DS3231 myDS3231;
-//RTClib myRTClib;
-
-const int DST = 1;
+const int hourOffs = 0;
 
 DateTime now;
 DateTime oldNow;
 
 float temperature;
-//float oldTemp;
+float oldTemp;
+
+float maxTemp = -100.0;
+float minTemp = 100.0;
 
 byte year;
 byte month;
