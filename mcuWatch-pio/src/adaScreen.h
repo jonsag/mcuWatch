@@ -358,12 +358,14 @@ void printTime(DateTime &now)
 {
   String temp1, temp2;
 
-  debug("Writing new time: ");
+  debug("+++++ Writing new time: ");
+
   temp1 = now.hour() + hourOffs;
   temp2 = padByte(temp1);
   temp2 += ":";
   temp1 = now.minute();
   temp2 += padByte(temp1);
+
   debugln(temp2);
 
   fillRectangle(tft.width() / 2 - temp2.length() / 2.0 * pixX * timeSize + timeXOffs, // x
@@ -383,7 +385,8 @@ void printDate(DateTime &now)
 {
   String temp1, temp2;
 
-  debug("Writing new date: ");
+  debug("+++++ Writing new date: ");
+
   temp2 = dayName[now.dayOfWeek() - 1];
   temp2 += " ";
   temp2 += monthName[now.month() - 1];
@@ -393,6 +396,7 @@ void printDate(DateTime &now)
   temp2 += " ";
   temp1 = now.year();
   temp2 += padByte(temp1);
+
   debugln((temp2));
 
   fillRectangle(tft.width() / 2 - (temp2.length() + 1) / 2.0 * pixX * dateSize, // x
@@ -412,7 +416,11 @@ void printTemp(float temperature)
 {
   String temp2;
 
+  debug("+++++ Writing new temp: ");
+
   temp2 = String(temperature, 1);
+
+  debugln(temp2);
 
   fillRectangle(tft.width() / 2 - (temp2.length() + 1) / 2.0 * pixX * tempSize, // x
                 tft.height() / 8 * 5,                                           // y
@@ -428,7 +436,7 @@ void printTemp(float temperature)
 
   if (temperature > maxTemp)
   {
-    debugln("New max temp");
+    debugln("+++++ New max temp");
 
     fillRectangle(tft.width() / 4 - (temp2.length() + 1) / 2.0 * pixX * tempSize, // x
                   tft.height() / 8 * 7,                                           // y
@@ -443,11 +451,12 @@ void printTemp(float temperature)
              temp2);                                                   // text
 
     maxTemp = temperature;
+    // maxTempNow = now;
   }
 
   if (temperature < minTemp)
   {
-    debugln("New min temp");
+    debugln("+++++ New min temp");
 
     fillRectangle(tft.width() / 4 * 3 - (temp2.length() + 1) / 2.0 * pixX * tempSize, // x
                   tft.height() / 8 * 7,                                               // y
@@ -462,6 +471,7 @@ void printTemp(float temperature)
              temp2);                                                       // text
 
     minTemp = temperature;
+    // minTempNow = now;
   }
 }
 
@@ -473,7 +483,7 @@ void updateScreen(DateTime &now, float temperature)
   temp2 = oldNow.minute();
   if (temp1 != temp2)
   {
-    debugln("Updating screen, time ...");
+    debugln("----- Updating screen, time ...");
     printTime(now);
 
     oldNow = now;
@@ -483,13 +493,14 @@ void updateScreen(DateTime &now, float temperature)
   temp2 = oldNow.date();
   if (temp1 != temp2)
   {
-    debugln("Updating screen, date ...");
+    debugln("----- Updating screen, date ...");
     printDate(now);
   }
 
   if (temperature != oldTemp)
   {
-    debugln("Updating screen, temperature ...");
+    debugln("----- Updating screen, temperature ...");
+
     printTemp(temperature);
 
     oldTemp = temperature;

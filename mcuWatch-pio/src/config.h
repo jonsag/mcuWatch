@@ -167,6 +167,9 @@ float oldTemp;
 float maxTemp = -100.0;
 float minTemp = 100.0;
 
+DateTime maxTempNow;
+DateTime minTempNow;
+
 byte year;
 byte month;
 byte date;
