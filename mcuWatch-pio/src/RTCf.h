@@ -234,7 +234,7 @@ void prettyPrint(DateTime &now, float temperature)
     String temp;
 
     //#if DEBUG
-    temp = now.hour() - DST;
+    temp = now.hour();
     Serial.print(padByte(temp));
     Serial.print(":");
 
@@ -246,7 +246,7 @@ void prettyPrint(DateTime &now, float temperature)
     Serial.print(padByte(temp));
     Serial.print(" ");
 
-    Serial.print(dayName[now.dayOfWeek()]);
+    Serial.print(dayName[now.dayOfWeek() - 1]);
     Serial.print(" ");
 
     Serial.print(monthName[now.month() - 1]);

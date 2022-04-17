@@ -24,6 +24,10 @@ void setup()
   Serial.println("Initializing display ...");
   tft.initR(INITR_BLACKTAB);
   Serial.println("Initialized");
+  Serial.print("Screen size: ");
+  Serial.print(tft.width());
+  Serial.print("x");
+  Serial.println(tft.height());
   Serial.println();
 
   Serial.println("Set time with YYMMDDwhhmmssx, ");
@@ -48,9 +52,10 @@ void setup()
 
 #if DEBUG
   Serial.println("Drawing help lines ...");
-  helpLines();
   Serial.println();
 #endif
+
+  helpLines();
 
   Serial.println("Getting time...");
   now = timeNow();
