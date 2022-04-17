@@ -49,8 +49,8 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
         }
     }
 
-    Serial.print("I got: ");
-    Serial.print(inString);
+    info("I got: ");
+    info(inString);
 
     temp1 = (byte)inString[0] - 48; // Read year first
     temp2 = (byte)inString[1] - 48;
@@ -101,7 +101,7 @@ void setTime()
     {
         // clockIsSet = false;
 
-        Serial.println("Preparing to set RTC...");
+        infoln("Preparing to set RTC...");
 
         getDateStuff(year, month, date, dOW, hour, minute, second);
 
@@ -137,7 +137,7 @@ void setTime()
         */
 
         debugln();
-        Serial.print("Time is set!");
+        info("Time is set!");
     }
 }
 
@@ -231,9 +231,9 @@ String prettyNumbering(String &k)
 
 void prettyPrint(DateTime &now, float temperature)
 {
+#if INFO
     String temp;
 
-    //#if DEBUG
     temp = now.hour() + hourOffs;
     Serial.print(padByte(temp));
     Serial.print(":");
@@ -259,9 +259,9 @@ void prettyPrint(DateTime &now, float temperature)
     temp = now.year();
     Serial.println(padByte(temp));
 
-    Serial.print("Temperature: ");
+    debug("Temperature: ");
     Serial.println(temperature);
 
     debugln();
-    //#endif
+#endif
 }

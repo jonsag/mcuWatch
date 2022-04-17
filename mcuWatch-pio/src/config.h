@@ -2,7 +2,8 @@
 /**********
  * Debug
  **********/
-#define DEBUG 1 // debug is off when 0
+#define DEBUG 0 // debug is off when 0
+#define INFO 1
 
 #if DEBUG
 #define debug(x) Serial.print(x)
@@ -11,6 +12,15 @@
 #define debug(x)
 #define debugln(x)
 #endif
+
+#if INFO || DEBUG
+#define info(x) Serial.print(x)
+#define infoln(x) Serial.println(x)
+#else
+#define info(x)
+#define infoln(x)
+#endif
+
 
 /*
 SPI (ST7735)
