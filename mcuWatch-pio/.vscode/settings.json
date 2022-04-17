@@ -5,6 +5,7 @@
         "HMISO",
         "HMOSI",
         "HSCLK",
+        "infoln",
         "INITR",
         "RAMWR",
         "RASET",

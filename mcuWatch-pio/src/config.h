@@ -79,7 +79,6 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #define buz 6
 
 #elif defined(ARDUINO_AVR_UNO)
-
 #define tftRES 5
 #define tftDC 4
 #define tftCS 3
@@ -87,6 +86,16 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #define rotDT 7
 #define rotSW 6
 #define buz 9
+
+#elif defined(ARDUINO_AVR_MEGA2560)
+#define tftRES 5
+#define tftDC 4
+#define tftCS 3
+#define rotCLK 8
+#define rotDT 7
+#define rotSW 6
+#define buz 9
+
 #endif
 
 /**********
