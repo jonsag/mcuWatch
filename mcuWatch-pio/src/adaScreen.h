@@ -414,11 +414,14 @@ void printDate(DateTime &now)
 
 void printTemp(float temperature)
 {
+  char temp1[4];
   String temp2;
 
   debug("+++++ Writing new temp: ");
 
-  temp2 = String(temperature, 1);
+  // temp2 = String(temperature, 1);
+  dtostrf(temperature, 4, 1, temp1);
+  temp2 = String(temp1);
 
   debugln(temp2);
 
@@ -496,15 +499,15 @@ void updateScreen(DateTime &now, float temperature)
     debugln("----- Updating screen, date ...");
     printDate(now);
   }
+  /*
+    if (temperature != oldTemp)
+    {
+      debugln("----- Updating screen, temperature ...");
 
-  if (temperature != oldTemp)
-  {
-    debugln("----- Updating screen, temperature ...");
+      printTemp(temperature);
 
-    printTemp(temperature);
-
-    oldTemp = temperature;
-  }
-
+      oldTemp = temperature;
+    }
+  */
   debugln();
 }
