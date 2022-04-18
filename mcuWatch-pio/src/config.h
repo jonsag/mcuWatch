@@ -27,7 +27,7 @@ Function    Screen pin  Mini        Uno         Mega        ESP8266     ESP-01  
 -----       -----       -----       -----       -----       -----       -----       -----
 SCK         3           D13*)       D13*)       D52*)       D5/GPIO14*)             SCL, HSCLK, SPI Clock, Hardware SPI clk
 SDA         4           D11*)       D11*)       D51*)       D7/GPIO13*)             SPI Data, MOSI, HMOSI, data to screen
-RES         5           D5          D5          D5          D6/                    RST, HMISO, screen reset
+RES         5           D5          D5          D5          D6/GPIO12               RST, HMISO, screen reset
 DC          6           D4          D4          D4          D4/GPIO2                Register Select, labelled as DC in Adafruit code
 CS          7           D3          D3          D3          D3/GPIO0                Chip Select, defined as Slave Select in SPI
 
