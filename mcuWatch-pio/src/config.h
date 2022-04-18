@@ -2,7 +2,7 @@
 /**********
  * Debug
  **********/
-#define DEBUG 0 // debug is off when 0
+#define DEBUG 1 // debug is off when 0
 #define INFO 1
 
 #if DEBUG

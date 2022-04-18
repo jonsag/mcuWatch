@@ -78,6 +78,8 @@ void loop()
     debugln("Getting temp...");
     temperature = tempNow();
 
+    RTCtest(now);
+
     prettyPrint(now, temperature);
 
     updateScreen(now, temperature);

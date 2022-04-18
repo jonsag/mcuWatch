@@ -173,6 +173,7 @@ float tempNow()
 void RTCtest(DateTime &now)
 {
 #if DEBUG
+    Serial.print("----- RTC test: ");
     Serial.print(now.year(), DEC);
     Serial.print('/');
     Serial.print(now.month(), DEC);
