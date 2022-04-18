@@ -69,6 +69,15 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #define rotSW D0   // GPIO16
 #define buz D8     // GPIO2
 
+#elif defined(ARDUINO_ESP32_DEV)
+#define tftRES 0
+#define tftDC 4   // GPIO2, TFT display SPI chip select pin
+#define tftCS 3   // GPIO0, TFT display data/command select pin
+#define rotCLK SD3 // GPIO10
+#define rotDT SD2  // GPIO9
+#define rotSW D0   // GPIO16
+#define buz D8     // GPIO2
+
 #elif defined(ARDUINO_AVR_PRO)
 #define tftRES 5
 #define tftDC 4
