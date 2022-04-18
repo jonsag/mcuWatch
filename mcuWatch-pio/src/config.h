@@ -21,24 +21,22 @@
 #define infoln(x)
 #endif
 
-
 /*
 SPI (ST7735)
-Function    Screen pin  Arduino 168 Arduino 328 ESP8266     ESP-01      Comment
------       -----       -----       -----       -----       -----       -----
-SCK         3           D13*)       D13*)       D5/GPIO14*)             SCL, HSCLK, SPI Clock, Hardware SPI clk
-SDA         4           D11*)       D11*)       D7/GPIO13*)             SPI Data, MOSI, HMOSI, data to screen
-RES         pulled high                                                 RST, HMISO, screen reset
-DC          6           D4          D4          D4/GPIO2                Register Select, labelled as DC in Adafruit code
-CS          7           D3          D3          D3/GPIO0                Chip Select, defined as Slave Select in SPI
-*) Must be these pins as they are set in firmware/hardware
+Function    Screen pin  Mini        Uno         Mega        ESP8266     ESP-01      Comment
+-----       -----       -----       -----       -----       -----       -----       -----
+SCK         3           D13*)       D13*)       D52*)       D5/GPIO14*)             SCL, HSCLK, SPI Clock, Hardware SPI clk
+SDA         4           D11*)       D11*)       D51*)       D7/GPIO13*)             SPI Data, MOSI, HMOSI, data to screen
+RES         5           D5          D5          D5          D6/                    RST, HMISO, screen reset
+DC          6           D4          D4          D4          D4/GPIO2                Register Select, labelled as DC in Adafruit code
+CS          7           D3          D3          D3          D3/GPIO0                Chip Select, defined as Slave Select in SPI
 
 I2C (RTC and SSD1306)
-Function    RTC         Screen      Arduino     ESP8266     ESP-01
------       -----       -----       -----       -----       -----
+Function    RTC         Screen      Uno, Mini   Mega        ESP8266     ESP-01
+-----       -----       -----       -----       -----       -----       -----
 Address     0x68        0x3C
-SDA         2                       A4          D2/GPIO4    3/GPIO2
-SCL         3                       A5          D1/GPIO5    5/GPIO0
+SDA         2                       A4*)         20*)      D2/GPIO4*)  3/GPIO2*)
+SCL         3                       A5*)         21*)      D1/GPIO5*)  5/GPIO0*)
 
 Rotary encoder
 Function                Arduino 168 Arduino 328 ESP8266     ESP-01
@@ -52,6 +50,8 @@ Function                Arduino 168 Arduino 328 ESP8266     ESP-01
 -----                   -----       -----       -----       -----
 +                                   D6          D8/GPIO15
 
+*) Must be these pins as they are set in firmware/hardware
+
 Find macro definitions:
 $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 */
@@ -61,7 +61,7 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
  **********/
 
 #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E)
-#define tftRES 0
+#define tftRES D6
 #define tftDC D4   // GPIO2, TFT display SPI chip select pin
 #define tftCS D3   // GPIO0, TFT display data/command select pin
 #define rotCLK SD3 // GPIO10
@@ -71,8 +71,8 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 
 #elif defined(ARDUINO_ESP32_DEV)
 #define tftRES 0
-#define tftDC 4   // GPIO2, TFT display SPI chip select pin
-#define tftCS 3   // GPIO0, TFT display data/command select pin
+#define tftDC 4    // GPIO2, TFT display SPI chip select pin
+#define tftCS 3    // GPIO0, TFT display data/command select pin
 #define rotCLK SD3 // GPIO10
 #define rotDT SD2  // GPIO9
 #define rotSW D0   // GPIO16
@@ -84,7 +84,7 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #define tftCS 3
 #define rotCLK 9
 #define rotDT 8
-#define rotSW 7
+#define rotSW 7ST77XX_RED
 #define buz 6
 
 #elif defined(ARDUINO_AVR_UNO)
@@ -119,7 +119,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 // colours
 #define bgCol ST77XX_BLACK
 
-#define timeCol ST77XX_RED
+#define timeCol ST77XX_GREEN
 #define dateCol ST77XX_YELLOW
 
 #define tempCol ST77XX_GREEN
@@ -137,7 +137,15 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 // sizes
 #define timeSize 4
 #define dateSize 1
+
+#define tempNowSize 3
 #define tempSize 2
+
+// positions
+#define dateYPos 1
+#define timeNowYPos 2
+#define tempNowYPos 4
+#define tempMinMaxYPos 6
 
 // compensations
 #define timeXOffs 2

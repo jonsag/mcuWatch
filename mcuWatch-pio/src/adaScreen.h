@@ -82,13 +82,13 @@ void printTime(DateTime &now)
   infoln(temp2);
 
   fillRectangle(tft.width() / 2 - temp2.length() / 2.0 * pixX * timeSize + timeXOffs, // x
-                tft.height() / 4,                                                     // y
+                tft.height() / 8 * timeNowYPos,                                       // y
                 temp2.length() * pixX * timeSize,                                     // width
                 pixY * timeSize,                                                      // height
                 bgCol);                                                               // colour
 
   drawText(tft.width() / 2 - temp2.length() / 2.0 * pixX * timeSize + timeXOffs, // x
-           tft.height() / 4,                                                     // y
+           tft.height() / 8 * timeNowYPos,                                       // y
            timeSize,                                                             // size
            timeCol,                                                              // colour
            temp2);                                                               // text
@@ -113,13 +113,13 @@ void printDate(DateTime &now)
   infoln((temp2));
 
   fillRectangle(tft.width() / 2 - (temp2.length() + 1) / 2.0 * pixX * dateSize, // x
-                tft.height() / 8,                                               // y
+                tft.height() / 8 * dateYPos,                                    // y
                 (temp2.length() + 1) * pixX * dateSize,                         // width
                 pixY * dateSize,                                                // height
                 bgCol);                                                         // colour
 
   drawText(tft.width() / 2 - temp2.length() / 2.0 * pixX * dateSize, // x
-           tft.height() / 8,                                         // y
+           tft.height() / 8 * dateYPos,                              // y
            dateSize,                                                 // size
            dateCol,                                                  // colour
            temp2);                                                   // text
@@ -138,33 +138,33 @@ void printTemp(float temperature)
 
   infoln(temp2);
 
-  fillRectangle(tft.width() / 2 - (temp2.length() + 1) / 2.0 * pixX * tempSize, // x
-                tft.height() / 8 * 5,                                           // y
-                (temp2.length() + 1) * pixX * tempSize,                         // width
-                pixY * dateSize,                                                // height
-                bgCol);                                                         // colour
+  fillRectangle(tft.width() / 2 - (temp2.length() + 1) / 2.0 * pixX * tempNowSize, // x
+                tft.height() / 8 * tempNowYPos,                                    // y
+                (temp2.length() + 1) * pixX * tempNowSize,                         // width
+                pixY * tempNowSize,                                                // height
+                bgCol);                                                            // colour
 
-  drawText(tft.width() / 2 - temp2.length() / 2.0 * pixX * tempSize, // x
-           tft.height() / 8 * 5,                                     // y
-           tempSize,                                                 // size
-           tempCol,                                                  // colour
-           temp2);                                                   // text
+  drawText(tft.width() / 2 - temp2.length() / 2.0 * pixX * tempNowSize, // x
+           tft.height() / 8 * tempNowYPos,                              // y
+           tempNowSize,                                                 // size
+           tempCol,                                                     // colour
+           temp2);                                                      // text
 
   if (temperature > maxTemp)
   {
     infoln("+++++ New max temp");
 
-    fillRectangle(tft.width() / 4 - (temp2.length() + 1) / 2.0 * pixX * tempSize, // x
-                  tft.height() / 8 * 7,                                           // y
-                  (temp2.length() + 1) * pixX * tempSize,                         // width
-                  pixY * dateSize,                                                // height
-                  bgCol);                                                         // colour
+    fillRectangle(tft.width() / 4 * 3 - (temp2.length() + 1) / 2.0 * pixX * tempSize, // x
+                  tft.height() / 8 * tempMinMaxYPos,                                  // y
+                  (temp2.length() + 1) * pixX * tempSize,                             // width
+                  pixY * tempSize,                                                    // height
+                  bgCol);                                                             // colour
 
-    drawText(tft.width() / 4 - temp2.length() / 2.0 * pixX * tempSize, // x
-             tft.height() / 8 * 7,                                     // y
-             tempSize,                                                 // size
-             maxTempCol,                                               // colour
-             temp2);                                                   // text
+    drawText(tft.width() / 4 * 3 - temp2.length() / 2.0 * pixX * tempSize, // x
+             tft.height() / 8 * tempMinMaxYPos,                            // y
+             tempSize,                                                     // size
+             maxTempCol,                                                   // colour
+             temp2);                                                       // text
 
     maxTemp = temperature;
     // maxTempNow = now;
@@ -174,17 +174,17 @@ void printTemp(float temperature)
   {
     infoln("+++++ New min temp");
 
-    fillRectangle(tft.width() / 4 * 3 - (temp2.length() + 1) / 2.0 * pixX * tempSize, // x
-                  tft.height() / 8 * 7,                                               // y
-                  (temp2.length() + 1) * pixX * tempSize,                             // width
-                  pixY * dateSize,                                                    // height
-                  bgCol);                                                             // colour
+    fillRectangle(tft.width() / 4 - (temp2.length() + 1) / 2.0 * pixX * tempSize, // x
+                  tft.height() / 8 * tempMinMaxYPos,                              // y
+                  (temp2.length() + 1) * pixX * tempSize,                         // width
+                  pixY * tempSize,                                                // height
+                  bgCol);                                                         // colour
 
-    drawText(tft.width() / 4 * 3 - temp2.length() / 2.0 * pixX * tempSize, // x
-             tft.height() / 8 * 7,                                         // y
-             tempSize,                                                     // size
-             minTempCol,                                                   // colour
-             temp2);                                                       // text
+    drawText(tft.width() / 4 - temp2.length() / 2.0 * pixX * tempSize, // x
+             tft.height() / 8 * tempMinMaxYPos,                        // y
+             tempSize,                                                 // size
+             minTempCol,                                               // colour
+             temp2);                                                   // text
 
     minTemp = temperature;
     // minTempNow = now;
@@ -194,6 +194,14 @@ void printTemp(float temperature)
 void updateScreen(DateTime &now, float temperature)
 {
   String temp1, temp2;
+
+  temp1 = now.date();
+  temp2 = oldNow.date();
+  if (temp1 != temp2)
+  {
+    debugln("----- Updating screen, date ...");
+    printDate(now);
+  }
 
   temp1 = now.minute();
   temp2 = oldNow.minute();
@@ -205,22 +213,14 @@ void updateScreen(DateTime &now, float temperature)
     oldNow = now;
   }
 
-  temp1 = now.date();
-  temp2 = oldNow.date();
-  if (temp1 != temp2)
+  if (temperature != oldTemp)
   {
-    debugln("----- Updating screen, date ...");
-    printDate(now);
+    debugln("----- Updating screen, temperature ...");
+
+    printTemp(temperature);
+
+    oldTemp = temperature;
   }
-  
-    if (temperature != oldTemp)
-    {
-      debugln("----- Updating screen, temperature ...");
 
-      printTemp(temperature);
-
-      oldTemp = temperature;
-    }
-  
   debugln();
 }
