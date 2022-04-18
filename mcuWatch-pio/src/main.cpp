@@ -16,7 +16,11 @@ void setup()
   debugln();
 
   debugln("Starting wire ...");
+#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E)
+  Wire.begin(rtcSDA, rtcSCL);
+#else
   Wire.begin();
+#endif
 
   debugln("Starting RTC ...");
   rtc.begin();

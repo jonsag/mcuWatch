@@ -27,7 +27,7 @@ Function    Screen pin  Mini        Uno         Mega        ESP8266     ESP-01  
 -----       -----       -----       -----       -----       -----       -----       -----
 SCK         3           D13*)       D13*)       D52*)       D5/GPIO14*)             SCL, HSCLK, SPI Clock, Hardware SPI clk
 SDA         4           D11*)       D11*)       D51*)       D7/GPIO13*)             SPI Data, MOSI, HMOSI, data to screen
-RES         5           D5          D5          D5          D6/GPIO12               RST, HMISO, screen reset
+RES         5           D5          D5          D5          D6/GPIO12               RST, NISO, HMISO, screen reset
 DC          6           D4          D4          D4          D4/GPIO2                Register Select, labelled as DC in Adafruit code
 CS          7           D3          D3          D3          D3/GPIO0                Chip Select, defined as Slave Select in SPI
 
@@ -61,48 +61,88 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
  **********/
 
 #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E)
+#define rtcSDA D2
+#define rtcSCL D1
+
+#define tftSCK D5
+#define tftSDA D7
+
 #define tftRES D6
-#define tftDC D4   // GPIO2, TFT display SPI chip select pin
-#define tftCS D3   // GPIO0, TFT display data/command select pin
+#define tftDC D4 // GPIO2, TFT display SPI chip select pin
+#define tftCS D3 // GPIO0, TFT display data/command select pin
+
 #define rotCLK SD3 // GPIO10
 #define rotDT SD2  // GPIO9
 #define rotSW D0   // GPIO16
-#define buz D8     // GPIO2
+
+#define buz D8 // GPIO2
 
 #elif defined(ARDUINO_ESP32_DEV)
+#define rtcSDA D2
+#define rtcSCL D1
+
+#define tftSCK D5
+#define tftSDA D7
+
 #define tftRES 0
-#define tftDC 4    // GPIO2, TFT display SPI chip select pin
-#define tftCS 3    // GPIO0, TFT display data/command select pin
+#define tftDC 4 // GPIO2, TFT display SPI chip select pin
+#define tftCS 3 // GPIO0, TFT display data/command select pin
+
 #define rotCLK SD3 // GPIO10
 #define rotDT SD2  // GPIO9
 #define rotSW D0   // GPIO16
-#define buz D8     // GPIO2
+
+#define buz D8 // GPIO2
 
 #elif defined(ARDUINO_AVR_PRO)
+#define rtcSDA A4
+#define rtcSCL A5
+
+#define tftSCK 13
+#define tftSDA 11
+
 #define tftRES 5
 #define tftDC 4
 #define tftCS 3
+
 #define rotCLK 9
 #define rotDT 8
 #define rotSW 7ST77XX_RED
+
 #define buz 6
 
 #elif defined(ARDUINO_AVR_UNO)
+#define rtcSDA A4
+#define rtcSCL A5
+
+#define tftSCK 13
+#define tftSDA 11
+
 #define tftRES 5
 #define tftDC 4
 #define tftCS 3
+
 #define rotCLK 8
 #define rotDT 7
 #define rotSW 6
+
 #define buz 9
 
 #elif defined(ARDUINO_AVR_MEGA2560)
+#define rtcSDA 20
+#define rtcSCL 21
+
+#define tftSCK 52
+#define tftSDA 51
+
 #define tftRES 5
 #define tftDC 4
 #define tftCS 3
+
 #define rotCLK 8
 #define rotDT 7
 #define rotSW 6
+
 #define buz 9
 
 #endif
@@ -115,6 +155,7 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #include <SPI.h>
 
 Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
+// Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftSDA, tftSCK, tftRES);
 
 // colours
 #define bgCol ST77XX_BLACK
