@@ -2,9 +2,9 @@
 /**********
  * Debug
  **********/
-#define DEBUG 1 // debugMess is off when 0
+#define DEBUG 0 // debugMess is off when 0
 #define INFO 1
-#define SCREENON 0
+#define SCREENON 1
 
 #if DEBUG
 #define debugMess(x) Serial.print(x)

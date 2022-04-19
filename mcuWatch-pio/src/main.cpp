@@ -6,7 +6,8 @@
 #if SCREENON
 #include "adaScreen.h"
 #endif
-// Setup **********************************************>
+
+// Setup **********************************************
 
 void setup()
 {
@@ -73,27 +74,46 @@ void setup()
 #endif
 }
 
+// Main **********************************************
+
+void update()
+{
+  RTCtest(now);
+
+  prettyPrint(now, temperature);
+
+#if SCREENON
+  updateScreen(now, temperature);
+#endif
+}
+
+void getData()
+{
+  debugMessln("Getting time...");
+  now = timeNow();
+  debugMessln("Getting temperature...");
+  temperature = tempNow();
+}
+
 void loop()
 {
   currentMillis = millis();
 
   setTime();
 
+#if DEBUG
   if (currentMillis - lastCheckMillis >= checkInterval)
   {
-    debugMessln("Getting time...");
-    now = timeNow();
-    debugMessln("Getting temperature...");
-    temperature = tempNow();
-
-    RTCtest(now);
-
-    prettyPrint(now, temperature);
-
-#if SCREENON
-    updateScreen(now, temperature);
-#endif
-
+    getData();
+    update();
     lastCheckMillis = currentMillis;
   }
+#else
+  getData();
+  if (now.getEpoch() != oldNow.getEpoch())
+  {
+    update();
+    oldNow = now;
+  }
+#endif
 }

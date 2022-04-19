@@ -36,13 +36,13 @@ void fillRectangle(int16_t x, int16_t y, int16_t width, int16_t height, uint16_t
 {
   debugMess("Filling rectangle, x: ");
   debugMess(x);
-  debugMess("\t y: ");
+  debugMess("\ty: ");
   debugMess(y);
-  debugMess("\t width: ");
+  debugMess("\twidth: ");
   debugMess(width);
-  debugMess("\t height: ");
+  debugMess("\theight: ");
   debugMess(height);
-  debugMess("\t colour: ");
+  debugMess("\tcolour: ");
   debugMessln(color);
   tft.fillRect(x, y, width, height, color);
 }
@@ -51,11 +51,11 @@ void drawText(int16_t posX, int16_t posY, int16_t size, uint16_t color, String i
 {
   debugMess("Drawing text, x: ");
   debugMess(posX);
-  debugMess("\t y: ");
+  debugMess("\ty: ");
   debugMess(posY);
-  debugMess("\t size: ");
+  debugMess("\tsize: ");
   debugMess(size);
-  debugMess("\t colour: ");
+  debugMess("\tcolour: ");
   debugMess(color);
   debugMess("\ttext: ");
   debugMessln(inText);
@@ -69,60 +69,56 @@ void drawText(int16_t posX, int16_t posY, int16_t size, uint16_t color, String i
 
 void printTime(DateTime &now)
 {
-  String myString1, myString2;
+  String myString;
 
   infoMess("+++++ Writing new time: ");
 
-  myString1 = now.hour() + hourOffs;
-  myString2 = padByte(myString1);
-  myString2 += ":";
-  myString1 = now.minute();
-  myString2 += padByte(myString1);
+  myString = padByte((now.hour() + hourOffs)) + ":";
+  myString.concat(padByte(now.minute()));
 
-  infoMessln(myString2);
+  infoMessln(myString);
 
-  fillRectangle(tft.width() / 2 - myString2.length() / 2.0 * pixX * timeSize + timeXOffs, // x
-                tft.height() / 8 * timeNowYPos,                                       // y
-                myString2.length() * pixX * timeSize,                                     // width
-                pixY * timeSize,                                                      // height
-                bgCol);                                                               // colour
+  fillRectangle(tft.width() / 2 - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
+                tft.height() / 8 * timeNowYPos,                                          // y
+                myString.length() * pixX * timeSize,                                     // width
+                pixY * timeSize,                                                         // height
+                bgCol);                                                                  // colour
 
-  drawText(tft.width() / 2 - myString2.length() / 2.0 * pixX * timeSize + timeXOffs, // x
-           tft.height() / 8 * timeNowYPos,                                       // y
-           timeSize,                                                             // size
-           timeCol,                                                              // colour
-           myString2);                                                               // text
+  drawText(tft.width() / 2 - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
+           tft.height() / 8 * timeNowYPos,                                          // y
+           timeSize,                                                                // size
+           timeCol,                                                                 // colour
+           myString);                                                               // text
 }
 
 void printDate(DateTime &now)
 {
-  String myString1, myString2;
+  String myString;
 
   infoMess("+++++ Writing new date: ");
 
-  myString2 = dayName[now.dayOfWeek() - 1];
-  myString2 += " ";
-  myString2 += monthName[now.month() - 1];
-  myString2 += " ";
-  myString1 = now.date();
-  myString2 += prettyNumbering(myString1);
-  myString2 += " ";
-  myString1 = now.year();
-  myString2 += padByte(myString1);
+  myString = dayName[now.dayOfWeek() - 1];
+  myString.concat(" ");
+  myString.concat(monthName[now.month() - 1]);
+  myString.concat(" ");
+  myString.concat(now.date());
+  myString.concat(prettyNumbering(now.date()));
+  myString.concat(" ");
+  myString.concat(now.year());
+  
+      infoMessln((myString));
 
-  infoMessln((myString2));
+  fillRectangle(tft.width() / 2 - (myString.length() + 1) / 2.0 * pixX * dateSize, // x
+                tft.height() / 8 * dateYPos,                                       // y
+                (myString.length() + 1) * pixX * dateSize,                         // width
+                pixY * dateSize,                                                   // height
+                bgCol);                                                            // colour
 
-  fillRectangle(tft.width() / 2 - (myString2.length() + 1) / 2.0 * pixX * dateSize, // x
-                tft.height() / 8 * dateYPos,                                    // y
-                (myString2.length() + 1) * pixX * dateSize,                         // width
-                pixY * dateSize,                                                // height
-                bgCol);                                                         // colour
-
-  drawText(tft.width() / 2 - myString2.length() / 2.0 * pixX * dateSize, // x
-           tft.height() / 8 * dateYPos,                              // y
-           dateSize,                                                 // size
-           dateCol,                                                  // colour
-           myString2);                                                   // text
+  drawText(tft.width() / 2 - myString.length() / 2.0 * pixX * dateSize, // x
+           tft.height() / 8 * dateYPos,                                 // y
+           dateSize,                                                    // size
+           dateCol,                                                     // colour
+           myString);                                                   // text
 }
 
 void printTemp(float temperature)
@@ -136,18 +132,18 @@ void printTemp(float temperature)
   dtostrf(temperature, 4, 1, myString1);
   myString2 = String(myString1);
 
-  infoMess(myString2);
+  infoMessln(myString2);
 
   fillRectangle(tft.width() / 2 - (myString2.length() + 1) / 2.0 * pixX * tempNowSize, // x
-                tft.height() / 8 * tempNowYPos,                                    // y
+                tft.height() / 8 * tempNowYPos,                                        // y
                 (myString2.length() + 1) * pixX * tempNowSize,                         // width
-                pixY * tempNowSize,                                                // height
-                bgCol);                                                            // colour
+                pixY * tempNowSize,                                                    // height
+                bgCol);                                                                // colour
 
   drawText(tft.width() / 2 - myString2.length() / 2.0 * pixX * tempNowSize, // x
-           tft.height() / 8 * tempNowYPos,                              // y
-           tempNowSize,                                                 // size
-           tempCol,                                                     // colour
+           tft.height() / 8 * tempNowYPos,                                  // y
+           tempNowSize,                                                     // size
+           tempCol,                                                         // colour
            myString2);                                                      // text
 
   if (temperature > maxTemp)
@@ -155,15 +151,15 @@ void printTemp(float temperature)
     infoMessln("+++++ New max temperature");
 
     fillRectangle(tft.width() / 4 * 3 - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
-                  tft.height() / 8 * tempMinMaxYPos,                                  // y
+                  tft.height() / 8 * tempMinMaxYPos,                                      // y
                   (myString2.length() + 1) * pixX * tempSize,                             // width
-                  pixY * tempSize,                                                    // height
-                  bgCol);                                                             // colour
+                  pixY * tempSize,                                                        // height
+                  bgCol);                                                                 // colour
 
     drawText(tft.width() / 4 * 3 - myString2.length() / 2.0 * pixX * tempSize, // x
-             tft.height() / 8 * tempMinMaxYPos,                            // y
-             tempSize,                                                     // size
-             maxTempCol,                                                   // colour
+             tft.height() / 8 * tempMinMaxYPos,                                // y
+             tempSize,                                                         // size
+             maxTempCol,                                                       // colour
              myString2);                                                       // text
 
     maxTemp = temperature;
@@ -175,15 +171,15 @@ void printTemp(float temperature)
     infoMessln("+++++ New min temperature");
 
     fillRectangle(tft.width() / 4 - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
-                  tft.height() / 8 * tempMinMaxYPos,                              // y
+                  tft.height() / 8 * tempMinMaxYPos,                                  // y
                   (myString2.length() + 1) * pixX * tempSize,                         // width
-                  pixY * tempSize,                                                // height
-                  bgCol);                                                         // colour
+                  pixY * tempSize,                                                    // height
+                  bgCol);                                                             // colour
 
     drawText(tft.width() / 4 - myString2.length() / 2.0 * pixX * tempSize, // x
-             tft.height() / 8 * tempMinMaxYPos,                        // y
-             tempSize,                                                 // size
-             minTempCol,                                               // colour
+             tft.height() / 8 * tempMinMaxYPos,                            // y
+             tempSize,                                                     // size
+             minTempCol,                                                   // colour
              myString2);                                                   // text
 
     minTemp = temperature;
@@ -193,24 +189,23 @@ void printTemp(float temperature)
 
 void updateScreen(DateTime &now, float temperature)
 {
-  String myString1, myString2;
+  //String myString1, myString2;
 
-  myString1 = now.date();
-  myString2 = oldNow.date();
-  if (myString1 != myString2)
+  //myString1 = now.date();
+  //myString2 = oldNow.date();
+  if (now.date() != oldNow.date())
   {
     debugMessln("----- Updating screen, date ...");
     printDate(now);
   }
 
-  myString1 = now.minute();
-  myString2 = oldNow.minute();
-  if (myString1 != myString2)
+  //myString1 = now.minute();
+  //myString2 = oldNow.minute();
+  if (now.minute() != oldNow.minute())
   {
     debugMessln("----- Updating screen, time ...");
+    
     printTime(now);
-
-    oldNow = now;
   }
 
   if (temperature != oldTemp)

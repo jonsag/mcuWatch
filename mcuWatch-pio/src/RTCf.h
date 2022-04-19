@@ -148,17 +148,6 @@ void adjustDate(int year, int month, int date, int hour, int min, int sec, int w
     // Serial.println(rtc.now().getEpoch());//debugMess info
 }
 
-String padByte(String &s)
-{
-    String myOtherString = s;
-    if (myOtherString.length() < 2)
-    {
-        myOtherString = "0" + myOtherString;
-    }
-
-    return myOtherString;
-}
-
 DateTime timeNow()
 {
     return rtc.now();
@@ -208,47 +197,69 @@ void printTemp()
 #endif
 }
 
-String prettyNumbering(String &k)
+String padByte(byte b)
 {
+    String myString = "";
+
+    if (b < 10)
+    {
+        myString.concat("0");
+    }
+
+    myString.concat(b);
+
+    return myString;
+}
+
+String prettyNumbering(byte b)
+{
+    /*
+    String k = "";
+
+    k.concat(b);
     char last = k.charAt(k.length() - 1);
     int l = (int)(last - '0');
-
-    switch (l)
+*/
+    if (b > 3 && b < 21)
     {
-    case 1:
-        return k + "st";
-        break;
-    case 2:
-        return k + "nd";
-        break;
-    case 3:
-        return k + "rd";
-        break;
-    default:
-        return k + "th";
-        break;
+        return "th";
+    }
+    else
+    {
+
+        while (b > 9)
+        {
+            b = b - 10;
+        }
+
+        switch (b)
+        {
+        case 1:
+            return "st";
+            break;
+        case 2:
+            return "nd";
+            break;
+        case 3:
+            return "rd";
+            break;
+        default:
+            return "th";
+            break;
+        }
     }
 }
 
 void prettyPrint(DateTime &now, float temperature)
 {
 #if INFO
-    byte myByte; 
-    String myString;
-
-    myByte = now.hour() - hourOffs;
-    if (myByte < 10) {
-        Serial.print("0");
-    }
-    Serial.print(myByte);
-    Serial.print(":");
-/*
-    myString = now.minute();
-    Serial.print(padByte(myString));
+    Serial.print(padByte((now.hour() + hourOffs)));
     Serial.print(":");
 
-    myString = now.second();
-    Serial.print(padByte(myString));
+    Serial.print(padByte(now.minute()));
+    Serial.print(":");
+
+    Serial.print(padByte(now.second()));
     Serial.print(" ");
 
     Serial.print(dayName[now.dayOfWeek() - 1]);
@@ -257,16 +268,16 @@ void prettyPrint(DateTime &now, float temperature)
     Serial.print(monthName[now.month() - 1]);
     Serial.print(" ");
 
-    myString = now.date();
-    Serial.print(prettyNumbering(myString));
+    Serial.print(now.date());
+    Serial.print(prettyNumbering(now.date()));
     Serial.print(" ");
 
-    myString = now.year();
-    Serial.println(padByte(myString));
+    Serial.print(now.year());
 
+    Serial.print("\t");
     debugMess("Temperature: ");
     Serial.println(temperature);
-*/
+
     debugMessln();
 #endif
 }
