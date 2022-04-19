@@ -2,23 +2,24 @@
 /**********
  * Debug
  **********/
-#define DEBUG 1 // debug is off when 0
+#define DEBUG 1 // debugMess is off when 0
 #define INFO 1
+#define SCREENON 0
 
 #if DEBUG
-#define debug(x) Serial.print(x)
-#define debugln(x) Serial.println(x)
+#define debugMess(x) Serial.print(x)
+#define debugMessln(x) Serial.println(x)
 #else
-#define debug(x)
-#define debugln(x)
+#define debugMess(x)
+#define debugMessln(x)
 #endif
 
 #if INFO || DEBUG
-#define info(x) Serial.print(x)
-#define infoln(x) Serial.println(x)
+#define infoMess(x) Serial.print(x)
+#define infoMessln(x) Serial.println(x)
 #else
-#define info(x)
-#define infoln(x)
+#define infoMess(x)
+#define infoMessln(x)
 #endif
 
 /*
@@ -150,6 +151,8 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 /**********
  * TFT screen
  **********/
+#if SCREENON
+
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
 #include <SPI.h>
@@ -195,25 +198,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define pixX 6
 #define pixY 8
 
-/*
-rotate:
-0: no rotation
-3: 90 degrees CW
-6: 180 degrees
-5: 90 degrees CCW
-*/
-
-/*
-#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_AVR_PRO)
-int const ysize = 128, xsize = 160, yoff = 0, xoff = 0, invert = 0, rotate = 0; // Adafruit 1.8" 160x128 display
-
-#elif defined(ARDUINO_AVR_UNO)
-int const ysize = 128, xsize = 160, yoff = 0, xoff = 0, invert = 0, rotate = 6; // Adafruit 1.8" 160x128 display
-
 #endif
-
-#include <TFTGraphicsLibrary.h>
-*/
 
 /**********
  * RTC
@@ -231,7 +216,7 @@ RTC from above
 
 //#include <DS3231.h>
 #include <Sodaq_DS3231.h>
-#include <Wire.h> // also included by the SPI-include above
+#include <Wire.h>
 
 const int hourOffs = 0;
 

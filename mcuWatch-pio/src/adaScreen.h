@@ -34,31 +34,31 @@ void helpLines()
 
 void fillRectangle(int16_t x, int16_t y, int16_t width, int16_t height, uint16_t color)
 {
-  debug("Filling rectangle, x: ");
-  debug(x);
-  debug("\t y: ");
-  debug(y);
-  debug("\t width: ");
-  debug(width);
-  debug("\t height: ");
-  debug(height);
-  debug("\t colour: ");
-  debugln(color);
+  debugMess("Filling rectangle, x: ");
+  debugMess(x);
+  debugMess("\t y: ");
+  debugMess(y);
+  debugMess("\t width: ");
+  debugMess(width);
+  debugMess("\t height: ");
+  debugMess(height);
+  debugMess("\t colour: ");
+  debugMessln(color);
   tft.fillRect(x, y, width, height, color);
 }
 
 void drawText(int16_t posX, int16_t posY, int16_t size, uint16_t color, String inText)
 {
-  debug("Drawing text, x: ");
-  debug(posX);
-  debug("\t y: ");
-  debug(posY);
-  debug("\t size: ");
-  debug(size);
-  debug("\t colour: ");
-  debug(color);
-  debug("\ttext: ");
-  debugln(inText);
+  debugMess("Drawing text, x: ");
+  debugMess(posX);
+  debugMess("\t y: ");
+  debugMess(posY);
+  debugMess("\t size: ");
+  debugMess(size);
+  debugMess("\t colour: ");
+  debugMess(color);
+  debugMess("\ttext: ");
+  debugMessln(inText);
 
   tft.setCursor(posX, posY);
   tft.setTextSize(size);
@@ -69,102 +69,102 @@ void drawText(int16_t posX, int16_t posY, int16_t size, uint16_t color, String i
 
 void printTime(DateTime &now)
 {
-  String temp1, temp2;
+  String myString1, myString2;
 
-  info("+++++ Writing new time: ");
+  infoMess("+++++ Writing new time: ");
 
-  temp1 = now.hour() + hourOffs;
-  temp2 = padByte(temp1);
-  temp2 += ":";
-  temp1 = now.minute();
-  temp2 += padByte(temp1);
+  myString1 = now.hour() + hourOffs;
+  myString2 = padByte(myString1);
+  myString2 += ":";
+  myString1 = now.minute();
+  myString2 += padByte(myString1);
 
-  infoln(temp2);
+  infoMessln(myString2);
 
-  fillRectangle(tft.width() / 2 - temp2.length() / 2.0 * pixX * timeSize + timeXOffs, // x
+  fillRectangle(tft.width() / 2 - myString2.length() / 2.0 * pixX * timeSize + timeXOffs, // x
                 tft.height() / 8 * timeNowYPos,                                       // y
-                temp2.length() * pixX * timeSize,                                     // width
+                myString2.length() * pixX * timeSize,                                     // width
                 pixY * timeSize,                                                      // height
                 bgCol);                                                               // colour
 
-  drawText(tft.width() / 2 - temp2.length() / 2.0 * pixX * timeSize + timeXOffs, // x
+  drawText(tft.width() / 2 - myString2.length() / 2.0 * pixX * timeSize + timeXOffs, // x
            tft.height() / 8 * timeNowYPos,                                       // y
            timeSize,                                                             // size
            timeCol,                                                              // colour
-           temp2);                                                               // text
+           myString2);                                                               // text
 }
 
 void printDate(DateTime &now)
 {
-  String temp1, temp2;
+  String myString1, myString2;
 
-  info("+++++ Writing new date: ");
+  infoMess("+++++ Writing new date: ");
 
-  temp2 = dayName[now.dayOfWeek() - 1];
-  temp2 += " ";
-  temp2 += monthName[now.month() - 1];
-  temp2 += " ";
-  temp1 = now.date();
-  temp2 += prettyNumbering(temp1);
-  temp2 += " ";
-  temp1 = now.year();
-  temp2 += padByte(temp1);
+  myString2 = dayName[now.dayOfWeek() - 1];
+  myString2 += " ";
+  myString2 += monthName[now.month() - 1];
+  myString2 += " ";
+  myString1 = now.date();
+  myString2 += prettyNumbering(myString1);
+  myString2 += " ";
+  myString1 = now.year();
+  myString2 += padByte(myString1);
 
-  infoln((temp2));
+  infoMessln((myString2));
 
-  fillRectangle(tft.width() / 2 - (temp2.length() + 1) / 2.0 * pixX * dateSize, // x
+  fillRectangle(tft.width() / 2 - (myString2.length() + 1) / 2.0 * pixX * dateSize, // x
                 tft.height() / 8 * dateYPos,                                    // y
-                (temp2.length() + 1) * pixX * dateSize,                         // width
+                (myString2.length() + 1) * pixX * dateSize,                         // width
                 pixY * dateSize,                                                // height
                 bgCol);                                                         // colour
 
-  drawText(tft.width() / 2 - temp2.length() / 2.0 * pixX * dateSize, // x
+  drawText(tft.width() / 2 - myString2.length() / 2.0 * pixX * dateSize, // x
            tft.height() / 8 * dateYPos,                              // y
            dateSize,                                                 // size
            dateCol,                                                  // colour
-           temp2);                                                   // text
+           myString2);                                                   // text
 }
 
 void printTemp(float temperature)
 {
-  char temp1[4];
-  String temp2;
+  char myString1[4];
+  String myString2;
 
-  info("+++++ Writing new temp: ");
+  infoMess("+++++ Writing new temperature: ");
 
-  // temp2 = String(temperature, 1);
-  dtostrf(temperature, 4, 1, temp1);
-  temp2 = String(temp1);
+  // myString2 = String(temperature, 1);
+  dtostrf(temperature, 4, 1, myString1);
+  myString2 = String(myString1);
 
-  infoln(temp2);
+  infoMess(myString2);
 
-  fillRectangle(tft.width() / 2 - (temp2.length() + 1) / 2.0 * pixX * tempNowSize, // x
+  fillRectangle(tft.width() / 2 - (myString2.length() + 1) / 2.0 * pixX * tempNowSize, // x
                 tft.height() / 8 * tempNowYPos,                                    // y
-                (temp2.length() + 1) * pixX * tempNowSize,                         // width
+                (myString2.length() + 1) * pixX * tempNowSize,                         // width
                 pixY * tempNowSize,                                                // height
                 bgCol);                                                            // colour
 
-  drawText(tft.width() / 2 - temp2.length() / 2.0 * pixX * tempNowSize, // x
+  drawText(tft.width() / 2 - myString2.length() / 2.0 * pixX * tempNowSize, // x
            tft.height() / 8 * tempNowYPos,                              // y
            tempNowSize,                                                 // size
            tempCol,                                                     // colour
-           temp2);                                                      // text
+           myString2);                                                      // text
 
   if (temperature > maxTemp)
   {
-    infoln("+++++ New max temp");
+    infoMessln("+++++ New max temperature");
 
-    fillRectangle(tft.width() / 4 * 3 - (temp2.length() + 1) / 2.0 * pixX * tempSize, // x
+    fillRectangle(tft.width() / 4 * 3 - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
                   tft.height() / 8 * tempMinMaxYPos,                                  // y
-                  (temp2.length() + 1) * pixX * tempSize,                             // width
+                  (myString2.length() + 1) * pixX * tempSize,                             // width
                   pixY * tempSize,                                                    // height
                   bgCol);                                                             // colour
 
-    drawText(tft.width() / 4 * 3 - temp2.length() / 2.0 * pixX * tempSize, // x
+    drawText(tft.width() / 4 * 3 - myString2.length() / 2.0 * pixX * tempSize, // x
              tft.height() / 8 * tempMinMaxYPos,                            // y
              tempSize,                                                     // size
              maxTempCol,                                                   // colour
-             temp2);                                                       // text
+             myString2);                                                       // text
 
     maxTemp = temperature;
     // maxTempNow = now;
@@ -172,19 +172,19 @@ void printTemp(float temperature)
 
   if (temperature < minTemp)
   {
-    infoln("+++++ New min temp");
+    infoMessln("+++++ New min temperature");
 
-    fillRectangle(tft.width() / 4 - (temp2.length() + 1) / 2.0 * pixX * tempSize, // x
+    fillRectangle(tft.width() / 4 - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
                   tft.height() / 8 * tempMinMaxYPos,                              // y
-                  (temp2.length() + 1) * pixX * tempSize,                         // width
+                  (myString2.length() + 1) * pixX * tempSize,                         // width
                   pixY * tempSize,                                                // height
                   bgCol);                                                         // colour
 
-    drawText(tft.width() / 4 - temp2.length() / 2.0 * pixX * tempSize, // x
+    drawText(tft.width() / 4 - myString2.length() / 2.0 * pixX * tempSize, // x
              tft.height() / 8 * tempMinMaxYPos,                        // y
              tempSize,                                                 // size
              minTempCol,                                               // colour
-             temp2);                                                   // text
+             myString2);                                                   // text
 
     minTemp = temperature;
     // minTempNow = now;
@@ -193,21 +193,21 @@ void printTemp(float temperature)
 
 void updateScreen(DateTime &now, float temperature)
 {
-  String temp1, temp2;
+  String myString1, myString2;
 
-  temp1 = now.date();
-  temp2 = oldNow.date();
-  if (temp1 != temp2)
+  myString1 = now.date();
+  myString2 = oldNow.date();
+  if (myString1 != myString2)
   {
-    debugln("----- Updating screen, date ...");
+    debugMessln("----- Updating screen, date ...");
     printDate(now);
   }
 
-  temp1 = now.minute();
-  temp2 = oldNow.minute();
-  if (temp1 != temp2)
+  myString1 = now.minute();
+  myString2 = oldNow.minute();
+  if (myString1 != myString2)
   {
-    debugln("----- Updating screen, time ...");
+    debugMessln("----- Updating screen, time ...");
     printTime(now);
 
     oldNow = now;
@@ -215,12 +215,12 @@ void updateScreen(DateTime &now, float temperature)
 
   if (temperature != oldTemp)
   {
-    debugln("----- Updating screen, temperature ...");
+    debugMessln("----- Updating screen, temperature ...");
 
     printTemp(temperature);
 
     oldTemp = temperature;
   }
 
-  debugln();
+  debugMessln();
 }

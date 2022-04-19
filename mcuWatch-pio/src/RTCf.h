@@ -7,9 +7,9 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
     // https://arduinogetstarted.com/reference/serial-readbytesuntil
     // https://arduinogetstarted.com/reference/serial-settimeout
 
-    const int BUFFER_SIZE = 12;
+    const int BUFFER_SIZE = 15;
     char buf[BUFFER_SIZE], inString[BUFFER_SIZE];
-    byte temp1, temp2;
+    byte myString1, myString2;
     int rlen, rxlen;
 
     rxlen = Serial.available(); // number of bytes available in Serial buffer
@@ -28,20 +28,20 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
         rlen = Serial.readBytesUntil('x', buf, BUFFER_SIZE);
 
         // prints the received data
-        debug("I received: ");
+        debugMess("I received: ");
         for (int i = 0; i < rlen; i++)
         {
             if (i != 0)
             {
-                debug(", ");
+                debugMess(", ");
             }
-            debug(buf[i]);
+            debugMess(buf[i]);
             inString[i] = buf[i];
         }
-        debugln();
+        debugMessln();
 
-        debug("Number of chars: ");
-        debugln(rlen);
+        debugMess("Number of chars: ");
+        debugMessln(rlen);
 
         while (Serial.available()) // clear buffer
         {
@@ -49,48 +49,48 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
         }
     }
 
-    info("I got: ");
-    info(inString);
+    infoMess("I got: ");
+    infoMess(inString);
 
-    temp1 = (byte)inString[0] - 48; // Read year first
-    temp2 = (byte)inString[1] - 48;
-    year = temp1 * 10 + temp2;
-    debug("Year: ");
-    debugln(year);
+    myString1 = (byte)inString[0] - 48; // Read year first
+    myString2 = (byte)inString[1] - 48;
+    year = myString1 * 10 + myString2;
+    debugMess("Year: ");
+    debugMessln(year);
 
-    temp1 = (byte)inString[2] - 48; // now month
-    temp2 = (byte)inString[3] - 48;
-    month = temp1 * 10 + temp2;
-    debug("Month: ");
-    debugln(month);
+    myString1 = (byte)inString[2] - 48; // now month
+    myString2 = (byte)inString[3] - 48;
+    month = myString1 * 10 + myString2;
+    debugMess("Month: ");
+    debugMessln(month);
 
-    temp1 = (byte)inString[4] - 48; // now date
-    temp2 = (byte)inString[5] - 48;
-    date = temp1 * 10 + temp2;
-    debug("Date: ");
-    debugln(date);
+    myString1 = (byte)inString[4] - 48; // now date
+    myString2 = (byte)inString[5] - 48;
+    date = myString1 * 10 + myString2;
+    debugMess("Date: ");
+    debugMessln(date);
 
     dOW = (byte)inString[6] - 48; // now Day of Week
-    debug("Dow: ");
-    debugln(dOW);
+    debugMess("Dow: ");
+    debugMessln(dOW);
 
-    temp1 = (byte)inString[7] - 48; // now hour
-    temp2 = (byte)inString[8] - 48;
-    hour = temp1 * 10 + temp2;
-    debug("Hour: ");
-    debugln(hour);
+    myString1 = (byte)inString[7] - 48; // now hour
+    myString2 = (byte)inString[8] - 48;
+    hour = myString1 * 10 + myString2;
+    debugMess("Hour: ");
+    debugMessln(hour);
 
-    temp1 = (byte)inString[9] - 48; // now minute
-    temp2 = (byte)inString[10] - 48;
-    minute = temp1 * 10 + temp2;
-    debug("Minute: ");
-    debugln(minute);
+    myString1 = (byte)inString[9] - 48; // now minute
+    myString2 = (byte)inString[10] - 48;
+    minute = myString1 * 10 + myString2;
+    debugMess("Minute: ");
+    debugMessln(minute);
 
-    temp1 = (byte)inString[11] - 48; // now second
-    temp2 = (byte)inString[12] - 48;
-    second = temp1 * 10 + temp2;
-    debug("Second: ");
-    debugln(second);
+    myString1 = (byte)inString[11] - 48; // now second
+    myString2 = (byte)inString[12] - 48;
+    second = myString1 * 10 + myString2;
+    debugMess("Second: ");
+    debugMessln(second);
 }
 
 void setTime()
@@ -101,7 +101,7 @@ void setTime()
     {
         // clockIsSet = false;
 
-        infoln("Preparing to set RTC...");
+        infoMessln("Preparing to set RTC...");
 
         getDateStuff(year, month, date, dOW, hour, minute, second);
 
@@ -136,8 +136,8 @@ void setTime()
         myDS3231.turnOnAlarm(2);
         */
 
-        debugln();
-        info("Time is set!");
+        debugMessln();
+        infoMess("Time is set!");
     }
 }
 
@@ -145,18 +145,18 @@ void adjustDate(int year, int month, int date, int hour, int min, int sec, int w
 {
     DateTime dt(year, month, date, hour, min, sec, weekday);
     rtc.setDateTime(dt); // Adjust date-time as defined 'dt' above
-    // Serial.println(rtc.now().getEpoch());//debug info
+    // Serial.println(rtc.now().getEpoch());//debugMess info
 }
 
 String padByte(String &s)
 {
-    String myString = s;
-    if (myString.length() < 2)
+    String myOtherString = s;
+    if (myOtherString.length() < 2)
     {
-        myString = "0" + myString;
+        myOtherString = "0" + myOtherString;
     }
 
-    return myString;
+    return myOtherString;
 }
 
 DateTime timeNow()
@@ -170,7 +170,7 @@ float tempNow()
     return rtc.getTemperature();
 }
 
-void RTCtest(DateTime &now)
+void RTCtest(DateTime now)
 {
 #if DEBUG
     Serial.print("----- RTC test: ");
@@ -233,18 +233,22 @@ String prettyNumbering(String &k)
 void prettyPrint(DateTime &now, float temperature)
 {
 #if INFO
-    String temp;
+    byte myByte; 
+    String myString;
 
-    temp = now.hour() + hourOffs;
-    Serial.print(padByte(temp));
+    myByte = now.hour() - hourOffs;
+    if (myByte < 10) {
+        Serial.print("0");
+    }
+    Serial.print(myByte);
+    Serial.print(":");
+/*
+    myString = now.minute();
+    Serial.print(padByte(myString));
     Serial.print(":");
 
-    temp = now.minute();
-    Serial.print(padByte(temp));
-    Serial.print(":");
-
-    temp = now.second();
-    Serial.print(padByte(temp));
+    myString = now.second();
+    Serial.print(padByte(myString));
     Serial.print(" ");
 
     Serial.print(dayName[now.dayOfWeek() - 1]);
@@ -253,16 +257,16 @@ void prettyPrint(DateTime &now, float temperature)
     Serial.print(monthName[now.month() - 1]);
     Serial.print(" ");
 
-    temp = now.date();
-    Serial.print(prettyNumbering(temp));
+    myString = now.date();
+    Serial.print(prettyNumbering(myString));
     Serial.print(" ");
 
-    temp = now.year();
-    Serial.println(padByte(temp));
+    myString = now.year();
+    Serial.println(padByte(myString));
 
-    debug("Temperature: ");
+    debugMess("Temperature: ");
     Serial.println(temperature);
-
-    debugln();
+*/
+    debugMessln();
 #endif
 }

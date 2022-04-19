@@ -39,7 +39,7 @@ void TestChart2()
   DrawTo(xsize - 1, y1);
   for (int i = 0; i <= 20; i = i + 4)
   {
-    debugln("Turning on display ...");
+    debugMessln("Turning on display ...");
     int mark = x1 + i * xinc;
     MoveTo(mark, y1);
     DrawTo(mark, y1 - 2);
@@ -109,7 +109,7 @@ void printTime(DateTime &now)
 
   String time = padByte(hourNow) + ":" + padByte(minuteNow);
   //String time = "1553";
-  debugln(time);
+  debugMessln(time);
   
   char buf[time.length() + 1];
   time.toCharArray(buf, time.length() + 1);
@@ -120,7 +120,7 @@ void printTime(DateTime &now)
   MoveTo(20, 20);
   PlotText(PSTR(time));
 
- debugln();
+ debugMessln();
 }
 
 void updateScreenTime(DateTime &now)
@@ -129,7 +129,7 @@ void updateScreenTime(DateTime &now)
 
   if (minuteNow != oldMinuteNow)
   {
-    debugln("Updating screen ...");
+    debugMessln("Updating screen ...");
     printTime(now);
     oldMinuteNow = minuteNow;
   }
