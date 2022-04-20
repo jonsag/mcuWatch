@@ -2,9 +2,11 @@
 /**********
  * Debug
  **********/
-#define DEBUG 0 // debugMess is off when 0
+#define DEBUG 1 // debugMess is off when 0
 #define INFO 1
-#define SCREENON 1
+
+#define SCREEN 1
+#define WEBSERVER 1
 
 #if DEBUG
 #define debugMess(x) Serial.print(x)
@@ -28,7 +30,7 @@ Function    Screen pin  Mini        Uno         Mega        ESP8266     ESP-01  
 -----       -----       -----       -----       -----       -----       -----       -----
 SCK         3           D13*)       D13*)       D52*)       D5/GPIO14*)             SCL, HSCLK, SPI Clock, Hardware SPI clk
 SDA         4           D11*)       D11*)       D51*)       D7/GPIO13*)             SPI Data, MOSI, HMOSI, data to screen
-RES         5           D5          D5          D5          D6/GPIO12               RST, NISO, HMISO, screen reset
+RES         5           D5          D5          D5          D6/GPIO12               RST, MISO, HMISO, screen reset
 DC          6           D4          D4          D4          D4/GPIO2                Register Select, labelled as DC in Adafruit code
 CS          7           D3          D3          D3          D3/GPIO0                Chip Select, defined as Slave Select in SPI
 
@@ -152,7 +154,7 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 /**********
  * TFT screen
  **********/
-#if SCREENON
+#if SCREEN
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
@@ -250,6 +252,25 @@ const char *dayName[7] = {
 long currentMillis;
 long lastCheckMillis;
 int checkInterval = 5000;
+
+/**********
+ * Web server
+ **********/
+#if WEBSERVER
+
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <ESP8266WebServer.h>
+#include <ESP8266mDNS.h>
+
+#include "secrets.h"
+
+const char *ssid = STASSID;
+const char *password = STAPSK;
+
+ESP8266WebServer server(80);
+
+#endif
 
 /**********
  * Rotary encoder
