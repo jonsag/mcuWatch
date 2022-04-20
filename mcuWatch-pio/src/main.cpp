@@ -65,9 +65,12 @@ void setup()
 
   debugMessln("Getting time...");
   now = timeNow();
+
   debugMessln("Getting temperature...");
   temperature = tempNow();
+
   prettyPrint(now, temperature);
+  oldEpoch = now;
 
 #if SCREENON
   updateScreen(now, temperature);
@@ -110,10 +113,10 @@ void loop()
   }
 #else
   getData();
-  if (now.getEpoch() != oldNow.getEpoch())
+  if (now.getEpoch() != oldEpoch.getEpoch())
   {
     update();
-    oldNow = now;
+    oldEpoch = now;
   }
 #endif
 }

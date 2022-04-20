@@ -24,11 +24,9 @@ void getDateStuff(byte &year, byte &month, byte &date, byte &dOW,
             rlen = rxlen;
         }
 
-        // read the incoming bytes:
-        rlen = Serial.readBytesUntil('x', buf, BUFFER_SIZE);
+        rlen = Serial.readBytesUntil('x', buf, BUFFER_SIZE); // read the incoming bytes
 
-        // prints the received data
-        debugMess("I received: ");
+        debugMess("I received: "); // prints the received data
         for (int i = 0; i < rlen; i++)
         {
             if (i != 0)
@@ -99,8 +97,6 @@ void setTime()
     // a time correction so set the clock accordingly.
     if (Serial.available())
     {
-        // clockIsSet = false;
-
         infoMessln("Preparing to set RTC...");
 
         getDateStuff(year, month, date, dOW, hour, minute, second);
@@ -108,33 +104,6 @@ void setTime()
         //          year, month, date, hour, min, sec and week-day
         DateTime dt(year, month, date, hour, minute, second, dOW);
         rtc.setDateTime(dt);
-
-        /*
-                myDS3231.setClockMode(false); // set to 24h
-                // setClockMode(true); // set to 12h
-
-                myDS3231.setYear(year);
-                myDS3231.setMonth(month);
-                myDS3231.setDate(date);
-                myDS3231.setDoW(dOW);
-                myDS3231.setHour(hour);
-                myDS3231.setMinute(minute);
-                myDS3231.setSecond(second);
-        */
-
-        /*
-        // Test of alarm functions
-        // set A1 to one minute past the time we just set the clock
-        // on current day of week.
-        myDS3231.setA1Time(dOW, hour, minute + 1, second, 0x0, true,
-                        false, false);
-        // set A2 to two minutes past, on current day of month.
-        myDS3231.setA2Time(date, hour, minute + 2, 0x0, false, false,
-                        false);
-        // Turn on both alarms, with external interrupt
-        myDS3231.turnOnAlarm(1);
-        myDS3231.turnOnAlarm(2);
-        */
 
         debugMessln();
         infoMess("Time is set!");
@@ -144,8 +113,7 @@ void setTime()
 void adjustDate(int year, int month, int date, int hour, int min, int sec, int weekday)
 {
     DateTime dt(year, month, date, hour, min, sec, weekday);
-    rtc.setDateTime(dt); // Adjust date-time as defined 'dt' above
-    // Serial.println(rtc.now().getEpoch());//debugMess info
+    rtc.setDateTime(dt); // adjust date-time as defined 'dt' above
 }
 
 DateTime timeNow()
@@ -213,20 +181,12 @@ String padByte(byte b)
 
 String prettyNumbering(byte b)
 {
-    /*
-    String k = "";
-
-    k.concat(b);
-    char last = k.charAt(k.length() - 1);
-    int l = (int)(last - '0');
-*/
     if (b > 3 && b < 21)
     {
         return "th";
     }
     else
     {
-
         while (b > 9)
         {
             b = b - 10;

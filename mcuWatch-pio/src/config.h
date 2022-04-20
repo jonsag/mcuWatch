@@ -38,6 +38,7 @@ Function    RTC         Screen      Uno, Mini   Mega        ESP8266     ESP-01
 Address     0x68        0x3C
 SDA         2                       A4*)         20*)      D2/GPIO4*)  3/GPIO2*)
 SCL         3                       A5*)         21*)      D1/GPIO5*)  5/GPIO0*)
+  oldNow = now;
 
 Rotary encoder
 Function                Arduino 168 Arduino 328 ESP8266     ESP-01
@@ -61,7 +62,7 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
  * Pins
  **********/
 
-#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E)
+#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) // nodeMCU LoLin v3
 #define rtcSDA D2
 #define rtcSCL D1
 
@@ -78,7 +79,7 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 
 #define buz D8 // GPIO2
 
-#elif defined(ARDUINO_ESP32_DEV)
+#elif defined(ARDUINO_ESP32_DEV) // esp32
 #define rtcSDA D2
 #define rtcSCL D1
 
@@ -95,7 +96,7 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 
 #define buz D8 // GPIO2
 
-#elif defined(ARDUINO_AVR_PRO)
+#elif defined(ARDUINO_AVR_PRO) // arduino Pro & Pro Mini
 #define rtcSDA A4
 #define rtcSCL A5
 
@@ -108,11 +109,11 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 
 #define rotCLK 9
 #define rotDT 8
-#define rotSW 7ST77XX_RED
+#define rotSW 7
 
 #define buz 6
 
-#elif defined(ARDUINO_AVR_UNO)
+#elif defined(ARDUINO_AVR_UNO) // arduino Uno
 #define rtcSDA A4
 #define rtcSCL A5
 
@@ -129,7 +130,7 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 
 #define buz 9
 
-#elif defined(ARDUINO_AVR_MEGA2560)
+#elif defined(ARDUINO_AVR_MEGA2560) // arduino Mega 2560
 #define rtcSDA 20
 #define rtcSCL 21
 
@@ -158,7 +159,6 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #include <SPI.h>
 
 Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
-// Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftSDA, tftSCK, tftRES);
 
 // colours
 #define bgCol ST77XX_BLACK
@@ -204,7 +204,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
  * RTC
  **********/
 /*
-RTC from above
+RTC module from above
 ------------
 | 5 GND     |
 | 4 NC      |
@@ -214,7 +214,6 @@ RTC from above
 ------------
 */
 
-//#include <DS3231.h>
 #include <Sodaq_DS3231.h>
 #include <Wire.h>
 
@@ -222,6 +221,7 @@ const int hourOffs = 0;
 
 DateTime now;
 DateTime oldNow;
+DateTime oldEpoch;
 
 float temperature;
 float oldTemp;
@@ -247,10 +247,6 @@ const char *monthName[12] = {
 const char *dayName[7] = {
     "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
-bool century = false;
-bool h12Flag;
-bool pmFlag;
-
 long currentMillis;
 long lastCheckMillis;
 int checkInterval = 5000;
@@ -267,5 +263,3 @@ int checkInterval = 5000;
  * Misc
  **********/
 const int serialTimeout = 10000;
-
-float pi = 3.1415926;

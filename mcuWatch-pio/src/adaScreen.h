@@ -105,8 +105,8 @@ void printDate(DateTime &now)
   myString.concat(prettyNumbering(now.date()));
   myString.concat(" ");
   myString.concat(now.year());
-  
-      infoMessln((myString));
+
+  infoMessln((myString));
 
   fillRectangle(tft.width() / 2 - (myString.length() + 1) / 2.0 * pixX * dateSize, // x
                 tft.height() / 8 * dateYPos,                                       // y
@@ -128,7 +128,6 @@ void printTemp(float temperature)
 
   infoMess("+++++ Writing new temperature: ");
 
-  // myString2 = String(temperature, 1);
   dtostrf(temperature, 4, 1, myString1);
   myString2 = String(myString1);
 
@@ -189,29 +188,22 @@ void printTemp(float temperature)
 
 void updateScreen(DateTime &now, float temperature)
 {
-  //String myString1, myString2;
-
-  //myString1 = now.date();
-  //myString2 = oldNow.date();
   if (now.date() != oldNow.date())
   {
     debugMessln("----- Updating screen, date ...");
     printDate(now);
   }
 
-  //myString1 = now.minute();
-  //myString2 = oldNow.minute();
   if (now.minute() != oldNow.minute())
   {
     debugMessln("----- Updating screen, time ...");
-    
     printTime(now);
+    oldNow = now;
   }
 
   if (temperature != oldTemp)
   {
     debugMessln("----- Updating screen, temperature ...");
-
     printTemp(temperature);
 
     oldTemp = temperature;
