@@ -5,6 +5,8 @@
 
 #if TFTSCREEN
 #include "tftScreen.h"
+#elif OLEDSCREEN
+#include "oledScreen.h"
 #endif
 
 #if WEBSERVER
@@ -58,6 +60,8 @@ void setup()
 
   // Clear the buffer
   display.clearDisplay();
+
+  testdrawstyles();
 #endif
 
 #if WEBSERVER

@@ -7,8 +7,6 @@
 #define DEBUG 0 // debugMess is off when 0
 #define INFO 0
 
-#define WEBSERVER 1
-
 #if DEBUG
 #define debugMess(x) Serial.print(x)
 #define debugMessln(x) Serial.println(x)
@@ -25,12 +23,16 @@
 #define infoMessln(x)
 #endif
 
-#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP32_DEV) || defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560)
+#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP32_DEV) || defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560)  || defined(ARDUINO_ESP32_DEV)
 #define TFTSCREEN 1
 #define BUZZER 1
 #elif defined(ARDUINO_ESP8266_ESP01)
 #define OLEDSCREEN 1
 #define BUZZER 0
+#endif
+
+#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP8266_ESP01) || defined(ARDUINO_ESP32_DEV)
+#define WEBSERVER 1
 #endif
 
 /*
