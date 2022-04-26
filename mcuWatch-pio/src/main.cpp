@@ -3,8 +3,8 @@
 #include "config.h"
 #include "RTCf.h"
 
-#if SCREEN
-#include "adaScreen.h"
+#if TFTSCREEN
+#include "tftScreen.h"
 #endif
 
 #if WEBSERVER
@@ -15,16 +15,18 @@
 
 void setup()
 {
+#if DEBUG || INFO
   Serial.begin(9600); // start the serial port
   Serial.setTimeout(serialTimeout);
 
   Serial.println();
   Serial.println("mcuWatch");
   Serial.println();
+#endif
 
   debugMessln("Starting wire ...");
-#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E)
-  Wire.begin(rtcSDA, rtcSCL);
+#if defined(ARDUINO_ESP8266_ESP01)
+  Wire.begin(i2cSDA, i2cSCK);
 #else
   Wire.begin();
 #endif
@@ -34,7 +36,7 @@ void setup()
   rtc.begin();
   debugMessln();
 
-#if SCREEN
+#if TFTSCREEN
   debugMessln("Initializing display ...");
   tft.initR(INITR_BLACKTAB);
   debugMessln("Initialized");
@@ -43,6 +45,19 @@ void setup()
   debugMess("x");
   debugMessln(tft.height());
   debugMessln();
+#elif OLEDSCREEN
+  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
+  {
+    debugMessln("SSD1306 allocation failed");
+    for (;;)
+      ; // Don't proceed, loop forever
+  }
+  debugMessln("Splash screen ...");
+  display.display();
+  delay(2000); // Pause for 2 seconds
+
+  // Clear the buffer
+  display.clearDisplay();
 #endif
 
 #if WEBSERVER
@@ -174,13 +189,13 @@ void setup()
   infoMessln("Example for input : 2004094090242x");
   infoMessln();
 
-#if SCREEN
+#if TFTSCREEN
   debugMessln("Clearing screen ...");
   clearScreen();
   debugMessln();
 #endif
 
-#if DEBUG && SCREEN
+#if DEBUG && TFTSCREEN
   Serial.println("Drawing help lines ...");
   Serial.println();
   helpLines();
@@ -196,7 +211,7 @@ void setup()
   prettyPrint(now, temperature);
   oldEpoch = now;
 
-#if SCREEN
+#if TFTSCREEN
   updateScreen(now, temperature);
 #endif
 }
@@ -209,7 +224,7 @@ void update()
 
   prettyPrint(now, temperature);
 
-#if SCREEN
+#if TFTSCREEN
   updateScreen(now, temperature);
 #endif
 }

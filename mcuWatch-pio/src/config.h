@@ -1,11 +1,12 @@
 
+#include <Wire.h>
+
 /**********
  * Debug
  **********/
-#define DEBUG 1 // debugMess is off when 0
-#define INFO 1
+#define DEBUG 0 // debugMess is off when 0
+#define INFO 0
 
-#define SCREEN 1
 #define WEBSERVER 1
 
 #if DEBUG
@@ -24,6 +25,14 @@
 #define infoMessln(x)
 #endif
 
+#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP32_DEV) || defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560)
+#define TFTSCREEN 1
+#define BUZZER 1
+#elif defined(ARDUINO_ESP8266_ESP01)
+#define OLEDSCREEN 1
+#define BUZZER 0
+#endif
+
 /*
 SPI (ST7735)
 Function    Screen pin  Mini        Uno         Mega        ESP8266     ESP-01      Comment
@@ -38,8 +47,8 @@ I2C (RTC and SSD1306)
 Function    RTC         Screen      Uno, Mini   Mega        ESP8266     ESP-01
 -----       -----       -----       -----       -----       -----       -----
 Address     0x68        0x3C
-SDA         2                       A4*)         20*)      D2/GPIO4*)  3/GPIO2*)
-SCL         3                       A5*)         21*)      D1/GPIO5*)  5/GPIO0*)
+SDA         2                       A4*)         20*)      D2/GPIO4*)  3/GPIO2
+SCL         3                       A5*)         21*)      D1/GPIO5*)  5/GPIO0
   oldNow = now;
 
 Rotary encoder
@@ -65,8 +74,8 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
  **********/
 
 #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) // nodeMCU LoLin v3
-#define rtcSDA D2
-#define rtcSCL D1
+//#define i2cSDA D2
+//#define i2cSCK D1
 
 #define tftSCK D5
 #define tftSDA D7
@@ -82,8 +91,8 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #define buz D8 // GPIO2
 
 #elif defined(ARDUINO_ESP32_DEV) // esp32
-#define rtcSDA D2
-#define rtcSCL D1
+//#define i2cSDA D2
+//#define i2cSCK D1
 
 #define tftSCK D5
 #define tftSDA D7
@@ -99,8 +108,8 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #define buz D8 // GPIO2
 
 #elif defined(ARDUINO_AVR_PRO) // arduino Pro & Pro Mini
-#define rtcSDA A4
-#define rtcSCL A5
+//#define i2cSDA A4
+//#define i2cSCK A5
 
 #define tftSCK 13
 #define tftSDA 11
@@ -116,8 +125,8 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #define buz 6
 
 #elif defined(ARDUINO_AVR_UNO) // arduino Uno
-#define rtcSDA A4
-#define rtcSCL A5
+//#define i2cSDA A4
+//#define i2cSCK A5
 
 #define tftSCK 13
 #define tftSDA 11
@@ -133,8 +142,8 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #define buz 9
 
 #elif defined(ARDUINO_AVR_MEGA2560) // arduino Mega 2560
-#define rtcSDA 20
-#define rtcSCL 21
+//#define i2cSDA 20
+//#define i2cSCK 21
 
 #define tftSCK 52
 #define tftSDA 51
@@ -149,16 +158,19 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 
 #define buz 9
 
+#elif defined(ARDUINO_ESP8266_ESP01)
+#define i2cSDA 2
+#define i2cSCK 0
+
 #endif
 
 /**********
  * TFT screen
  **********/
-#if SCREEN
+#if TFTSCREEN
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
-#include <SPI.h>
 
 Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 
@@ -200,6 +212,19 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define pixX 6
 #define pixY 8
 
+#elif OLEDSCREEN
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128    // OLED display width, in pixels
+#define SCREEN_HEIGHT 64    // OLED display height, in pixels
+
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+#define OLED_RESET -1       // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
 #endif
 
 /**********
@@ -217,7 +242,6 @@ RTC module from above
 */
 
 #include <Sodaq_DS3231.h>
-#include <Wire.h>
 
 const int hourOffs = 0;
 
