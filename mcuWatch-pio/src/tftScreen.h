@@ -7,7 +7,8 @@ void clearScreen()
 void helpLines()
 {
 #if DEBUG
-  for (int i = tft.height() / 4; i < tft.height(); i += tft.height() / 4)
+  debugMessln("Drawing horizontal lines ...");
+  for (int i = tft.height() / YSplits; i < tft.height(); i += tft.height() / YSplits) // horizontal lines
   {
     Serial.print("0, ");
     Serial.print(i);
@@ -19,7 +20,8 @@ void helpLines()
     tft.drawLine(0, i, tft.width() - 1, i, colGre);
   }
 
-  for (int i = tft.width() / 4; i < tft.width(); i += tft.width() / 4)
+  debugMessln("Drawing vertical lines ...");
+  for (int i = tft.width() / XSplits; i < tft.width(); i += tft.width() / XSplits) // vertical lines
   {
     Serial.print(i);
     Serial.print(", 0 -> ");
@@ -78,13 +80,13 @@ void printTime(DateTime &now)
 
   infoMessln(myString);
 
-  fillRectangle(tft.width() / 2 - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
+  fillRectangle(tft.width() / XSplits * timeNowXPos - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
                 tft.height() / 8 * timeNowYPos,                                          // y
                 myString.length() * pixX * timeSize,                                     // width
                 pixY * timeSize,                                                         // height
                 bgCol);                                                                  // colour
 
-  drawText(tft.width() / 2 - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
+  drawText(tft.width() / XSplits * timeNowXPos - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
            tft.height() / 8 * timeNowYPos,                                          // y
            timeSize,                                                                // size
            timeCol,                                                                 // colour
@@ -108,14 +110,14 @@ void printDate(DateTime &now)
 
   infoMessln((myString));
 
-  fillRectangle(tft.width() / 2 - (myString.length() + 1) / 2.0 * pixX * dateSize, // x
-                tft.height() / 8 * dateYPos,                                       // y
+  fillRectangle(tft.width() / XSplits * dateXPos - (myString.length() + 1) / 2.0 * pixX * dateSize, // x
+                tft.height() / YSplits * dateYPos,                                       // y
                 (myString.length() + 1) * pixX * dateSize,                         // width
                 pixY * dateSize,                                                   // height
                 bgCol);                                                            // colour
 
-  drawText(tft.width() / 2 - myString.length() / 2.0 * pixX * dateSize, // x
-           tft.height() / 8 * dateYPos,                                 // y
+  drawText(tft.width() / XSplits * dateXPos - myString.length() / 2.0 * pixX * dateSize, // x
+           tft.height() / YSplits * dateYPos,                                 // y
            dateSize,                                                    // size
            dateCol,                                                     // colour
            myString);                                                   // text
@@ -133,14 +135,14 @@ void printTemp(float temperature)
 
   infoMessln(myString2);
 
-  fillRectangle(tft.width() / 2 - (myString2.length() + 1) / 2.0 * pixX * tempNowSize, // x
-                tft.height() / 8 * tempNowYPos,                                        // y
+  fillRectangle(tft.width() / XSplits * tempNowXPos - (myString2.length() + 1) / 2.0 * pixX * tempNowSize, // x
+                tft.height() / YSplits * tempNowYPos,                                        // y
                 (myString2.length() + 1) * pixX * tempNowSize,                         // width
                 pixY * tempNowSize,                                                    // height
                 bgCol);                                                                // colour
 
-  drawText(tft.width() / 2 - myString2.length() / 2.0 * pixX * tempNowSize, // x
-           tft.height() / 8 * tempNowYPos,                                  // y
+  drawText(tft.width() / XSplits * tempNowXPos - myString2.length() / 2.0 * pixX * tempNowSize, // x
+           tft.height() / YSplits * tempNowYPos,                                  // y
            tempNowSize,                                                     // size
            tempCol,                                                         // colour
            myString2);                                                      // text
@@ -149,14 +151,14 @@ void printTemp(float temperature)
   {
     infoMessln("+++++ New max temperature");
 
-    fillRectangle(tft.width() / 4 * 3 - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
-                  tft.height() / 8 * tempMinMaxYPos,                                      // y
+    fillRectangle(tft.width() / XSplits * tempMaxXpos - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
+                  tft.height() / YSplits * tempMaxYPos,                                      // y
                   (myString2.length() + 1) * pixX * tempSize,                             // width
                   pixY * tempSize,                                                        // height
                   bgCol);                                                                 // colour
 
-    drawText(tft.width() / 4 * 3 - myString2.length() / 2.0 * pixX * tempSize, // x
-             tft.height() / 8 * tempMinMaxYPos,                                // y
+    drawText(tft.width() / XSplits * tempMaxXpos - myString2.length() / 2.0 * pixX * tempSize, // x
+             tft.height() / YSplits * tempMaxYPos,                                // y
              tempSize,                                                         // size
              maxTempCol,                                                       // colour
              myString2);                                                       // text
@@ -169,14 +171,14 @@ void printTemp(float temperature)
   {
     infoMessln("+++++ New min temperature");
 
-    fillRectangle(tft.width() / 4 - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
-                  tft.height() / 8 * tempMinMaxYPos,                                  // y
+    fillRectangle(tft.width() / XSplits * tempMinXpos - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
+                  tft.height() / YSplits * tempMinYPos,                                  // y
                   (myString2.length() + 1) * pixX * tempSize,                         // width
                   pixY * tempSize,                                                    // height
                   bgCol);                                                             // colour
 
-    drawText(tft.width() / 4 - myString2.length() / 2.0 * pixX * tempSize, // x
-             tft.height() / 8 * tempMinMaxYPos,                            // y
+    drawText(tft.width() / XSplits * tempMinXpos - myString2.length() / 2.0 * pixX * tempSize, // x
+             tft.height() / YSplits * tempMinYPos,                            // y
              tempSize,                                                     // size
              minTempCol,                                                   // colour
              myString2);                                                   // text

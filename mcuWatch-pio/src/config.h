@@ -4,7 +4,7 @@
 /**********
  * Debug
  **********/
-#define DEBUG 0 // debugMess is off when 0
+#define DEBUG 1 // debugMess is off when 0
 #define INFO 0
 
 #if DEBUG
@@ -23,7 +23,7 @@
 #define infoMessln(x)
 #endif
 
-#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP32_DEV) || defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560)  || defined(ARDUINO_ESP32_DEV)
+#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP32_DEV) || defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_ESP32_DEV)
 #define TFTSCREEN 1
 #define BUZZER 1
 #elif defined(ARDUINO_ESP8266_ESP01)
@@ -186,13 +186,15 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define maxTempCol ST77XX_RED
 #define minTempCol ST77XX_BLUE
 
-#define colBla ST77XX_BLACK
-#define colWhi ST77XX_WHITE
-#define colYel ST77XX_YELLOW
-#define colRed ST77XX_RED
-#define colGre ST77XX_GREEN
-#define colBlu ST77XX_BLUE
-#define colMag ST77XX_MAGENTA
+#define colBla ST77XX_BLACK   // 0x0000
+#define colWhi ST77XX_WHITE   // 0xFFFF
+#define colRed ST77XX_RED     // 0xF800
+#define colGre ST77XX_GREEN   // 0x07E0
+#define colBlu ST77XX_BLUE    // 0x001F
+#define colCya ST77XX_CYAN    // 0x07FF
+#define colMag ST77XX_MAGENTA // 0xF81F
+#define colYel ST77XX_YELLOW  // 0xFFE0
+#define colOra ST77XX_ORANGE  // 0xFC00
 
 // sizes
 #define timeSize 4
@@ -202,18 +204,34 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define tempSize 2
 
 // positions
-#define dateYPos 1
+#define XSplits 4 // split screen vertically, this is used below for positions
+#define YSplits 8 // split screen horizontally, this is used below for positions
+
+#define timeNowXPos 2
 #define timeNowYPos 2
+
+#define dateXPos 2
+#define dateYPos 1
+
+#define tempNowXPos 2
 #define tempNowYPos 4
-#define tempMinMaxYPos 6
+
+#define tempMaxXpos 3
+#define tempMaxYPos 6
+
+#define tempMinXpos 1
+#define tempMinYPos 6
 
 // compensations
 #define timeXOffs 2
 
-// font
+// font, how many pixels are the font built of
 #define pixX 6
 #define pixY 8
 
+/**********
+ * OLED screen
+ **********/
 #elif OLEDSCREEN
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
@@ -225,7 +243,44 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define OLED_RESET -1       // Reset pin # (or -1 if sharing Arduino reset pin)
 #define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+// colours, note: the screen is monochrome
+#define bgCol SSD1306_BLACK
+#define textCol SSD1306_WHITE
+
+// sizes
+#define timeSize 1
+#define dateSize 1
+
+#define tempNowSize 1
+#define tempSize 1
+
+// positions
+#define XSplits 4 // split screen vertically, this is used below for positions
+#define YSplits 4 // split screen horizontally, this is used below for positions
+
+#define timeNowXPos 2
+#define timeNowYPos 2
+
+#define dateXPos 2
+#define dateYPos 1
+
+#define tempNowXPos 2
+#define tempNowYPos 3
+
+#define tempMaxXpos 3
+#define tempMaxYPos 4
+
+#define tempMinXpos 1
+#define tempMinYPos 4
+
+// compensations
+#define timeXOffs 0
+
+// font, how many pixels are the font built of
+#define pixX 6
+#define pixY 8
 
 #endif
 

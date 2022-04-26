@@ -13,6 +13,7 @@
         "RAMWR",
         "RASET",
         "rxlen",
+        "SWITCHCAPVCC",
         "whhmmssx",
         "xinc",
         "xorigin",

@@ -47,19 +47,28 @@ void setup()
   debugMess("x");
   debugMessln(tft.height());
   debugMessln();
+
 #elif OLEDSCREEN
-  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
+debugMessln("Initializing display ...");
+  if (!oled.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
   {
     debugMessln("SSD1306 allocation failed");
     for (;;)
       ; // Don't proceed, loop forever
   }
-  debugMessln("Splash screen ...");
-  display.display();
-  delay(2000); // Pause for 2 seconds
+  debugMessln("Initialized");
+  debugMess("Screen size: ");
+  debugMess(oled.width());
+  debugMess("x");
+  debugMessln(oled.height());
+  debugMessln();
 
-  // Clear the buffer
-  display.clearDisplay();
+  debugMessln("Splash screen ...");
+  oled.display();
+  debugMessln();
+  delay(2000); // pause for 2 seconds
+
+  clearScreen(); // clear the buffer
 
   testdrawstyles();
 #endif
@@ -193,13 +202,13 @@ void setup()
   infoMessln("Example for input : 2004094090242x");
   infoMessln();
 
-#if TFTSCREEN
+#if TFTSCREEN || OLEDSCREEN
   debugMessln("Clearing screen ...");
   clearScreen();
   debugMessln();
 #endif
 
-#if DEBUG && TFTSCREEN
+#if DEBUG && (TFTSCREEN || OLEDSCREEN)
   Serial.println("Drawing help lines ...");
   Serial.println();
   helpLines();
