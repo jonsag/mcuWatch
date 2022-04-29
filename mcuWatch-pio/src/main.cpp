@@ -22,13 +22,16 @@ void setup()
   Serial.println();
   Serial.println("mcuWatch");
   Serial.println();
+
 #endif
 
   debugMessln("Starting wire ...");
 #if defined(ARDUINO_ESP8266_ESP01)
   Wire.begin(i2cSDA, i2cSCK);
+
 #else
   Wire.begin();
+
 #endif
   debugMessln();
 
@@ -67,6 +70,7 @@ void setup()
   delay(500); // pause for 2 seconds
 
   clearScreen(); // clear the buffer
+
 #endif
 
 #if WEBSERVER
@@ -151,9 +155,11 @@ void setup()
       // swallow the exact amount matching the full request+content,
       // hence the tcp connection cannot be handled anymore by the
       // webserver.
+
 #ifdef STREAMSEND_API
       // we are lucky
       client->sendAll(Serial, 500);
+
 #else
       auto last = millis();
       while ((millis() - last) < 500) {
@@ -165,6 +171,7 @@ void setup()
           last = millis();
         }
       }
+
 #endif
       // Two choices: return MUST STOP and webserver will close it
       //                       (we already have the example with '/fail' hook)
@@ -189,6 +196,7 @@ void setup()
   printIP();
   delay(2000);
   clearScreen();
+
 #endif
 
 #endif
@@ -209,6 +217,7 @@ void setup()
   debugMessln("Clearing screen ...");
   clearScreen();
   debugMessln();
+
 #endif
 
 #if DEBUG && (TFTSCREEN || OLEDSCREEN)
@@ -216,6 +225,7 @@ void setup()
   Serial.println();
   helpLines();
   debugMessln();
+
 #endif
 
   debugMessln("Getting time...");
@@ -229,6 +239,7 @@ void setup()
 
 #if TFTSCREEN || OLEDSCREEN
   updateScreen(now, temperature);
+
 #endif
 }
 
@@ -242,6 +253,7 @@ void update()
 
 #if TFTSCREEN || OLEDSCREEN
   updateScreen(now, temperature);
+
 #endif
 }
 
@@ -262,6 +274,7 @@ void loop()
 #if WEBSERVER
   server.handleClient();
   MDNS.update();
+
 #endif
 
 #if DEBUG
@@ -271,6 +284,7 @@ void loop()
     update();
     lastCheckMillis = currentMillis;
   }
+
 #else
   getData();
   if (now.getEpoch() != oldEpoch.getEpoch())
@@ -278,5 +292,6 @@ void loop()
     update();
     oldEpoch = now;
   }
+
 #endif
 }

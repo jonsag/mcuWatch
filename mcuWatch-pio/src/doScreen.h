@@ -6,6 +6,7 @@ void clearScreen()
 
 #elif TFTSCREEN
   myScreen.fillScreen(bgCol);
+
 #endif
 }
 
@@ -39,6 +40,7 @@ void helpLines()
 
 #if OLEDSCREEN
   myScreen.display(); // update screen with drawn lines
+
 #endif
 
 #endif
@@ -60,6 +62,7 @@ void fillRectangle(int16_t x, int16_t y, int16_t width, int16_t height, uint16_t
 
 #if OLEDSCREEN
   myScreen.display(); // update screen
+
 #endif
 }
 
@@ -84,6 +87,7 @@ void drawText(int16_t posX, int16_t posY, int16_t size, uint16_t color, String i
 
 #if OLEDSCREEN
   myScreen.display(); // update screen
+
 #endif
 }
 
@@ -99,6 +103,7 @@ void printIP()
 {
   String myString;
 
+#if WEBSERVER
   infoMess("+++++ Writing SSID and IP ...");
 
   myString = "Connected to:";
@@ -113,8 +118,15 @@ void printIP()
   myString = WiFi.localIP().toString();
   printStartMess(myString, 3);
 
+#else
+  myString = "No web server";
+  printStartMess(myString, 0);
+
+#endif
+
 #if OLEDSCREEN
   myScreen.display(); // update screen
+
 #endif
 }
 
@@ -149,6 +161,7 @@ void printDate(DateTime &now)
 
 #if OLEDSCREEN
   myScreen.display(); // update screen
+
 #endif
 }
 
@@ -177,6 +190,7 @@ void printTime(DateTime &now)
 
 #if OLEDSCREEN
   myScreen.display(); // update screen
+
 #endif
 }
 
@@ -246,6 +260,7 @@ void printTemp(float temperature)
 
 #if OLEDSCREEN
   myScreen.display(); // update screen
+
 #endif
 }
 

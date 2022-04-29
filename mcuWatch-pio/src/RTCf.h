@@ -142,6 +142,7 @@ void RTCtest(DateTime now)
     Serial.print(now.minute(), DEC);
     Serial.print(':');
     Serial.println(now.second(), DEC);
+
 #endif
 }
 
@@ -153,6 +154,7 @@ void printUNIXtime(DateTime &now)
     Serial.print("s, ");
     Serial.print(now.getEpoch() / 86400L);
     Serial.println("d");
+
 #endif
 }
 
@@ -162,6 +164,7 @@ void printTemp()
     rtc.convertTemperature();
     Serial.print(rtc.getTemperature()); // read registers and display the temperature
     Serial.println("deg C");
+
 #endif
 }
 
@@ -239,5 +242,6 @@ void prettyPrint(DateTime &now, float temperature)
     Serial.println(temperature);
 
     debugMessln();
+
 #endif
 }
