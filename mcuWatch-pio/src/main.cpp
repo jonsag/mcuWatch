@@ -35,10 +35,6 @@ void setup()
 #endif
   debugMessln();
 
-  debugMessln("Starting RTC ...");
-  rtc.begin();
-  debugMessln();
-
 #if TFTSCREEN
   debugMessln("Initializing display ...");
   myScreen.initR(INITR_BLACKTAB);
@@ -72,6 +68,10 @@ void setup()
   clearScreen(); // clear the buffer
 
 #endif
+
+  debugMessln("Starting RTC ...");
+  rtc.begin();
+  debugMessln();
 
 #if WEBSERVER
   debugMessln("Starting and connecting wifi ...");
