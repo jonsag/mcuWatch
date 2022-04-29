@@ -1,7 +1,12 @@
 
 void clearScreen()
 {
+#if OLEDSCREEN
+  myScreen.clearDisplay();
+
+#elif TFTSCREEN
   myScreen.fillScreen(bgCol);
+#endif
 }
 
 void helpLines()
@@ -31,6 +36,11 @@ void helpLines()
 
     myScreen.drawLine(i, 0, i, myScreen.height() - 1, helpLineCol);
   }
+
+#if OLEDSCREEN
+  myScreen.display(); // update screen with drawn lines
+#endif
+
 #endif
 }
 
@@ -47,6 +57,10 @@ void fillRectangle(int16_t x, int16_t y, int16_t width, int16_t height, uint16_t
   debugMess("\tcolour: ");
   debugMessln(color);
   myScreen.fillRect(x, y, width, height, color);
+
+#if OLEDSCREEN
+  myScreen.display(); // update screen
+#endif
 }
 
 void drawText(int16_t posX, int16_t posY, int16_t size, uint16_t color, String inText)
@@ -67,7 +81,12 @@ void drawText(int16_t posX, int16_t posY, int16_t size, uint16_t color, String i
   myScreen.setTextColor(color);
   myScreen.setTextWrap(true);
   myScreen.print(inText);
+
+#if OLEDSCREEN
+  myScreen.display(); // update screen
+#endif
 }
+
 void printDate(DateTime &now)
 {
   String myString;
@@ -96,6 +115,10 @@ void printDate(DateTime &now)
            dateSize,                                                                          // size
            dateCol,                                                                           // colour
            myString);                                                                         // text
+
+#if OLEDSCREEN
+  myScreen.display(); // update screen
+#endif
 }
 
 void printTime(DateTime &now)
@@ -110,16 +133,20 @@ void printTime(DateTime &now)
   infoMessln(myString);
 
   fillRectangle(myScreen.width() / XSplits * timeNowXPos - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
-                myScreen.height() / 8 * timeNowYPos,                                                              // y
+                myScreen.height() / YSplits * timeNowYPos,                                                        // y
                 myString.length() * pixX * timeSize,                                                              // width
                 pixY * timeSize,                                                                                  // height
                 bgCol);                                                                                           // colour
 
   drawText(myScreen.width() / XSplits * timeNowXPos - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
-           myScreen.height() / 8 * timeNowYPos,                                                              // y
+           myScreen.height() / YSplits * timeNowYPos,                                                        // y
            timeSize,                                                                                         // size
            timeCol,                                                                                          // colour
            myString);                                                                                        // text
+
+#if OLEDSCREEN
+  myScreen.display(); // update screen
+#endif
 }
 
 void printTemp(float temperature)
@@ -185,6 +212,10 @@ void printTemp(float temperature)
     minTemp = temperature;
     // minTempNow = now;
   }
+
+#if OLEDSCREEN
+  myScreen.display(); // update screen
+#endif
 }
 
 void updateScreen(DateTime &now, float temperature)

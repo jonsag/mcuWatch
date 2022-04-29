@@ -10,6 +10,7 @@
 #if DEBUG
 #define debugMess(x) Serial.print(x)
 #define debugMessln(x) Serial.println(x)
+
 #else
 #define debugMess(x)
 #define debugMessln(x)
@@ -26,6 +27,7 @@
 #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP32_DEV) || defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_ESP32_DEV)
 #define TFTSCREEN 1
 #define BUZZER 1
+
 #elif defined(ARDUINO_ESP8266_ESP01)
 #define OLEDSCREEN 1
 #define BUZZER 0

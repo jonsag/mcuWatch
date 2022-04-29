@@ -3,10 +3,8 @@
 #include "config.h"
 #include "RTCf.h"
 
-#if TFTSCREEN
-#include "tftScreen.h"
-#elif OLEDSCREEN
-#include "oledScreen.h"
+#if TFTSCREEN || OLEDSCREEN
+#include "doScreen.h"
 #endif
 
 #if WEBSERVER
@@ -235,7 +233,7 @@ void update()
 
   prettyPrint(now, temperature);
 
-#if TFTSCREEN || OLDESCREEN
+#if TFTSCREEN || OLEDSCREEN
   updateScreen(now, temperature);
 #endif
 }
