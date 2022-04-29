@@ -47,7 +47,7 @@ void setup()
   debugMessln();
 
 #elif OLEDSCREEN
-debugMessln("Initializing display ...");
+  debugMessln("Initializing display ...");
   if (!myScreen.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
   {
     debugMessln("SSD1306 allocation failed");
@@ -184,6 +184,13 @@ debugMessln("Initializing display ...");
   server.begin();
   Serial.println("HTTP server started");
   debugMessln();
+
+#if TFTSCREEN || OLEDSCREEN
+  printIP();
+  delay(2000);
+  clearScreen();
+#endif
+
 #endif
 
   infoMessln("Set time with YYMMDDwhhmmssx, ");

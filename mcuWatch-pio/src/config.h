@@ -181,6 +181,8 @@ Adafruit_ST7735 myScreen = Adafruit_ST7735(tftCS, tftDC, tftRES);
 // colours
 #define bgCol ST77XX_BLACK
 
+#define startCol ST77XX_WHITE
+
 #define timeCol ST77XX_GREEN
 #define dateCol ST77XX_YELLOW
 
@@ -203,6 +205,8 @@ Adafruit_ST7735 myScreen = Adafruit_ST7735(tftCS, tftDC, tftRES);
 */
 
 // sizes
+#define startSize 2
+
 #define timeSize 4
 #define dateSize 1
 
@@ -254,6 +258,8 @@ Adafruit_SSD1306 myScreen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // colours, note: the screen is monochrome
 #define bgCol SSD1306_BLACK
 
+#define startCol SSD1306_WHITE
+
 #define timeCol SSD1306_WHITE
 #define dateCol SSD1306_WHITE
 
@@ -264,6 +270,8 @@ Adafruit_SSD1306 myScreen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define helpLineCol SSD1306_WHITE
 
 // sizes
+#define startSize 1
+
 #define timeSize 1
 #define dateSize 1
 

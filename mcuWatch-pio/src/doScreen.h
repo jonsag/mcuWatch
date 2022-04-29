@@ -87,6 +87,37 @@ void drawText(int16_t posX, int16_t posY, int16_t size, uint16_t color, String i
 #endif
 }
 
+void printStartMess(String inText, int YPos)
+{
+  drawText(myScreen.width() / 2 - inText.length() / 2.0 * pixX * startSize, // x
+           myScreen.height() / YSplits * YPos,                                // y
+           dateSize,                                                          // size
+           startCol,                                                          // colour
+           inText);
+}
+void printIP()
+{
+  String myString;
+
+  infoMess("+++++ Writing SSID and IP ...");
+
+  myString = "Connected to:";
+  printStartMess(myString, 0);
+
+  myString = ssid;
+  printStartMess(myString, 1);
+
+  myString = "IP:";
+  printStartMess(myString, 2);
+
+  myString = WiFi.localIP().toString();
+  printStartMess(myString, 3);
+
+#if OLEDSCREEN
+  myScreen.display(); // update screen
+#endif
+}
+
 void printDate(DateTime &now)
 {
   String myString;
