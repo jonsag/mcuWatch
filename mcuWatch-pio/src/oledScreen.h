@@ -1,38 +1,38 @@
 
 void clearScreen()
 {
-  oled.clearDisplay();
+  myScreen.clearDisplay();
 }
 
 void helpLines()
 {
 #if DEBUG
   debugMessln("Drawing horizontal lines ...");
-  for (int i = oled.height() / 4; i < oled.height(); i += oled.height() / 4) // horizontal lines
+  for (int i = myScreen.height() / 4; i < myScreen.height(); i += myScreen.height() / 4) // horizontal lines
   {
     Serial.print("0, ");
     Serial.print(i);
     Serial.print(" -> ");
-    Serial.print(oled.width() - 1);
+    Serial.print(myScreen.width() - 1);
     Serial.print(", ");
     Serial.println(i);
 
-    oled.drawLine(0, i, oled.width() - 1, i, textCol);
+    myScreen.drawLine(0, i, myScreen.width() - 1, i, helpLineCol);
   }
 
   debugMessln("Drawing vertical lines ...");
-  for (int i = oled.width() / 4; i < oled.width(); i += oled.width() / 4) // vertical lines
+  for (int i = myScreen.width() / 4; i < myScreen.width(); i += myScreen.width() / 4) // vertical lines
   {
     Serial.print(i);
     Serial.print(", 0 -> ");
     Serial.print(i);
     Serial.print(", ");
-    Serial.println(oled.height() - 1);
+    Serial.println(myScreen.height() - 1);
 
-    oled.drawLine(i, 0, i, oled.height() - 1, textCol);
+    myScreen.drawLine(i, 0, i, myScreen.height() - 1, helpLineCol);
   }
 
-  oled.display(); // update screen with drawn lines
+  myScreen.display(); // update screen with drawn lines
 #endif
 }
 
@@ -48,9 +48,9 @@ void fillRectangle(int16_t x, int16_t y, int16_t width, int16_t height, uint16_t
   debugMess(height);
   debugMess("\tcolour: ");
   debugMessln(color);
-  oled.fillRect(x, y, width, height, color);
+  myScreen.fillRect(x, y, width, height, color);
 
-  oled.display(); // update screen
+  myScreen.display(); // update screen
 }
 
 void drawText(int16_t posX, int16_t posY, int16_t size, uint16_t color, String inText)
@@ -66,39 +66,13 @@ void drawText(int16_t posX, int16_t posY, int16_t size, uint16_t color, String i
   debugMess("\ttext: ");
   debugMessln(inText);
 
-  oled.setCursor(posX, posY);
-  oled.setTextSize(size);
-  oled.setTextColor(color);
-  oled.setTextWrap(true);
-  oled.print(inText);
+  myScreen.setCursor(posX, posY);
+  myScreen.setTextSize(size);
+  myScreen.setTextColor(color);
+  myScreen.setTextWrap(true);
+  myScreen.print(inText);
 
-  oled.display(); // update screen
-}
-
-void printTime(DateTime &now)
-{
-  String myString;
-
-  infoMess("+++++ Writing new time: ");
-
-  myString = padByte((now.hour() + hourOffs)) + ":";
-  myString.concat(padByte(now.minute()));
-
-  infoMessln(myString);
-
-  fillRectangle(oled.width() / XSplits * timeNowXPos - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
-                oled.height() / 8 * timeNowYPos,                                                              // y
-                myString.length() * pixX * timeSize,                                                          // width
-                pixY * timeSize,                                                                              // height
-                bgCol);                                                                                       // colour
-
-  drawText(oled.width() / XSplits * timeNowXPos - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
-           oled.height() / 8 * timeNowYPos,                                                              // y
-           timeSize,                                                                                     // size
-           textCol,                                                                                      // colour
-           myString);                                                                                    // text
-
-  oled.display(); // update screen
+  myScreen.display(); // update screen
 }
 
 void printDate(DateTime &now)
@@ -118,19 +92,45 @@ void printDate(DateTime &now)
 
   infoMessln((myString));
 
-  fillRectangle(oled.width() / XSplits * dateXPos - (myString.length() + 1) / 2.0 * pixX * dateSize, // x
-                oled.height() / YSplits * dateYPos,                                                  // y
-                (myString.length() + 1) * pixX * dateSize,                                           // width
-                pixY * dateSize,                                                                     // height
-                bgCol);                                                                              // colour
+  fillRectangle(myScreen.width() / XSplits * dateXPos - (myString.length() + 1) / 2.0 * pixX * dateSize, // x
+                myScreen.height() / YSplits * dateYPos,                                                  // y
+                (myString.length() + 1) * pixX * dateSize,                                               // width
+                pixY * dateSize,                                                                         // height
+                bgCol);                                                                                  // colour
 
-  drawText(oled.width() / XSplits * dateXPos - myString.length() / 2.0 * pixX * dateSize, // x
-           oled.height() / YSplits * dateYPos,                                            // y
-           dateSize,                                                                      // size
-           textCol,                                                                       // colour
-           myString);                                                                     // text
+  drawText(myScreen.width() / XSplits * dateXPos - myString.length() / 2.0 * pixX * dateSize, // x
+           myScreen.height() / YSplits * dateYPos,                                            // y
+           dateSize,                                                                          // size
+           dateCol,                                                                           // colour
+           myString);                                                                         // text
 
-  oled.display(); // update screen
+  myScreen.display(); // update screen
+}
+
+void printTime(DateTime &now)
+{
+  String myString;
+
+  infoMess("+++++ Writing new time: ");
+
+  myString = padByte((now.hour() + hourOffs)) + ":";
+  myString.concat(padByte(now.minute()));
+
+  infoMessln(myString);
+
+  fillRectangle(myScreen.width() / XSplits * timeNowXPos - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
+                myScreen.height() / YSplits * timeNowYPos,                                                        // y
+                myString.length() * pixX * timeSize,                                                              // width
+                pixY * timeSize,                                                                                  // height
+                bgCol);                                                                                           // colour
+
+  drawText(myScreen.width() / XSplits * timeNowXPos - myString.length() / 2.0 * pixX * timeSize + timeXOffs, // x
+           myScreen.height() / YSplits * timeNowYPos,                                                        // y
+           timeSize,                                                                                         // size
+           timeCol,                                                                                          // colour
+           myString);                                                                                        // text
+
+  myScreen.display(); // update screen
 }
 
 void printTemp(float temperature)
@@ -145,33 +145,33 @@ void printTemp(float temperature)
 
   infoMessln(myString2);
 
-  fillRectangle(oled.width() / XSplits * tempNowXPos - (myString2.length() + 1) / 2.0 * pixX * tempNowSize, // x
-                oled.height() / YSplits * tempNowYPos,                                                      // y
-                (myString2.length() + 1) * pixX * tempNowSize,                                              // width
-                pixY * tempNowSize,                                                                         // height
-                bgCol);                                                                                     // colour
+  fillRectangle(myScreen.width() / XSplits * tempNowXPos - (myString2.length() + 1) / 2.0 * pixX * tempNowSize, // x
+                myScreen.height() / YSplits * tempNowYPos,                                                      // y
+                (myString2.length() + 1) * pixX * tempNowSize,                                                  // width
+                pixY * tempNowSize,                                                                             // height
+                bgCol);                                                                                         // colour
 
-  drawText(oled.width() / XSplits * tempNowXPos - myString2.length() / 2.0 * pixX * tempNowSize, // x
-           oled.height() / YSplits * tempNowYPos,                                                // y
-           tempNowSize,                                                                          // size
-           textCol,                                                                              // colour
-           myString2);                                                                           // text
+  drawText(myScreen.width() / XSplits * tempNowXPos - myString2.length() / 2.0 * pixX * tempNowSize, // x
+           myScreen.height() / YSplits * tempNowYPos,                                                // y
+           tempNowSize,                                                                              // size
+           tempCol,                                                                                  // colour
+           myString2);                                                                               // text
 
   if (temperature > maxTemp)
   {
     infoMessln("+++++ New max temperature");
 
-    fillRectangle(oled.width() / XSplits * tempMaxXpos - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
-                  oled.height() / YSplits * tempMaxYPos,                                                   // y
-                  (myString2.length() + 1) * pixX * tempSize,                                              // width
-                  pixY * tempSize,                                                                         // height
-                  bgCol);                                                                                  // colour
+    fillRectangle(myScreen.width() / XSplits * tempMaxXpos - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
+                  myScreen.height() / YSplits * tempMaxYPos,                                                   // y
+                  (myString2.length() + 1) * pixX * tempSize,                                                  // width
+                  pixY * tempSize,                                                                             // height
+                  bgCol);                                                                                      // colour
 
-    drawText(oled.width() / XSplits * tempMaxXpos - myString2.length() / 2.0 * pixX * tempSize, // x
-             oled.height() / YSplits * tempMaxYPos,                                             // y
-             tempSize,                                                                          // size
-             textCol,                                                                           // colour
-             myString2);                                                                        // text
+    drawText(myScreen.width() / XSplits * tempMaxXpos - myString2.length() / 2.0 * pixX * tempSize, // x
+             myScreen.height() / YSplits * tempMaxYPos,                                             // y
+             tempSize,                                                                              // size
+             maxTempCol,                                                                            // colour
+             myString2);                                                                            // text
 
     maxTemp = temperature;
     // maxTempNow = now;
@@ -181,23 +181,23 @@ void printTemp(float temperature)
   {
     infoMessln("+++++ New min temperature");
 
-    fillRectangle(oled.width() / XSplits * tempMinXpos - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
-                  oled.height() / YSplits * tempMinYPos,                                                   // y
-                  (myString2.length() + 1) * pixX * tempSize,                                              // width
-                  pixY * tempSize,                                                                         // height
-                  bgCol);                                                                                  // colour
+    fillRectangle(myScreen.width() / XSplits * tempMinXpos - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
+                  myScreen.height() / YSplits * tempMinYPos,                                                   // y
+                  (myString2.length() + 1) * pixX * tempSize,                                                  // width
+                  pixY * tempSize,                                                                             // height
+                  bgCol);                                                                                      // colour
 
-    drawText(oled.width() / XSplits * tempMinXpos - myString2.length() / 2.0 * pixX * tempSize, // x
-             oled.height() / YSplits * tempMinYPos,                                             // y
-             tempSize,                                                                          // size
-             textCol,                                                                           // colour
-             myString2);                                                                        // text
+    drawText(myScreen.width() / XSplits * tempMinXpos - myString2.length() / 2.0 * pixX * tempSize, // x
+             myScreen.height() / YSplits * tempMinYPos,                                             // y
+             tempSize,                                                                              // size
+             minTempCol,                                                                            // colour
+             myString2);                                                                            // text
 
     minTemp = temperature;
     // minTempNow = now;
   }
 
-  oled.display(); // update screen
+  myScreen.display(); // update screen
 }
 
 void updateScreen(DateTime &now, float temperature)
@@ -224,25 +224,4 @@ void updateScreen(DateTime &now, float temperature)
   }
 
   debugMessln();
-}
-
-void testdrawstyles(void)
-{
-  oled.clearDisplay();
-
-  oled.setTextSize(1);              // Normal 1:1 pixel scale
-  oled.setTextColor(SSD1306_WHITE); // Draw white text
-  oled.setCursor(0, 0);             // Start at top-left corner
-  oled.println(F("Hello, world!"));
-
-  oled.setTextColor(SSD1306_BLACK, SSD1306_WHITE); // Draw 'inverse' text
-  oled.println(3.141592);
-
-  oled.setTextSize(2); // Draw 2X-scale text
-  oled.setTextColor(SSD1306_WHITE);
-  oled.print(F("0x"));
-  oled.println(0xDEADBEEF, HEX);
-
-  oled.display();
-  delay(2000);
 }

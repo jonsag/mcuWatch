@@ -4,7 +4,7 @@
 /**********
  * Debug
  **********/
-#define DEBUG 1 // debugMess is off when 0
+#define DEBUG 0 // debugMess is off when 0
 #define INFO 0
 
 #if DEBUG
@@ -174,7 +174,7 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
 
-Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
+Adafruit_ST7735 myScreen = Adafruit_ST7735(tftCS, tftDC, tftRES);
 
 // colours
 #define bgCol ST77XX_BLACK
@@ -182,10 +182,13 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define timeCol ST77XX_GREEN
 #define dateCol ST77XX_YELLOW
 
-#define tempCol ST77XX_GREEN
+#define tempCol ST77XX_YELLOW
 #define maxTempCol ST77XX_RED
 #define minTempCol ST77XX_BLUE
 
+#define helpLineCol ST77XX_GREEN
+
+/*
 #define colBla ST77XX_BLACK   // 0x0000
 #define colWhi ST77XX_WHITE   // 0xFFFF
 #define colRed ST77XX_RED     // 0xF800
@@ -195,6 +198,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define colMag ST77XX_MAGENTA // 0xF81F
 #define colYel ST77XX_YELLOW  // 0xFFE0
 #define colOra ST77XX_ORANGE  // 0xFC00
+*/
 
 // sizes
 #define timeSize 4
@@ -207,11 +211,11 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define XSplits 4 // split screen vertically, this is used below for positions
 #define YSplits 8 // split screen horizontally, this is used below for positions
 
-#define timeNowXPos 2
-#define timeNowYPos 2
-
 #define dateXPos 2
 #define dateYPos 1
+
+#define timeNowXPos 2
+#define timeNowYPos 2
 
 #define tempNowXPos 2
 #define tempNowYPos 4
@@ -243,11 +247,19 @@ Adafruit_ST7735 tft = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define OLED_RESET -1       // Reset pin # (or -1 if sharing Arduino reset pin)
 #define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 
-Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+Adafruit_SSD1306 myScreen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // colours, note: the screen is monochrome
 #define bgCol SSD1306_BLACK
-#define textCol SSD1306_WHITE
+
+#define timeCol SSD1306_WHITE
+#define dateCol SSD1306_WHITE
+
+#define tempCol SSD1306_WHITE
+#define maxTempCol SSD1306_WHITE
+#define minTempCol SSD1306_WHITE
+
+#define helpLineCol SSD1306_WHITE
 
 // sizes
 #define timeSize 1
@@ -260,20 +272,20 @@ Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define XSplits 4 // split screen vertically, this is used below for positions
 #define YSplits 4 // split screen horizontally, this is used below for positions
 
-#define timeNowXPos 2
-#define timeNowYPos 2
-
 #define dateXPos 2
-#define dateYPos 1
+#define dateYPos 0
+
+#define timeNowXPos 2
+#define timeNowYPos 1
 
 #define tempNowXPos 2
-#define tempNowYPos 3
+#define tempNowYPos 2
 
 #define tempMaxXpos 3
-#define tempMaxYPos 4
+#define tempMaxYPos 3
 
 #define tempMinXpos 1
-#define tempMinYPos 4
+#define tempMinYPos 3
 
 // compensations
 #define timeXOffs 0

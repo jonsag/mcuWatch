@@ -40,17 +40,17 @@ void setup()
 
 #if TFTSCREEN
   debugMessln("Initializing display ...");
-  tft.initR(INITR_BLACKTAB);
+  myScreen.initR(INITR_BLACKTAB);
   debugMessln("Initialized");
   debugMess("Screen size: ");
-  debugMess(tft.width());
+  debugMess(myScreen.width());
   debugMess("x");
-  debugMessln(tft.height());
+  debugMessln(myScreen.height());
   debugMessln();
 
 #elif OLEDSCREEN
 debugMessln("Initializing display ...");
-  if (!oled.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
+  if (!myScreen.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
   {
     debugMessln("SSD1306 allocation failed");
     for (;;)
@@ -58,19 +58,17 @@ debugMessln("Initializing display ...");
   }
   debugMessln("Initialized");
   debugMess("Screen size: ");
-  debugMess(oled.width());
+  debugMess(myScreen.width());
   debugMess("x");
-  debugMessln(oled.height());
+  debugMessln(myScreen.height());
   debugMessln();
 
   debugMessln("Splash screen ...");
-  oled.display();
+  myScreen.display();
   debugMessln();
-  delay(2000); // pause for 2 seconds
+  delay(500); // pause for 2 seconds
 
   clearScreen(); // clear the buffer
-
-  testdrawstyles();
 #endif
 
 #if WEBSERVER
@@ -224,7 +222,7 @@ debugMessln("Initializing display ...");
   prettyPrint(now, temperature);
   oldEpoch = now;
 
-#if TFTSCREEN
+#if TFTSCREEN || OLEDSCREEN
   updateScreen(now, temperature);
 #endif
 }
@@ -237,7 +235,7 @@ void update()
 
   prettyPrint(now, temperature);
 
-#if TFTSCREEN
+#if TFTSCREEN || OLDESCREEN
   updateScreen(now, temperature);
 #endif
 }
