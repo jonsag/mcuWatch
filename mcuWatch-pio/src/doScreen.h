@@ -90,9 +90,9 @@ void drawText(int16_t posX, int16_t posY, int16_t size, uint16_t color, String i
 void printStartMess(String inText, int YPos)
 {
   drawText(myScreen.width() / 2 - inText.length() / 2.0 * pixX * startSize, // x
-           myScreen.height() / YSplits * YPos,                                // y
-           dateSize,                                                          // size
-           startCol,                                                          // colour
+           myScreen.height() / YSplits * YPos,                              // y
+           dateSize,                                                        // size
+           startCol,                                                        // colour
            inText);
 }
 void printIP()
