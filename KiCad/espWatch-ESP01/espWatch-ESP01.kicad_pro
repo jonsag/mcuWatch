@@ -346,7 +346,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "ardWatch-miniPro328.kicad_pro",
+    "filename": "espWatch-ESP01.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -379,7 +379,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "specctra_dsn": "espWatch.dsn",
+      "specctra_dsn": "espWatch-ESP01.dsn",
       "step": "",
       "vrml": ""
     },
