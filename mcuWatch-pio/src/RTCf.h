@@ -215,7 +215,7 @@ String prettyNumbering(byte b)
 
 void prettyPrint(DateTime &now, float temperature)
 {
-#if INFO
+#if INFO || DEBUG
     Serial.print(padByte((now.hour() + hourOffs)));
     Serial.print(":");
 
