@@ -4,11 +4,18 @@
 #include "RTCf.h"
 
 #if TFTSCREEN || OLEDSCREEN
-#include "doScreen.h"
+#include "screenDrawf.h"
+
 #endif
 
 #if WEBSERVER
 #include "webServer.h"
+
+#endif
+
+#if NTP
+#include "NTPf.h"
+
 #endif
 
 // Setup **********************************************
@@ -19,11 +26,11 @@ void setup()
   Serial.begin(9600); // start the serial port
   Serial.setTimeout(serialTimeout);
 
-  Serial.println();
-  Serial.println("mcuWatch");
-  Serial.println();
+  debugMessln();
+  debugMessln("mcuWatch");
+  debugMessln();
 
-#endif
+#endif // DEBUG || INFO
 
   debugMessln("Starting wire ...");
 #if defined(ARDUINO_ESP8266_ESP01)
@@ -32,7 +39,7 @@ void setup()
 #else
   Wire.begin();
 
-#endif
+#endif // defined(ARDUINO_ESP8266_ESP01)
   debugMessln();
 
 #if TFTSCREEN
@@ -67,30 +74,52 @@ void setup()
 
   clearScreen(); // clear the buffer
 
-#endif
+#endif // TFTSCREEN or OLEDSCREEN
 
   debugMessln("Starting RTC ...");
-  rtc.begin();
-  debugMessln();
-
-#if WEBSERVER
-  debugMessln("Starting and connecting wifi ...");
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-
-  while (WiFi.status() != WL_CONNECTED) // wait for connection
+  if (!rtc.begin())
   {
-    delay(500);
-    debugMess(".");
+    debugMessln("Couldn't find RTC");
+  }
+  else
+  {
+    debugMessln("RTC found");
   }
   debugMessln();
+
+#if TFTSCREEN || OLEDSCREEN
+  printIP();
+  delay(2000);
+  clearScreen();
+
+#endif // TFTSCREEN || OLEDSCREEN
+
+#if WEBSERVER || NTP
+  debugMessln("Starting and connecting wifi ...");
+
+  WiFi.persistent(false);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(STASSID, STAPSK);
+
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    debugMess(".");
+    delay(200);
+    static uint16_t counter = 0;
+    counter++;
+    if (counter % 30 == 0)
+      debugMessln();
+  }
 
   infoMess("Connected to ");
   infoMessln(ssid);
   infoMess("IP address: ");
   infoMessln(WiFi.localIP());
 
-  // debugMessln("Starting MDNS responder ...");
+#endif // WEBSERVER || NTP
+
+#if WEBSERVER
+  debugMessln("Starting MDNS responder ...");
   if (MDNS.begin("esp8266"))
   {
     debugMessln("MDNS responder started");
@@ -173,6 +202,7 @@ void setup()
       }
 
 #endif
+
       // Two choices: return MUST STOP and webserver will close it
       //                       (we already have the example with '/fail' hook)
       // or                  IS GIVEN and webserver will forget it
@@ -192,14 +222,30 @@ void setup()
   Serial.println("HTTP server started");
   debugMessln();
 
-#if TFTSCREEN || OLEDSCREEN
-  printIP();
-  delay(2000);
-  clearScreen();
+#endif // WEBSERVER
 
-#endif
+#if NTP
+  /*
+    debugMessln("NTP TZ DST - RTC Fallback");
 
-#endif
+    configTime(MY_TZ, MY_NTP_SERVER); // --> for the ESP8266 you only need this for Timezone and DST
+    settimeofday_cb(time_is_set);     // register callback if time was sent
+
+    if (time(nullptr) < 1600000000)
+    {
+      getRTC();
+    }
+  */
+  debugMessln("Initiating time client ...");
+
+  timeClient.begin();                   // initialize a NTP client to get time
+  timeClient.setTimeOffset(timeOffset); // set offset time
+
+  getNetworkTime();
+
+  debugMessln();
+
+#endif // NTP
 
   infoMessln("Set time with YYMMDDwhhmmssx, ");
   infoMessln("where YY = Year (ex. 20 for 2020)");
@@ -218,15 +264,15 @@ void setup()
   clearScreen();
   debugMessln();
 
-#endif
+#endif // TFTSCREEN || OLEDSCREEN
 
 #if DEBUG && (TFTSCREEN || OLEDSCREEN)
-  Serial.println("Drawing help lines ...");
-  Serial.println();
+  debugMessln("Drawing help lines ...");
+  debugMessln();
   helpLines();
   debugMessln();
 
-#endif
+#endif // DEBUG && (TFTSCREEN || OLEDSCREEN)
 
   debugMessln("Getting time...");
   now = timeNow();
@@ -240,7 +286,7 @@ void setup()
 #if TFTSCREEN || OLEDSCREEN
   updateScreen(now, temperature);
 
-#endif
+#endif // TFTSCREEN || OLEDSCREEN
 }
 
 // Main **********************************************

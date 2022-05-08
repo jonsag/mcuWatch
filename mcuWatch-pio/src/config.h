@@ -35,6 +35,7 @@
 
 #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP8266_ESP01) || defined(ARDUINO_ESP32_DEV)
 #define WEBSERVER 1
+#define NTP 1
 #endif
 
 /*
@@ -357,21 +358,54 @@ long lastCheckMillis;
 int checkInterval = 5000;
 
 /**********
- * Web server
+ * Wifi
  **********/
-#if WEBSERVER
-
+#if WEBSERVER || NTP
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
-#include <ESP8266WebServer.h>
-#include <ESP8266mDNS.h>
 
 #include "secrets.h"
 
 const char *ssid = STASSID;
 const char *password = STAPSK;
 
+#endif
+
+/**********
+ * Web server
+ **********/
+#if WEBSERVER
+#include <ESP8266WebServer.h>
+#include <ESP8266mDNS.h>
+
 ESP8266WebServer server(80);
+
+#endif
+
+/**********
+ * NTP
+ **********/
+#if NTP
+#if ARDUINO_ESP8266_MAJOR < 3
+#pragma message("This sketch requires at least ESP8266 Core Version 3.0.0")
+
+#endif
+
+#include <NTPClient.h>
+#include <WiFiUdp.h>
+
+#include <time.h>      // for time() ctime() ...
+#include <coredecls.h> // optional settimeofday_cb() callback to check on server
+
+#define MY_NTP_SERVER "se.pool.ntp.org" // find best pool at https://www.ntppool.org
+
+// choose time zone from list at https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv
+#define MY_TZ "CET-1CEST,M3.5.0,M10.5.0/3" // Europe/Stockholm
+
+#define timeOffset 0 // time offset in seconds
+
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, MY_NTP_SERVER);
 
 #endif
 
