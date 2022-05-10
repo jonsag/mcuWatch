@@ -47,7 +47,9 @@ void setup()
 // ############################## start screen
 #if TFTSCREEN
   debugMessln("Initializing display ...");
+
   myScreen.initR(INITR_BLACKTAB);
+
   debugMessln("Initialized");
   debugMess("Screen size: ");
   debugMess(myScreen.width());
@@ -59,12 +61,14 @@ void setup()
 
 #elif OLEDSCREEN
   debugMessln("Initializing display ...");
+
   if (!myScreen.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
   {
     debugMessln("SSD1306 allocation failed");
     for (;;)
       ; // Don't proceed, loop forever
   }
+
   debugMessln("Initialized");
   debugMess("Screen size: ");
   debugMess(myScreen.width());
@@ -74,20 +78,22 @@ void setup()
 
   debugMessln("Splash screen ...");
   myScreen.display();
-  debugMessln();
-  delay(500); // pause for 2 seconds
 
+  debugMessln();
+
+  delay(500);    // pause for 2 seconds
   clearScreen(); // clear the buffer
 
 #endif // TFTSCREEN or OLEDSCREEN
 
-// ############################## start RTC
+  // ############################## start RTC
+  debugMessln("Starting RTC ...");
+
 #if TFTSCREEN || OLEDSCREEN
   printStartMess("RTC ...", 1);
 
 #endif
 
-  debugMessln("Starting RTC ...");
   if (!rtc.begin())
   {
     debugMessln("Couldn't find RTC");
@@ -96,6 +102,7 @@ void setup()
   {
     debugMessln("RTC found");
   }
+
   debugMessln();
 
 #if TFTSCREEN || OLEDSCREEN
@@ -105,12 +112,13 @@ void setup()
 
 // ############################## start and connect wifi
 #if WEBSERVER || RTC
+  debugMessln("Starting and connecting wifi ...");
+
 #if TFTSCREEN || OLEDSCREEN
   printStartMess("Connecting ...", 1);
 
 #endif // TFTSCREEN || OLEDSCREEN
 
-  debugMessln("Starting and connecting wifi ...");
   startTime = millis();
   WiFi.mode(WIFI_STA);
   WiFi.begin(STASSID, STAPSK);
@@ -176,6 +184,7 @@ void setup()
       0x00, 0x5f, 0x74, 0xb4, 0x56, 0xb0, 0xb0, 0xd2, 0xf2, 0x35, 0x1e, 0x4c,
       0x0c, 0x24, 0x5a, 0xe6, 0x89, 0xa6, 0x4d, 0x01, 0x00, 0x3b
     };
+
     char gif_colored[sizeof(gif)];
     memcpy_P(gif_colored, gif, sizeof(gif));
     // Set the background to a random set of colors
@@ -183,6 +192,7 @@ void setup()
     gif_colored[17] = millis() % 256;
     gif_colored[18] = millis() % 256;
     server.send(200, "image/gif", gif_colored, sizeof(gif_colored)); });
+
   // Hook examples##############################************************
   server.addHook([](const String &method,
                     const String &url,
@@ -202,10 +212,12 @@ void setup()
                     WiFiClient *,
                     ESP8266WebServer::ContentTypeFunction)
                  {
+
     if (url.startsWith("/fail")) {
       Serial.printf("An always failing web hook has been triggered\n");
       return ESP8266WebServer::CLIENT_MUST_STOP;
     }
+
     return ESP8266WebServer::CLIENT_REQUEST_CAN_CONTINUE; });
 
   server.addHook([](const String &,
@@ -213,6 +225,7 @@ void setup()
                     WiFiClient *client,
                     ESP8266WebServer::ContentTypeFunction)
                  {
+
       if (url.startsWith("/dump"))
       {
         Serial.printf("The dumper web hook is on the run\n");
@@ -250,7 +263,9 @@ void setup()
       static WiFiClient forgetme = *client; // stop previous one if present and transfer client refcounter
       return ESP8266WebServer::CLIENT_IS_GIVEN;
   }
+
   return ESP8266WebServer::CLIENT_REQUEST_CAN_CONTINUE; });
+
   // Hook examples##############################************************
   server.onNotFound(handleNotFound);
 
@@ -267,38 +282,16 @@ void setup()
 
 #endif // WEBSERVER>
 
+  currentMillis = millis();
+
 // ############################## start NTP client
 #if NTP
+  debugMessln("Starting NTP client ...");
+
+#if TFTSCREEN || OLEDSCREEN
   printStartMess("NTP ...", 1);
 
-  /*
-    debugMessln("NTP TZ DST - RTC Fallback");
-  #if TFTSCREEN || OLEDSCREEN
-    clearScreen();
-
-  #endif
-  }
-  else
-  {
-    infoMess("Could not connect!");
-
-  #if TFTSCREEN || OLEDSCREEN
-    printStartMess("Could not connect!", 1);
-    delay(2000);
-    clearScreen();
-
-  #endif
-  }
-
-    configTime(MY_TZ, MY_NTP_SERVER); // --> for the ESP8266 you only need this for Timezone and DST
-    settimeofday_cb(time_is_set);     // register callback if time was sent
-
-    if (time(nullptr) < 1600000000)
-    {
-      getRTC();
-    }
-  */
-  debugMessln("Starting NTP client ...");
+#endif
 
   timeClient.begin();                   // initialize a NTP client to get time
   timeClient.setTimeOffset(timeOffset); // set offset time
@@ -308,7 +301,9 @@ void setup()
 #if TFTSCREEN || OLEDSCREEN
   clearScreen();
 
-#endif
+#endif // NTP
+
+  lastNTPCheckMillis = currentMillis;
 
   debugMessln();
 
@@ -329,6 +324,7 @@ void setup()
 #if TFTSCREEN || OLEDSCREEN
   debugMessln("Clearing screen ...");
   clearScreen();
+
   debugMessln();
 
 #endif // TFTSCREEN || OLEDSCREEN
@@ -337,28 +333,35 @@ void setup()
   debugMessln("Drawing help lines ...");
   debugMessln();
   helpLines();
+
   debugMessln();
 
 #endif // DEBUG && (TFTSCREEN || OLEDSCREEN)
 
   debugMessln("Getting time...");
-  now = timeNow();
+  now = RTCTimeNow();
 
   debugMessln("Getting temperature...");
-  temperature = tempNow();
+  temperature = RTCTempNow();
 
   prettyPrint(now, temperature);
   oldEpoch = now;
+
+  lastRTCCheckMillis = currentMillis;
 
 #if TFTSCREEN || OLEDSCREEN
   updateScreen(now, temperature);
 
 #endif // TFTSCREEN || OLEDSCREEN
+
+  debugMessln("Start finished!");
+  debugMessln("Now entering main loop ...");
+  debugMessln();
 }
 
-// Main##############################****************
+// ############################## Main
 
-void update()
+void updateOutput()
 {
   RTCtest(now);
 
@@ -370,19 +373,20 @@ void update()
 #endif
 }
 
-void getData()
+void getRTCData()
 {
   debugMessln("Getting time...");
-  now = timeNow();
+  now = RTCTimeNow();
+
   debugMessln("Getting temperature...");
-  temperature = tempNow();
+  temperature = RTCTempNow();
 }
 
 void loop()
 {
   currentMillis = millis();
 
-  setTime();
+  setTime(); // check for keyboard input
 
 #if WEBSERVER
   server.handleClient();
@@ -390,21 +394,31 @@ void loop()
 
 #endif
 
+// ############################## if in debug mode, only check every interval
 #if DEBUG
-  if (currentMillis - lastCheckMillis >= checkInterval)
+  if (currentMillis - lastRTCCheckMillis >= RTCCheckInterval)
   {
-    getData();
-    update();
-    lastCheckMillis = currentMillis;
+    getRTCData();
+    updateOutput();
+    lastRTCCheckMillis = currentMillis;
   }
 
+// ############################## otherwise check every time, then see if a second have passed
 #else
-  getData();
+  getRTCData();
   if (now.getEpoch() != oldEpoch.getEpoch())
   {
-    update();
+    updateOutput();
     oldEpoch = now;
   }
 
 #endif
+
+  // ############################## update from NTP
+  if (currentMillis - lastNTPCheckMillis >= NTPCheckInterval)
+  {
+    getNetworkTime();
+
+    lastNTPCheckMillis = currentMillis;
+  }
 }

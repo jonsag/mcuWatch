@@ -353,9 +353,8 @@ const char *monthName[12] = {
 const char *dayName[7] = {
     "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
-long currentMillis;
-long lastCheckMillis;
-int checkInterval = 5000;
+long lastRTCCheckMillis;
+const int RTCCheckInterval = 5000;
 
 /**********
  * Wifi
@@ -412,6 +411,9 @@ boolean connected = false;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, MY_NTP_SERVER);
 
+long lastNTPCheckMillis;
+const int NTPCheckInterval = 5000;
+
 #endif
 
 /**********
@@ -425,4 +427,6 @@ NTPClient timeClient(ntpUDP, MY_NTP_SERVER);
 /**********
  * Misc
  **********/
+long currentMillis;
+
 const int serialTimeout = 10000;

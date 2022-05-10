@@ -116,12 +116,12 @@ void adjustDate(int year, int month, int date, int hour, int min, int sec, int w
     rtc.setDateTime(dt); // adjust date-time as defined 'dt' above
 }
 
-DateTime timeNow()
+DateTime RTCTimeNow()
 {
     return rtc.now();
 }
 
-float tempNow()
+float RTCTempNow()
 {
     rtc.convertTemperature();
     return rtc.getTemperature();
