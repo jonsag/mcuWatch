@@ -18,10 +18,11 @@
 
 #endif
 
-// Setup **********************************************
+// Setup##############################****************
 
 void setup()
 {
+  // ############################## start serial
 #if DEBUG || INFO
   Serial.begin(9600); // start the serial port
   Serial.setTimeout(serialTimeout);
@@ -32,6 +33,7 @@ void setup()
 
 #endif // DEBUG || INFO
 
+  // ############################## start wire
   debugMessln("Starting wire ...");
 #if defined(ARDUINO_ESP8266_ESP01)
   Wire.begin(i2cSDA, i2cSCK);
@@ -42,6 +44,7 @@ void setup()
 #endif // defined(ARDUINO_ESP8266_ESP01)
   debugMessln();
 
+// ############################## start screen
 #if TFTSCREEN
   debugMessln("Initializing display ...");
   myScreen.initR(INITR_BLACKTAB);
@@ -51,6 +54,8 @@ void setup()
   debugMess("x");
   debugMessln(myScreen.height());
   debugMessln();
+
+  clearScreen();
 
 #elif OLEDSCREEN
   debugMessln("Initializing display ...");
@@ -76,6 +81,12 @@ void setup()
 
 #endif // TFTSCREEN or OLEDSCREEN
 
+// ############################## start RTC
+#if TFTSCREEN || OLEDSCREEN
+  printStartMess("RTC ...", 1);
+
+#endif
+
   debugMessln("Starting RTC ...");
   if (!rtc.begin())
   {
@@ -88,44 +99,69 @@ void setup()
   debugMessln();
 
 #if TFTSCREEN || OLEDSCREEN
+  clearScreen();
+
+#endif
+
+// ############################## start and connect wifi
+#if WEBSERVER || RTC
+#if TFTSCREEN || OLEDSCREEN
+  printStartMess("Connecting ...", 1);
+
+#endif // TFTSCREEN || OLEDSCREEN
+
+  debugMessln("Starting and connecting wifi ...");
+  startTime = millis();
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(STASSID, STAPSK);
+
+  while (WiFi.status() != WL_CONNECTED && (millis() - startTime) <= wifiTimeout) // wait for connection
+  {
+    debugMess(".");
+    delay(500);
+    // static uint16_t counter = 0;
+    // counter++;
+    // if (counter % 30 == 0)
+  }
+  debugMessln();
+
+#if TFTSCREEN || OLEDSCREEN
+  clearScreen();
+
+#endif // TFTSCREEN || OLEDSCREEN
+
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    infoMess("Connected to ");
+    infoMessln(ssid);
+    infoMess("IP address: ");
+    infoMessln(WiFi.localIP());
+  }
+
+#if TFTSCREEN || OLEDSCREEN
   printIP();
   delay(2000);
   clearScreen();
 
 #endif // TFTSCREEN || OLEDSCREEN
 
-#if WEBSERVER || NTP
-  debugMessln("Starting and connecting wifi ...");
+#endif // WEBSERVER || RTC
 
-  WiFi.persistent(false);
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(STASSID, STAPSK);
-
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    debugMess(".");
-    delay(200);
-    static uint16_t counter = 0;
-    counter++;
-    if (counter % 30 == 0)
-      debugMessln();
-  }
-
-  infoMess("Connected to ");
-  infoMessln(ssid);
-  infoMess("IP address: ");
-  infoMessln(WiFi.localIP());
-
-#endif // WEBSERVER || NTP
-
+// ############################## start web server
 #if WEBSERVER
-  debugMessln("Starting MDNS responder ...");
+#if TFTSCREEN || OLEDSCREEN
+  printStartMess("Web server ...", 1);
+
+#endif // TFTSCREEN || OLEDSCREEN
+
+  // debugMessln("Starting MDNS responder ...");
   if (MDNS.begin("esp8266"))
   {
     debugMessln("MDNS responder started");
   }
 
   debugMessln("Initializing web server ...");
+
   server.on("/", handleRoot);
   server.on("/temp", showTemps);
   server.on("/test.svg", drawGraph);
@@ -147,7 +183,7 @@ void setup()
     gif_colored[17] = millis() % 256;
     gif_colored[18] = millis() % 256;
     server.send(200, "image/gif", gif_colored, sizeof(gif_colored)); });
-  // Hook examples ******************************************************
+  // Hook examples##############################************************
   server.addHook([](const String &method,
                     const String &url,
                     WiFiClient *client,
@@ -177,8 +213,9 @@ void setup()
                     WiFiClient *client,
                     ESP8266WebServer::ContentTypeFunction)
                  {
-    if (url.startsWith("/dump")) {
-      Serial.printf("The dumper web hook is on the run\n");
+      if (url.startsWith("/dump"))
+      {
+        Serial.printf("The dumper web hook is on the run\n");
 
       // Here the request is not interpreted, so we cannot for sure
       // swallow the exact amount matching the full request+content,
@@ -212,21 +249,46 @@ void setup()
       Serial.printf("\nTelling server to forget this connection\n");
       static WiFiClient forgetme = *client; // stop previous one if present and transfer client refcounter
       return ESP8266WebServer::CLIENT_IS_GIVEN;
-    }
-    return ESP8266WebServer::CLIENT_REQUEST_CAN_CONTINUE; });
-  // Hook examples ******************************************************
+  }
+  return ESP8266WebServer::CLIENT_REQUEST_CAN_CONTINUE; });
+  // Hook examples##############################************************
   server.onNotFound(handleNotFound);
 
   debugMessln("Starting web server ...");
+
   server.begin();
-  Serial.println("HTTP server started");
+
+#if TFTSCREEN || OLEDSCREEN
+  clearScreen();
+
+#endif
+
   debugMessln();
 
-#endif // WEBSERVER
+#endif // WEBSERVER>
 
+// ############################## start NTP client
 #if NTP
+  printStartMess("NTP ...", 1);
+
   /*
     debugMessln("NTP TZ DST - RTC Fallback");
+  #if TFTSCREEN || OLEDSCREEN
+    clearScreen();
+
+  #endif
+  }
+  else
+  {
+    infoMess("Could not connect!");
+
+  #if TFTSCREEN || OLEDSCREEN
+    printStartMess("Could not connect!", 1);
+    delay(2000);
+    clearScreen();
+
+  #endif
+  }
 
     configTime(MY_TZ, MY_NTP_SERVER); // --> for the ESP8266 you only need this for Timezone and DST
     settimeofday_cb(time_is_set);     // register callback if time was sent
@@ -236,12 +298,17 @@ void setup()
       getRTC();
     }
   */
-  debugMessln("Initiating time client ...");
+  debugMessln("Starting NTP client ...");
 
   timeClient.begin();                   // initialize a NTP client to get time
   timeClient.setTimeOffset(timeOffset); // set offset time
 
   getNetworkTime();
+
+#if TFTSCREEN || OLEDSCREEN
+  clearScreen();
+
+#endif
 
   debugMessln();
 
@@ -289,7 +356,7 @@ void setup()
 #endif // TFTSCREEN || OLEDSCREEN
 }
 
-// Main **********************************************
+// Main##############################****************
 
 void update()
 {

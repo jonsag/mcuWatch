@@ -95,7 +95,7 @@ void printStartMess(String inText, int YPos)
 {
   drawText(myScreen.width() / 2 - inText.length() / 2.0 * pixX * startSize, // x
            myScreen.height() / YSplits * YPos,                              // y
-           dateSize,                                                        // size
+           startSize,                                                        // size
            startCol,                                                        // colour
            inText);
 }

@@ -4,7 +4,7 @@
 /**********
  * Debug
  **********/
-#define DEBUG 0 // debugMess is off when 0
+#define DEBUG 1 // debugMess is off when 0
 #define INFO 0
 
 #if DEBUG
@@ -206,7 +206,7 @@ Adafruit_ST7735 myScreen = Adafruit_ST7735(tftCS, tftDC, tftRES);
 */
 
 // sizes
-#define startSize 2
+#define startSize 1
 
 #define timeSize 4
 #define dateSize 1
@@ -379,6 +379,11 @@ const char *password = STAPSK;
 #include <ESP8266mDNS.h>
 
 ESP8266WebServer server(80);
+
+#define wifiTimeout 10000
+
+long startTime;
+boolean connected = false;
 
 #endif
 
