@@ -18,7 +18,7 @@
 
   Hardware:
   NodeMCU / ESP8266 and DS3231 wiring
-  D0 GPI16 (use for reset after deepsleep)
+  D0 GPI16 (use for reset after deep sleep)
   D1 GPIO5 - I2C SCL
   D2 GPIO4 - I2C SDA
 
@@ -119,7 +119,7 @@ void setRTC() // set date/time of external RTC
 {
     Serial.println(F("setRTC --> from internal time"));
     time_t now;          // this are the seconds since Epoch (1970) - seconds GMT
-    tm tm;               // the structure tm holds time information in a more convient way
+    tm tm;               // the structure tm holds time information in a more convenient way
     time(&now);          // read the current time and store to now
     gmtime_r(&now, &tm); // update the structure tm with the current GMT
     rtc.adjust(DateTime(tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec));

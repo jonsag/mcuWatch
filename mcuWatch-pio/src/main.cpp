@@ -24,7 +24,14 @@ void setup()
 {
   // ############################## start serial
 #if DEBUG || INFO
-  Serial.begin(9600); // start the serial port
+#if defined(ARDUINO_ESP8266_ESP01)
+  Serial.begin(serialSpeed, SERIAL_8N1, SERIAL_TX_ONLY);
+
+#else
+  Serial.begin(serialSpeed); // start the serial port
+
+#endif
+
   Serial.setTimeout(serialTimeout);
 
   debugMessln();

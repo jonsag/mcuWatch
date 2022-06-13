@@ -252,7 +252,7 @@ Adafruit_ST7735 myScreen = Adafruit_ST7735(tftCS, tftDC, tftRES);
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET -1       // Reset pin # (or -1 if sharing Arduino reset pin)
-#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+#define SCREEN_ADDRESS 0x3C ///< See data sheet for Address; 0x3D for 128x64, 0x3C for 128x32
 
 Adafruit_SSD1306 myScreen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
@@ -412,7 +412,7 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, MY_NTP_SERVER);
 
 long lastNTPCheckMillis;
-const int NTPCheckInterval = 5000;
+#define NTPCheckInterval 5000
 
 #endif
 
@@ -429,4 +429,5 @@ const int NTPCheckInterval = 5000;
  **********/
 long currentMillis;
 
-const int serialTimeout = 10000;
+#define serialSpeed 9600
+#define serialTimeout 10000
