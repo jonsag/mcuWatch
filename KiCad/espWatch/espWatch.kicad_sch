@@ -1191,7 +1191,7 @@
     (pin "8" (uuid 7de9e503-ef79-4e1b-8577-de97a826558f))
   )
 
-  (symbol (lib_id "Device:R_Potentiometer") (at 58.42 127 0) (mirror x) (unit 1)
+  (symbol (lib_id "Device:R_Potentiometer") (at 58.42 127 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 3c20f13b-10e1-4ba5-97ce-7589c25103b4)
     (property "Reference" "RV1" (id 0) (at 56.6421 126.1653 0)
