@@ -81,7 +81,7 @@ void printIP()
 {
   String myString;
 
-  infoMess("+++++ Writing SSID and IP ...");
+  infoMessln("+++++ Writing SSID and IP ...");
 
   myString = "Connected to:";
   printStartMess(myString, 0);
@@ -178,13 +178,13 @@ void printTemp(float temperature)
   {
     infoMessln("+++++ New max temperature");
 
-    fillRectangle(myScreen.width() / XSplits * tempMaxXpos - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
+    fillRectangle(myScreen.width() / XSplits * tempMaxXPos - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
                   myScreen.height() / YSplits * tempMaxYPos,                                                   // y
                   (myString2.length() + 1) * pixX * tempSize,                                                  // width
                   pixY * tempSize,                                                                             // height
                   bgCol);                                                                                      // colour
 
-    drawText(myScreen.width() / XSplits * tempMaxXpos - myString2.length() / 2.0 * pixX * tempSize, // x
+    drawText(myScreen.width() / XSplits * tempMaxXPos - myString2.length() / 2.0 * pixX * tempSize, // x
              myScreen.height() / YSplits * tempMaxYPos,                                             // y
              tempSize,                                                                              // size
              maxTempCol,                                                                            // colour
@@ -198,13 +198,13 @@ void printTemp(float temperature)
   {
     infoMessln("+++++ New min temperature");
 
-    fillRectangle(myScreen.width() / XSplits * tempMinXpos - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
+    fillRectangle(myScreen.width() / XSplits * tempMinXPos - (myString2.length() + 1) / 2.0 * pixX * tempSize, // x
                   myScreen.height() / YSplits * tempMinYPos,                                                   // y
                   (myString2.length() + 1) * pixX * tempSize,                                                  // width
                   pixY * tempSize,                                                                             // height
                   bgCol);                                                                                      // colour
 
-    drawText(myScreen.width() / XSplits * tempMinXpos - myString2.length() / 2.0 * pixX * tempSize, // x
+    drawText(myScreen.width() / XSplits * tempMinXPos - myString2.length() / 2.0 * pixX * tempSize, // x
              myScreen.height() / YSplits * tempMinYPos,                                             // y
              tempSize,                                                                              // size
              minTempCol,                                                                            // colour

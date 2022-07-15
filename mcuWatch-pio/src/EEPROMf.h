@@ -1,29 +1,34 @@
 DateTime readEEPROMdatetime(int EEPROMaddress)
 {
-    //    #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP8266_ESP01) || defined(ARDUINO_ESP32_DEV)
+    DateTime dtAnswer;
+
     debugMessln("Initializing EEPROM ...");
     EEPROM.begin(EEPROM_SIZE); // initialize EEPROM
 
     debugMessln("Reading EEPROM ...");
     EEPROM.get(EEPROMaddress, dtAnswer);
 
+    // debugMess("Value: ");
+    // debugMessln(dtAnswer);
+
     debugMessln("Closing EEPROM ...");
     EEPROM.end();
 
-    debugMessln();
-
     return dtAnswer;
-    //#endif // esp8266
 }
 
 byte readEEPROMbyte(int EEPROMaddress)
 {
-    //    #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP8266_ESP01) || defined(ARDUINO_ESP32_DEV)
+    byte byteAnswer;
+
     debugMessln("Initializing EEPROM ...");
     EEPROM.begin(EEPROM_SIZE); // initialize EEPROM
 
     debugMessln("Reading EEPROM ...");
     EEPROM.get(dtNtpAddress, byteAnswer);
+
+    debugMess("Value: ");
+    debugMessln(byteAnswer);
 
     debugMessln("Closing EEPROM ...");
     EEPROM.end();
@@ -31,16 +36,38 @@ byte readEEPROMbyte(int EEPROMaddress)
     debugMessln();
 
     return byteAnswer;
-    //#endif // esp8266
+}
+
+boolean isDT(int EEPROMaddress)
+{
+    debugMessln("Checking if EEPROM holds a time stamp ...");
+
+    byte value = readEEPROMbyte(EEPROMaddress);
+
+    if (value == 0 || value == 255)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 void getDtNTP()
 {
+    if (isDT(dtNtpAddress))
+    {
+        dtNTP = readEEPROMdatetime(dtNtpAddress + 1);
 
-    //dtNTP = readEEPROMdatetime(dtNtpAddress);
+        debugMessln("Time when RTC was synced with an ntp server: ");
 
-    debugMessln("Time when RTC was synced with an ntp server: ");
-    //prettyPrintDateTime(dtNTP);
-    Serial.print(readEEPROMbyte(dtNtpAddress));
-    debugMessln();
+        prettyPrintDateTime(dtNTP);
+
+        debugMessln();
+    }
+    else
+    {
+        debugMessln("No time stamp stored");
+    }
 }

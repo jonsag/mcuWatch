@@ -192,7 +192,7 @@ void getNetworkTime()
 
     timeClient.update();
 
-#if DEBUG
+#if DEBUG || INFO
     Serial.println("********** Network time **********");
 
     time_t epochTime = timeClient.getEpochTime();
@@ -244,7 +244,85 @@ void getNetworkTime()
     Serial.println(currentDate);
 
     Serial.println("********** Network time **********");
-    Serial.println();
 
 #endif
+}
+
+void setRTCfromNTP()
+{
+    debugMessln("Setting RTC from NTP ...");
+
+    time_t epochTime = timeClient.getEpochTime();
+
+    int hour = timeClient.getHours();
+
+    int minute = timeClient.getMinutes();
+
+    int second = timeClient.getSeconds();
+
+    byte dOW = timeClient.getDay();
+
+    // Get a time structure
+    struct tm *ptm = gmtime((time_t *)&epochTime);
+
+    int date = ptm->tm_mday;
+
+    int month = ptm->tm_mon + 1;
+
+    int year = ptm->tm_year + 1900;
+
+    debugMessln("Setting time to:");
+    debugMess("Year: ");
+    debugMessln(year);
+    debugMess("Month: ");
+    debugMessln(month);
+    debugMess("Date: ");
+    debugMessln(date);
+    debugMess("Hour: ");
+    debugMessln(hour);
+    debugMess("Minute: ");
+    debugMessln(minute);
+    debugMess("Second: ");
+    debugMessln(second);
+    debugMess("Day of week: ");
+    debugMessln(dOW);
+
+    DateTime dt(year, month, date, hour, minute, second, dOW);
+    rtc.setDateTime(dt);
+
+    infoMessln("Time adjusted");
+    infoMessln();
+}
+
+void checkNetworkTime()
+{
+    int drift = 0;
+
+    getNetworkTime();
+
+    debugMess("NTP epoch time: ");
+    debugMessln(timeClient.getEpochTime());
+    debugMess("RTC epoch time: ");
+    debugMessln(now.getEpoch());
+    debugMess("Drift: ");
+
+    if (timeClient.getEpochTime() > now.getEpoch())
+    {
+        debugMess(" -");
+        drift = timeClient.getEpochTime() - now.getEpoch();
+    }
+    else if (now.getEpoch() > timeClient.getEpochTime())
+    {
+        debugMess(" +");
+        drift = now.getEpoch() - timeClient.getEpochTime();
+    }
+
+    debugMess(drift);
+    debugMessln(" s");
+    debugMessln();
+
+    if (drift > maxDrift)
+    {
+        setRTCfromNTP();
+    }
 }

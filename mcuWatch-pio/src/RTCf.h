@@ -240,6 +240,7 @@ void prettyPrintDateTime(DateTime &dt)
 void prettyPrint(DateTime &now, float temperature)
 {
 #if INFO || DEBUG
+/*
     Serial.print(padByte((now.hour() + hourOffs)));
     Serial.print(":");
 
@@ -260,6 +261,8 @@ void prettyPrint(DateTime &now, float temperature)
     Serial.print(" ");
 
     Serial.print(now.year());
+*/
+    prettyPrintDateTime(now);
 
     Serial.print("\t");
     debugMess("Temperature: ");

@@ -90,16 +90,9 @@ Adafruit_ST7735 myScreen = Adafruit_ST7735(tftCS, tftDC, tftRES);
 // colours
 #define bgCol ST77XX_BLACK
 
-#define startCol ST77XX_WHITE
-
-#define timeCol ST77XX_GREEN
-#define dateCol ST77XX_YELLOW
-
-#define tempCol ST77XX_YELLOW
-#define maxTempCol ST77XX_RED
-#define minTempCol ST77XX_BLUE
-
 #define helpLineCol ST77XX_GREEN
+
+#
 
 /*
 #define colBla ST77XX_BLACK   // 0x0000
@@ -114,32 +107,46 @@ Adafruit_ST7735 myScreen = Adafruit_ST7735(tftCS, tftDC, tftRES);
 */
 
 // sizes
+#define startCol ST77XX_WHITE
 #define startSize 1
 
-#define timeSize 4
-#define dateSize 1
 
-#define tempNowSize 3
-#define tempSize 2
 
 // positions
 #define XSplits 4 // split screen vertically, this is used below for positions
 #define YSplits 8 // split screen horizontally, this is used below for positions
 
+#define dateCol ST77XX_YELLOW
+#define dateSize 1
 #define dateXPos 2
 #define dateYPos 1
 
+#define timeCol ST77XX_GREEN
+#define timeSize 4
 #define timeNowXPos 2
 #define timeNowYPos 2
 
+#define tempCol ST77XX_YELLOW
+#define tempNowSize 3
 #define tempNowXPos 2
 #define tempNowYPos 4
 
-#define tempMaxXpos 3
+#define tempSize 2
+
+#define maxTempCol ST77XX_RED
+#define tempMaxXPos 3
 #define tempMaxYPos 6
 
-#define tempMinXpos 1
+#define minTempCol ST77XX_BLUE
+#define tempMinXPos 1
 #define tempMinYPos 6
+
+#define wifiStatusSize 1
+#define wifiStatusOKCol ST77XX_GREEN
+#define wifiStatusDownCol ST77XX_RED
+#define wifiStatusXPos 1
+#define wifiStatusYPos 0
+const String wifiStatusString = "WiFi";
 
 // compensations
 #define timeXOffs 2
@@ -235,7 +242,7 @@ boolean connected = false;
 // choose time zone from list at https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv
 #define MY_TZ "CET-1CEST,M3.5.0,M10.5.0/3" // Europe/Stockholm
 
-#define timeOffset 0 // time offset in seconds
+#define timeOffset 7200 // time offset in seconds
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, MY_NTP_SERVER);
@@ -251,9 +258,9 @@ long lastNTPCheckMillis;
 #define EEPROM_SIZE 512 // esp8266 has 512 bytes of eeprom
 #define dtNtpAddress 0  // time when RTC was set from NTP (4 bytes)
 
-DateTime dtAnswer;
-byte byteAnswer;
 DateTime dtNTP;
+
+#define maxDrift 10
 
 /**********
  * Rotary encoder
