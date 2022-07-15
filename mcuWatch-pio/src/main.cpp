@@ -3,21 +3,10 @@
 #include "config.h"
 #include "RTCf.h"
 
-#if TFTSCREEN || OLEDSCREEN
 #include "screenDrawf.h"
-
-#endif // TFTSCREEN || OLEDSCREEN
-
-#if WEBSERVER
 #include "webServer.h"
-
-#endif // WEBSERVER
-
-#if NTP
 #include "NTPf.h"
 #include "EEPROMf.h"
-
-#endif // NTP
 
 // Setup##############################****************
 
@@ -25,13 +14,7 @@ void setup()
 {
   // ############################## start serial
 #if DEBUG || INFO
-#if defined(ARDUINO_ESP8266_ESP01)
-  Serial.begin(serialSpeed, SERIAL_8N1, SERIAL_TX_ONLY);
-
-#else
   Serial.begin(serialSpeed); // start the serial port
-
-#endif // esp-01
 
   Serial.setTimeout(serialTimeout);
 
@@ -43,17 +26,11 @@ void setup()
 
   // ############################## start wire
   debugMessln("Starting wire ...");
-#if defined(ARDUINO_ESP8266_ESP01)
-  Wire.begin(i2cSDA, i2cSCK);
-
-#else
   Wire.begin();
 
-#endif // defined(ARDUINO_ESP8266_ESP01)
   debugMessln();
 
-// ############################## start screen
-#if TFTSCREEN
+  // ############################## start screen
   debugMessln("Initializing display ...");
 
   myScreen.initR(INITR_BLACKTAB);
@@ -67,40 +44,10 @@ void setup()
 
   clearScreen();
 
-#elif OLEDSCREEN
-  debugMessln("Initializing display ...");
-
-  if (!myScreen.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
-  {
-    debugMessln("SSD1306 allocation failed");
-    for (;;)
-      ; // Don't proceed, loop forever
-  }
-
-  debugMessln("Initialized");
-  debugMess("Screen size: ");
-  debugMess(myScreen.width());
-  debugMess("x");
-  debugMessln(myScreen.height());
-  debugMessln();
-
-  debugMessln("Splash screen ...");
-  myScreen.display();
-
-  debugMessln();
-
-  delay(500);    // pause for 2 seconds
-  clearScreen(); // clear the buffer
-
-#endif // TFTSCREEN or OLEDSCREEN
-
   // ############################## start RTC
   debugMessln("Starting RTC ...");
 
-#if TFTSCREEN || OLEDSCREEN
   printStartMess("RTC ...", 1);
-
-#endif // TFTSCREEN || OLEDSCREEN
 
   if (!rtc.begin())
   {
@@ -113,19 +60,12 @@ void setup()
 
   debugMessln();
 
-#if TFTSCREEN || OLEDSCREEN
   clearScreen();
 
-#endif // TFTSCREEN || OLEDSCREEN
-
-// ############################## start and connect wifi
-#if WEBSERVER || RTC
+  // ############################## start and connect wifi
   debugMessln("Starting and connecting wifi ...");
 
-#if TFTSCREEN || OLEDSCREEN
   printStartMess("Connecting ...", 1);
-
-#endif // TFTSCREEN || OLEDSCREEN
 
   startTime = millis();
   WiFi.mode(WIFI_STA);
@@ -141,10 +81,7 @@ void setup()
   }
   debugMessln();
 
-#if TFTSCREEN || OLEDSCREEN
   clearScreen();
-
-#endif // TFTSCREEN || OLEDSCREEN
 
   if (WiFi.status() == WL_CONNECTED)
   {
@@ -154,21 +91,12 @@ void setup()
     infoMessln(WiFi.localIP());
   }
 
-#if TFTSCREEN || OLEDSCREEN
   printIP();
   delay(2000);
   clearScreen();
 
-#endif // TFTSCREEN || OLEDSCREEN
-
-#endif // WEBSERVER || RTC
-
-// ############################## start web server
-#if WEBSERVER
-#if TFTSCREEN || OLEDSCREEN
+  // ############################## start web server
   printStartMess("Web server ...", 1);
-
-#endif // TFTSCREEN || OLEDSCREEN
 
   // debugMessln("Starting MDNS responder ...");
   if (MDNS.begin("esp8266"))
@@ -281,36 +209,23 @@ void setup()
 
   server.begin();
 
-#if TFTSCREEN || OLEDSCREEN
   clearScreen();
-
-#endif
 
   debugMessln();
 
-#endif // WEBSERVER>
-
   currentMillis = millis();
 
-// ############################## start NTP client
-#if NTP
-
+  // ############################## start NTP client
   debugMessln("Starting NTP client ...");
 
-#if TFTSCREEN || OLEDSCREEN
   printStartMess("Starting NTP ...", 1);
-
-#endif // TFTSCREEN || OLEDSCREEN
 
   timeClient.begin();                   // initialize a NTP client to get time
   timeClient.setTimeOffset(timeOffset); // set offset time
 
   getNetworkTime();
 
-#if TFTSCREEN || OLEDSCREEN
   clearScreen();
-
-#endif // TFTSCREEN || OLEDSCREEN
 
   lastNTPCheckMillis = currentMillis;
 
@@ -319,8 +234,7 @@ void setup()
   getDtNTP();
   debugMessln();
 
-#endif // NTP
-
+  // ############################## show info
   infoMessln("Set time with YYMMDDwhhmmssx, ");
   infoMessln("where YY = Year (ex. 20 for 2020)");
   infoMessln("      MM = Month (ex. 04 for April)");
@@ -333,22 +247,19 @@ void setup()
   infoMessln("Example for input : 2004094090242x");
   infoMessln();
 
-#if TFTSCREEN || OLEDSCREEN
   debugMessln("Clearing screen ...");
   clearScreen();
 
   debugMessln();
 
-#endif // TFTSCREEN || OLEDSCREEN
-
-#if DEBUG && (TFTSCREEN || OLEDSCREEN)
+#if DEBUG
   debugMessln("Drawing help lines ...");
   debugMessln();
   helpLines();
 
   debugMessln();
 
-#endif // DEBUG && (TFTSCREEN || OLEDSCREEN)
+#endif // DEBUG
 
   debugMessln("Getting time...");
   now = RTCTimeNow();
@@ -361,10 +272,7 @@ void setup()
 
   lastRTCCheckMillis = currentMillis;
 
-#if TFTSCREEN || OLEDSCREEN
   updateScreen(now, temperature);
-
-#endif // TFTSCREEN || OLEDSCREEN
 
   debugMessln("Start finished!");
   debugMessln("Now entering main loop ...");
@@ -379,10 +287,7 @@ void updateOutput()
 
   prettyPrint(now, temperature);
 
-#if TFTSCREEN || OLEDSCREEN
   updateScreen(now, temperature);
-
-#endif
 }
 
 void getRTCData()
@@ -400,11 +305,8 @@ void loop()
 
   setTime(); // check for keyboard input
 
-#if WEBSERVER
   server.handleClient();
   MDNS.update();
-
-#endif
 
 // ############################## if in debug mode, only check every interval
 #if DEBUG

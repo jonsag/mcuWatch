@@ -24,23 +24,6 @@
 #define infoMessln(x)
 #endif
 
-/**********
- * Boards
- **********/
-#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP32_DEV) || defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_ESP32_DEV)
-#define TFTSCREEN 1
-#define BUZZER 1
-
-#elif defined(ARDUINO_ESP8266_ESP01)
-#define OLEDSCREEN 1
-#define BUZZER 0
-#endif
-
-#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP8266_ESP01) || defined(ARDUINO_ESP32_DEV)
-#define WEBSERVER 1
-#define NTP 1
-#endif
-
 /*
 SPI (ST7735)
 Function    Screen pin  Mini        Uno         Mega        ESP8266     ESP-01      Comment
@@ -80,8 +63,6 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 /**********
  * Pins
  **********/
-
-#if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) // nodeMCU LoLin v3
 //#define i2cSDA D2
 //#define i2cSCK D1
 
@@ -98,85 +79,9 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 
 #define buz D8 // GPIO2
 
-#elif defined(ARDUINO_ESP32_DEV) // esp32
-//#define i2cSDA D2
-//#define i2cSCK D1
-
-#define tftSCK D5
-#define tftSDA D7
-
-#define tftRES 0
-#define tftDC 4 // GPIO2, TFT display SPI chip select pin
-#define tftCS 3 // GPIO0, TFT display data/command select pin
-
-#define rotCLK SD3 // GPIO10
-#define rotDT SD2  // GPIO9
-#define rotSW D0   // GPIO16
-
-#define buz D8 // GPIO2
-
-#elif defined(ARDUINO_AVR_PRO) // arduino Pro & Pro Mini
-//#define i2cSDA A4
-//#define i2cSCK A5
-
-#define tftSCK 13
-#define tftSDA 11
-
-#define tftRES 5
-#define tftDC 4
-#define tftCS 3
-
-#define rotCLK 9
-#define rotDT 8
-#define rotSW 7
-
-#define buz 6
-
-#elif defined(ARDUINO_AVR_UNO) // arduino Uno
-//#define i2cSDA A4
-//#define i2cSCK A5
-
-#define tftSCK 13
-#define tftSDA 11
-
-#define tftRES 5
-#define tftDC 4
-#define tftCS 3
-
-#define rotCLK 8
-#define rotDT 7
-#define rotSW 6
-
-#define buz 9
-
-#elif defined(ARDUINO_AVR_MEGA2560) // arduino Mega 2560
-//#define i2cSDA 20
-//#define i2cSCK 21
-
-#define tftSCK 52
-#define tftSDA 51
-
-#define tftRES 5
-#define tftDC 4
-#define tftCS 3
-
-#define rotCLK 8
-#define rotDT 7
-#define rotSW 6
-
-#define buz 9
-
-#elif defined(ARDUINO_ESP8266_ESP01)
-#define i2cSDA 2
-#define i2cSCK 0
-
-#endif
-
 /**********
  * TFT screen
  **********/
-#if TFTSCREEN
-
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
 
@@ -244,73 +149,6 @@ Adafruit_ST7735 myScreen = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define pixY 8
 
 /**********
- * OLED screen
- **********/
-#elif OLEDSCREEN
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-
-#define SCREEN_WIDTH 128    // OLED display width, in pixels
-#define SCREEN_HEIGHT 64    // OLED display height, in pixels
-
-// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
-#define OLED_RESET -1       // Reset pin # (or -1 if sharing Arduino reset pin)
-#define SCREEN_ADDRESS 0x3C ///< See data sheet for Address; 0x3D for 128x64, 0x3C for 128x32
-
-Adafruit_SSD1306 myScreen(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-// colours, note: the screen is monochrome
-#define bgCol SSD1306_BLACK
-
-#define startCol SSD1306_WHITE
-
-#define timeCol SSD1306_WHITE
-#define dateCol SSD1306_WHITE
-
-#define tempCol SSD1306_WHITE
-#define maxTempCol SSD1306_WHITE
-#define minTempCol SSD1306_WHITE
-
-#define helpLineCol SSD1306_WHITE
-
-// sizes
-#define startSize 1
-
-#define timeSize 1
-#define dateSize 1
-
-#define tempNowSize 1
-#define tempSize 1
-
-// positions
-#define XSplits 4 // split screen vertically, this is used below for positions
-#define YSplits 4 // split screen horizontally, this is used below for positions
-
-#define dateXPos 2
-#define dateYPos 0
-
-#define timeNowXPos 2
-#define timeNowYPos 1
-
-#define tempNowXPos 2
-#define tempNowYPos 2
-
-#define tempMaxXpos 3
-#define tempMaxYPos 3
-
-#define tempMinXpos 1
-#define tempMinYPos 3
-
-// compensations
-#define timeXOffs 0
-
-// font, how many pixels are the font built of
-#define pixX 6
-#define pixY 8
-
-#endif
-
-/**********
  * RTC
  **********/
 /*
@@ -362,7 +200,6 @@ const int RTCCheckInterval = 5000;
 /**********
  * Wifi
  **********/
-#if WEBSERVER || NTP
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 
@@ -371,12 +208,9 @@ const int RTCCheckInterval = 5000;
 const char *ssid = STASSID;
 const char *password = STAPSK;
 
-#endif
-
 /**********
  * Web server
  **********/
-#if WEBSERVER
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
@@ -387,17 +221,9 @@ ESP8266WebServer server(80);
 long startTime;
 boolean connected = false;
 
-#endif
-
 /**********
  * NTP
  **********/
-#if NTP
-#if ARDUINO_ESP8266_MAJOR < 3
-#pragma message("This sketch requires at least ESP8266 Core Version 3.0.0")
-
-#endif
-
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 
@@ -417,23 +243,18 @@ NTPClient timeClient(ntpUDP, MY_NTP_SERVER);
 long lastNTPCheckMillis;
 #define NTPCheckInterval 5000
 
-#endif
-
 /**********
  * EEPROM
  **********/
-#if NTP
-
 #include <EEPROM.h>
 
 #define EEPROM_SIZE 512 // esp8266 has 512 bytes of eeprom
-#define dtNtpAddress 0 // time when RTC was set from NTP (4 bytes)
+#define dtNtpAddress 0  // time when RTC was set from NTP (4 bytes)
 
 DateTime dtAnswer;
 byte byteAnswer;
 DateTime dtNTP;
 
-#endif
 /**********
  * Rotary encoder
  **********/
