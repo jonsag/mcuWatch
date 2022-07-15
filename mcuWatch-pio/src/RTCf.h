@@ -213,6 +213,30 @@ String prettyNumbering(byte b)
     }
 }
 
+void prettyPrintDateTime(DateTime &dt)
+{
+    Serial.print(padByte((dt.hour() + hourOffs)));
+    Serial.print(":");
+
+    Serial.print(padByte(dt.minute()));
+    Serial.print(":");
+
+    Serial.print(padByte(dt.second()));
+    Serial.print(" ");
+
+    Serial.print(dayName[dt.dayOfWeek() - 1]);
+    Serial.print(" ");
+
+    Serial.print(monthName[dt.month() - 1]);
+    Serial.print(" ");
+
+    Serial.print(dt.date());
+    Serial.print(prettyNumbering(dt.date()));
+    Serial.print(" ");
+
+    Serial.println(dt.year());
+}
+
 void prettyPrint(DateTime &now, float temperature)
 {
 #if INFO || DEBUG

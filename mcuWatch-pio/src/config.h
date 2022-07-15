@@ -24,6 +24,9 @@
 #define infoMessln(x)
 #endif
 
+/**********
+ * Boards
+ **********/
 #if defined(ARDUINO_ESP8266_NODEMCU_ESP12E) || defined(ARDUINO_ESP32_DEV) || defined(ARDUINO_AVR_PRO) || defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_ESP32_DEV)
 #define TFTSCREEN 1
 #define BUZZER 1
@@ -416,6 +419,21 @@ long lastNTPCheckMillis;
 
 #endif
 
+/**********
+ * EEPROM
+ **********/
+#if NTP
+
+#include <EEPROM.h>
+
+#define EEPROM_SIZE 512 // esp8266 has 512 bytes of eeprom
+#define dtNtpAddress 0 // time when RTC was set from NTP (4 bytes)
+
+DateTime dtAnswer;
+byte byteAnswer;
+DateTime dtNTP;
+
+#endif
 /**********
  * Rotary encoder
  **********/

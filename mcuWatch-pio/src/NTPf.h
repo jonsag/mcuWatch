@@ -247,6 +247,4 @@ void getNetworkTime()
     Serial.println();
 
 #endif
-
-    delay(2000);
 }

@@ -6,17 +6,18 @@
 #if TFTSCREEN || OLEDSCREEN
 #include "screenDrawf.h"
 
-#endif
+#endif // TFTSCREEN || OLEDSCREEN
 
 #if WEBSERVER
 #include "webServer.h"
 
-#endif
+#endif // WEBSERVER
 
 #if NTP
 #include "NTPf.h"
+#include "EEPROMf.h"
 
-#endif
+#endif // NTP
 
 // Setup##############################****************
 
@@ -30,7 +31,7 @@ void setup()
 #else
   Serial.begin(serialSpeed); // start the serial port
 
-#endif
+#endif // esp-01
 
   Serial.setTimeout(serialTimeout);
 
@@ -99,7 +100,7 @@ void setup()
 #if TFTSCREEN || OLEDSCREEN
   printStartMess("RTC ...", 1);
 
-#endif
+#endif // TFTSCREEN || OLEDSCREEN
 
   if (!rtc.begin())
   {
@@ -115,7 +116,7 @@ void setup()
 #if TFTSCREEN || OLEDSCREEN
   clearScreen();
 
-#endif
+#endif // TFTSCREEN || OLEDSCREEN
 
 // ############################## start and connect wifi
 #if WEBSERVER || RTC
@@ -293,12 +294,13 @@ void setup()
 
 // ############################## start NTP client
 #if NTP
+
   debugMessln("Starting NTP client ...");
 
 #if TFTSCREEN || OLEDSCREEN
-  printStartMess("NTP ...", 1);
+  printStartMess("Starting NTP ...", 1);
 
-#endif
+#endif // TFTSCREEN || OLEDSCREEN
 
   timeClient.begin();                   // initialize a NTP client to get time
   timeClient.setTimeOffset(timeOffset); // set offset time
@@ -308,10 +310,13 @@ void setup()
 #if TFTSCREEN || OLEDSCREEN
   clearScreen();
 
-#endif // NTP
+#endif // TFTSCREEN || OLEDSCREEN
 
   lastNTPCheckMillis = currentMillis;
 
+  debugMessln();
+
+  getDtNTP();
   debugMessln();
 
 #endif // NTP
