@@ -297,6 +297,7 @@ void setRTCfromNTP()
 void checkNetworkTime()
 {
     int drift = 0;
+    String myString;
 
     getNetworkTime();
 
@@ -308,18 +309,36 @@ void checkNetworkTime()
 
     if (timeClient.getEpochTime() > now.getEpoch())
     {
+        myString = "-";
         debugMess(" -");
         drift = timeClient.getEpochTime() - now.getEpoch();
     }
     else if (now.getEpoch() > timeClient.getEpochTime())
     {
+        myString = "+";
         debugMess(" +");
         drift = now.getEpoch() - timeClient.getEpochTime();
     }
 
+    myString += String(drift);
+    myString += "s";
     debugMess(drift);
     debugMessln(" s");
     debugMessln();
+
+    /*
+    fillRectangle(myScreen.width() / XSplits * driftXPos - myString.length() / 2.0 * pixX * driftSize, // x
+                  myScreen.height() / YSplits * driftYPos,                                             // y
+                  myString.length() * pixX * driftSize,                                                // width
+                  pixY * driftSize * 2,                                                                    // height
+                  bgCol);                                                                              // colour
+    */
+   
+    drawText(myScreen.width() / XSplits * driftXPos - myString.length() / 2.0 * pixX * driftSize, // x
+             myScreen.height() / YSplits * driftYPos,                                             // y
+             driftSize,                                                                           // size
+             driftCol,                                                                            // colour
+             myString);
 
     if (drift > maxDrift)
     {

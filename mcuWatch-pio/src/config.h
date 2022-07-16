@@ -4,8 +4,8 @@
 /**********
  * Debug
  **********/
-#define DEBUG 1 // debugMess is off when 0
-#define INFO 0
+#define DEBUG 0 // debugMess is off when 0
+#define INFO 1
 
 #if DEBUG
 #define debugMess(x) Serial.print(x)
@@ -148,6 +148,11 @@ Adafruit_ST7735 myScreen = Adafruit_ST7735(tftCS, tftDC, tftRES);
 #define wifiStatusYPos 0
 const String wifiStatusString = "WiFi";
 
+#define driftSize 1
+#define driftCol ST77XX_GREEN
+#define driftXPos 3
+#define driftYPos 0
+
 // compensations
 #define timeXOffs 2
 
@@ -248,7 +253,7 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, MY_NTP_SERVER);
 
 long lastNTPCheckMillis;
-#define NTPCheckInterval 5000
+#define NTPCheckInterval 60000
 
 /**********
  * EEPROM

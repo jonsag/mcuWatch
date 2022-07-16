@@ -109,26 +109,6 @@ void setup()
 
   currentMillis = millis();
 
-  // ############################## start NTP client
-  debugMessln("Starting NTP client ...");
-
-  printStartMess("Starting NTP ...", 1);
-
-  timeClient.begin();                   // initialize a NTP client to get time
-  timeClient.setTimeOffset(timeOffset); // set offset time
-
-  // getNetworkTime();
-
-  clearScreen();
-
-  lastNTPCheckMillis = currentMillis;
-
-  debugMessln();
-
-  getDtNTP();
-
-  debugMessln();
-
   // ############################## show info
   infoMessln("Set time with YYMMDDwhhmmssx, ");
   infoMessln("where YY = Year (ex. 20 for 2020)");
@@ -144,6 +124,18 @@ void setup()
 
   // ############################## set up screen
   debugMessln("Clearing screen ...");
+  clearScreen();
+
+  debugMessln();
+
+  // ############################## start NTP client
+  debugMessln("Starting NTP client ...");
+
+  printStartMess("Starting NTP ...", 1);
+
+  timeClient.begin();                   // initialize a NTP client to get time
+  timeClient.setTimeOffset(timeOffset); // set offset time
+
   clearScreen();
 
   debugMessln();
@@ -170,6 +162,30 @@ void setup()
   lastRTCCheckMillis = currentMillis;
 
   updateScreen(now, temperature);
+
+  // ############################## initial NTP check
+  if (WiFi.status() != WL_CONNECTED)
+  {
+    drawText(myScreen.width() / XSplits * wifiStatusXPos - wifiStatusString.length() / 2.0 * pixX * wifiStatusSize, // x
+             myScreen.height() / YSplits * wifiStatusYPos,                                                          // y
+             wifiStatusSize,                                                                                        // size
+             wifiStatusDownCol,                                                                                     // colour
+             wifiStatusString);
+
+    debugMessln("Not connected");
+  }
+  else
+  {
+    drawText(myScreen.width() / XSplits * wifiStatusXPos - wifiStatusString.length() / 2.0 * pixX * wifiStatusSize, // x
+             myScreen.height() / YSplits * wifiStatusYPos,                                                          // y
+             wifiStatusSize,                                                                                        // size
+             wifiStatusOKCol,                                                                                       // colour
+             wifiStatusString);
+
+    checkNetworkTime();
+  }
+
+  lastNTPCheckMillis = currentMillis;
 
   // ############################## finished with setup
   debugMessln("Start finished!");
@@ -229,29 +245,31 @@ void loop()
   // ############################## update from NTP
   if (currentMillis - lastNTPCheckMillis >= NTPCheckInterval)
   {
-      if (WiFi.status() != WL_CONNECTED)
-  {
-    drawText(myScreen.width() / XSplits * wifiStatusXPos - wifiStatusString.length() / 2.0 * pixX * wifiStatusSize, // x
-             myScreen.height() / YSplits * wifiStatusYPos,                                        // y
-             wifiStatusSize,                                                                                 // size
-             wifiStatusDownCol,                                                                              // colour
-             wifiStatusString);
-  }
-  else
-  {
-    drawText(myScreen.width() / XSplits * wifiStatusXPos - wifiStatusString.length() / 2.0 * pixX * wifiStatusSize, // x
-             myScreen.height() / YSplits * wifiStatusYPos,                                                   // y
-             wifiStatusSize,                                                                                 // size
-             wifiStatusOKCol,                                                                                // colour
-             wifiStatusString);
-  }
-  
+    // erase drift from screen
+    fillRectangle(myScreen.width() / XSplits * driftXPos - 10 / 2.0 * pixX * driftSize, // x
+                  myScreen.height() / YSplits * driftYPos,                              // y
+                  10 * pixX * driftSize,                                                // width
+                  pixY * driftSize,                                                     // height
+                  bgCol);
+
     if (WiFi.status() != WL_CONNECTED)
     {
+      drawText(myScreen.width() / XSplits * wifiStatusXPos - wifiStatusString.length() / 2.0 * pixX * wifiStatusSize, // x
+               myScreen.height() / YSplits * wifiStatusYPos,                                                          // y
+               wifiStatusSize,                                                                                        // size
+               wifiStatusDownCol,                                                                                     // colour
+               wifiStatusString);
+
       debugMessln("Not connected");
     }
     else
     {
+      drawText(myScreen.width() / XSplits * wifiStatusXPos - wifiStatusString.length() / 2.0 * pixX * wifiStatusSize, // x
+               myScreen.height() / YSplits * wifiStatusYPos,                                                          // y
+               wifiStatusSize,                                                                                        // size
+               wifiStatusOKCol,                                                                                       // colour
+               wifiStatusString);
+
       checkNetworkTime();
     }
 
