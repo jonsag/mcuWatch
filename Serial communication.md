@@ -54,8 +54,7 @@ Connect
 
 >$ screen /dev/ttyUSB0 9600
 
-
-### mincom
+### minicom
 
 [minicom @ github](https://github.com/Distrotech/minicom)  
 [minicom man page](https://linux.die.net/man/1/minicom)  

@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "anotherWatch-pio",
+			"path": "anotherWatch-pio"
+		},
+		{
+			"name": "espTest-pio",
+			"path": "espTest-pio"
+		},
+		{
+			"name": "mcuWatch-pio",
+			"path": "mcuWatch-pio"
+		},
+		{
+			"name": "ST7735graphicstest-pio",
+			"path": "ST7735graphicstest-pio"
+		}
+	],
+	"settings": {}
+}
