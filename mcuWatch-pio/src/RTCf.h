@@ -240,28 +240,28 @@ void prettyPrintDateTime(DateTime &dt)
 void prettyPrint(DateTime &now, float temperature)
 {
 #if INFO || DEBUG
-/*
-    Serial.print(padByte((now.hour() + hourOffs)));
-    Serial.print(":");
+    /*
+        Serial.print(padByte((now.hour() + hourOffs)));
+        Serial.print(":");
 
-    Serial.print(padByte(now.minute()));
-    Serial.print(":");
+        Serial.print(padByte(now.minute()));
+        Serial.print(":");
 
-    Serial.print(padByte(now.second()));
-    Serial.print(" ");
+        Serial.print(padByte(now.second()));
+        Serial.print(" ");
 
-    Serial.print(dayName[now.dayOfWeek() - 1]);
-    Serial.print(" ");
+        Serial.print(dayName[now.dayOfWeek() - 1]);
+        Serial.print(" ");
 
-    Serial.print(monthName[now.month() - 1]);
-    Serial.print(" ");
+        Serial.print(monthName[now.month() - 1]);
+        Serial.print(" ");
 
-    Serial.print(now.date());
-    Serial.print(prettyNumbering(now.date()));
-    Serial.print(" ");
+        Serial.print(now.date());
+        Serial.print(prettyNumbering(now.date()));
+        Serial.print(" ");
 
-    Serial.print(now.year());
-*/
+        Serial.print(now.year());
+    */
     prettyPrintDateTime(now);
 
     Serial.print("\t");

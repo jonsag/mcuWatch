@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "mcuWatch-pio",
+			"path": "mcuWatch-pio"
+		}
+	],
+	"settings": {}
+}

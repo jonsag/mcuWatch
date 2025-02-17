@@ -63,8 +63,8 @@ $ grep board= `find ~/.platformio/ -name boards.txt` | cut -f2 -d= | sort -u
 /**********
  * Pins
  **********/
-//#define i2cSDA D2
-//#define i2cSCK D1
+// #define i2cSDA D2
+// #define i2cSCK D1
 
 #define tftSCK D5
 #define tftSDA D7
@@ -109,8 +109,6 @@ Adafruit_ST7735 myScreen = Adafruit_ST7735(tftCS, tftDC, tftRES);
 // sizes
 #define startCol ST77XX_WHITE
 #define startSize 1
-
-
 
 // positions
 #define XSplits 4 // split screen vertically, this is used below for positions

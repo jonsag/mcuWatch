@@ -333,7 +333,7 @@ void checkNetworkTime()
                   pixY * driftSize * 2,                                                                    // height
                   bgCol);                                                                              // colour
     */
-   
+
     drawText(myScreen.width() / XSplits * driftXPos - myString.length() / 2.0 * pixX * driftSize, // x
              myScreen.height() / YSplits * driftYPos,                                             // y
              driftSize,                                                                           // size
