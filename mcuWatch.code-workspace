@@ -4,25 +4,8 @@
 			"path": "."
 		},
 		{
-<<<<<<< HEAD
 			"name": "mcuWatch-pio",
 			"path": "mcuWatch-pio"
-=======
-			"name": "anotherWatch-pio",
-			"path": "anotherWatch-pio"
-		},
-		{
-			"name": "espTest-pio",
-			"path": "espTest-pio"
-		},
-		{
-			"name": "mcuWatch-pio",
-			"path": "mcuWatch-pio"
-		},
-		{
-			"name": "ST7735graphicstest-pio",
-			"path": "ST7735graphicstest-pio"
->>>>>>> 8f605f9bc48add27a3815af38a94972ca5ff487c
 		}
 	],
 	"settings": {}
